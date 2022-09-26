@@ -1,41 +1,65 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "theme-machine",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "Description here",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Eric Alain <ericalain1@hotmail.com>",
   "dependencies": {
+    "@fontsource/jost": "^4.5.11",
+    "@reduxjs/toolkit": "^1.8.5",
     "gatsby": "^4.23.0",
     "gatsby-plugin-image": "^2.23.0",
     "gatsby-plugin-manifest": "^4.23.0",
+    "gatsby-plugin-purgecss": "^6.1.2",
+    "gatsby-plugin-react-redux": "^1.1.0",
     "gatsby-plugin-sharp": "^4.23.0",
     "gatsby-source-filesystem": "^4.23.0",
     "gatsby-transformer-sharp": "^4.23.0",
     "prop-types": "^15.8.1",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
-    "prettier": "^2.7.1"
+    "@tailwindcss/forms": "^0.5.3",
+    "autoprefixer": "^10.4.12",
+    "eslint-config-react-app": "^7.0.1",
+    "gatsby-plugin-postcss": "^5.23.0",
+    "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
+    "tailwindcss": "^3.1.8"
   },
   "keywords": [
     "gatsby"
   ],
-  "license": "0BSD",
+  "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
+    "build": "gatsby clean && gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
     "start": "gatsby develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "rimraf": "npx rimraf ./**/node_modules ./**/package-lock.json"
+  },
+  "overrides": {
+    "ansi-html": "https://registry.npmjs.org/ansi-html-community/-/ansi-html-community-0.0.8.tgz",
+    "ansi-regex": "^5.0.1",
+    "browserslist": "^4.19.3",
+    "got": "^11.8.5",
+    "immer": "^9.0.12",
+    "node-fetch": "https://registry.npmjs.org/node-fetch-commonjs/-/node-fetch-commonjs-3.1.1.tgz",
+    "nth-check": "^2.0.1",
+    "parse-url": "^8.1.0",
+    "ws": "^8.5.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "x"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "x"
   }
 }

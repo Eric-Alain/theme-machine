@@ -44,12 +44,12 @@ function Seo({ description, title, children }) {
 }
 
 Seo.defaultProps = {
-  description: ``,
+  description: ``
 }
 
 Seo.propTypes = {
   description: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 }
 
 export default Seo
