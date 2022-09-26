@@ -8,12 +8,7 @@ const Header = ({ siteTitle }) => {
       <header className="container mx-auto text-white py-3 px-2">
         <div className="grid grid-cols-12 gap-2 justify-around content-end">
           <div className="col-span-12 md:col-span-9">
-            {siteTitle}
-            <br />
-            By:{" "}
-            <a href="https://ericalain.ca" className="hover:text-secondary-900">
-              Eric Alain
-            </a>
+            {siteTitle}            
           </div>
           <div className="col-span-12 md:col-span-1 self-end md:justify-self-end">
             <a href="#" className="hover:text-secondary-900">

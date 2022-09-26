@@ -2,15 +2,14 @@ import * as React from "react"
 
 const Footer = () => {
   return (
-    <div>
-      <div>
-        <footer>
-          © {new Date().getFullYear()} &middot; Built with
-          {` `}
-          <a href="https://www.gatsbyjs.com">Gatsby</a>
-        </footer>
-      </div>
-    </div>
+    <footer className="container mx-auto py-3 px-2">
+      © {new Date().getFullYear()} &middot; Built by
+      {` `}
+      By:{" "}
+      <a href="https://ericalain.ca" className="hover:text-secondary-900">
+        Eric Alain
+      </a>
+    </footer>
   )
 }
 

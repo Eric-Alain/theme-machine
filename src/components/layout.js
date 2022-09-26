@@ -16,13 +16,13 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <>
+    <div className="flex flex-col bg-primary-100 min-h-screen">
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div>
+      <div className="py-10 grow">
         <main>{children}</main>
       </div>
-      <Footer />
-    </>
+      <Footer className="" />
+    </div>
   )
 }
 
