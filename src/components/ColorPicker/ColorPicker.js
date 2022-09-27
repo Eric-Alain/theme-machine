@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { SketchPicker } from "react-color"
 
 //Redux
@@ -6,19 +6,38 @@ import { useDispatch } from "react-redux"
 import { setColors } from "../../state/actions/styles"
 
 const ColorPicker = ({ colors, category }) => {
+  //Local state for component
   const [hide, setHide] = useState(true)
+  const ref = useRef(null)
 
   //Redux
   const dispatch = useDispatch()
 
   //Handlers
-  const toggleHide = () => {
+  const toggleHide = e => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setHide(true)
+    }
     setHide(!hide)
   }
 
   const handleChangeComplete = color => {
     dispatch(setColors([category, color.hex]))
   }
+
+  const handleClickOutside = event => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setHide(true)
+    }
+  }
+
+  //useEffect
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true)
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true)
+    }
+  }, [])
 
   return (
     <>
@@ -40,9 +59,8 @@ const ColorPicker = ({ colors, category }) => {
             />
           </svg>
         </div>
-        <div className>
+        <div ref={ref} className={`absolute${hide ? " hidden" : ""}`}>
           <SketchPicker
-            className={`absolute${hide ? " hidden" : ""}`}
             color={colors[category]}
             onChangeComplete={handleChangeComplete}
           />

@@ -13,42 +13,42 @@ const Options = () => {
           <fieldset>
             <legend>Theme colors</legend>
             <div className="grid grid-cols-1 md:grid-cols-3">
-              <p className="inline-flex items-center">
+              <div className="inline-flex items-center">
                 <input
                   type="hidden"
                   name="theme-primary"
                   id="theme-primary"
                   value={colors.primary}
                 />
-                <label className="mr-3" for="theme-primary">
+                <label className="mr-3" htmlFor="theme-primary">
                   Primary
                 </label>
                 <ColorPicker colors={colors} category={"primary"} />
-              </p>
-              <p className="inline-flex items-center justify-center">
+              </div>
+              <div className="inline-flex items-center justify-center">
                 <input
                   type="hidden"
                   name="theme-secondary"
                   id="theme-secondary"
                   value={colors.secondary}
                 />
-                <label className="mr-3" for="theme-secondary">
+                <label className="mr-3" htmlFor="theme-secondary">
                   Secondary
                 </label>
                 <ColorPicker colors={colors} category={"secondary"} />
-              </p>
-              <p className="inline-flex items-center justify-end">
+              </div>
+              <div className="inline-flex items-center justify-end">
                 <input
                   type="hidden"
                   name="theme-tertiary"
                   id="theme-tertiary"
                   value={colors.tertiary}
                 />
-                <label className="mr-3" for="theme-tertiary">
+                <label className="mr-3" htmlFor="theme-tertiary">
                   Tertiary
                 </label>
                 <ColorPicker colors={colors} category={"tertiary"} />
-              </p>
+              </div>
             </div>
           </fieldset>
 
