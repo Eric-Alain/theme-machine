@@ -4,6 +4,7 @@ import * as React from "react"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Starter from "../components/Starter/Starter"
+import Options from "../components/Options/Options"
 
 const IndexPage = () => (
   <Layout>
@@ -16,11 +17,8 @@ const IndexPage = () => (
       <h2>Redux Test Component</h2>
       <Starter />
       <div className="grid gap-3 grid-cols-12">
-        <section className="col-span-4 flex flex-col">
-          <h2>Options</h2>
-          <div className="grow rounded border border-solid border-primary-300 pb-3 px-5"></div>
-        </section>
-        <section className="col-span-8">
+        <Options />
+        <section className="col-span-8 ">
           <h2>Result</h2>
           <div className="rounded border border-solid border-primary-300 pb-3 px-5">
             <h3 className="h1">Heading 1</h3>

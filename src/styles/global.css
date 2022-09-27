@@ -89,7 +89,7 @@
   h4,
   h5,
   h6 {
-    @apply subpixel-antialiased tracking-normal font-semibold mt-3 mb-1 text-primary-900;
+    @apply subpixel-antialiased tracking-normal font-semibold mt-3 mb-1 py-[12px] text-primary-900;
   }
 
   h1, .h1 {
