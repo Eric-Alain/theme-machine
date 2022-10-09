@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 const Options = () => {
   const colors = useSelector(state => state.styles.colors)
   return (
-    <section className="col-span-4 flex flex-col">
+    <section className="col-span-12 md:col-span-4 flex flex-col">
       <h2>Options</h2>
       <div className="grow rounded border border-solid border-primary-300 pb-3 px-5">
         <form className="my-5">

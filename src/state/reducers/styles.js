@@ -25,7 +25,7 @@ const stylesReducer = (state = initialState, action) => {
   const { type, payload } = action
 
   switch (type) {
-    case COLORS:
+    case COLORS:      
       return {
         ...state,
         colors: { ...state.colors, [payload.category]: payload.color }
@@ -33,13 +33,13 @@ const stylesReducer = (state = initialState, action) => {
     case FONTS:
       return {
         ...state,
-        fonts: { ...fonts, payload }
+        fonts: { ...state.fonts, payload }
       }
 
     case SIZES:
       return {
         ...state,
-        sizes: { ...sizes, payload }
+        sizes: { ...state.sizes, payload }
       }
 
     default:

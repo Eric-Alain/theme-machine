@@ -8,25 +8,30 @@ import { setColors } from "../../state/actions/styles"
 const ColorPicker = ({ colors, category }) => {
   //Local state for component
   const [hide, setHide] = useState(true)
+  const [pickerOpen, setPickerOpen] = useState(false)
   const ref = useRef(null)
 
   //Redux
   const dispatch = useDispatch()
 
   //Handlers
-  const toggleHide = e => {
-    if (ref.current && !ref.current.contains(event.target)) {
+  const toggleHide = () => {
+    if (pickerOpen) {
+      setPickerOpen(false)
       setHide(true)
+    } else {
+      setPickerOpen(true)
+      setHide(false)
     }
-    setHide(!hide)
   }
 
   const handleChangeComplete = color => {
     dispatch(setColors([category, color.hex]))
   }
 
-  const handleClickOutside = event => {
-    if (ref.current && !ref.current.contains(event.target)) {
+  const handleClickOutside = e => {
+    console.log("called also")
+    if (ref.current && !ref.current.contains(e.target)) {
       setHide(true)
     }
   }
@@ -41,10 +46,10 @@ const ColorPicker = ({ colors, category }) => {
 
   return (
     <>
-      <div className="relative">
+      <div className="relative z-0">
         <div
           onClick={toggleHide}
-          className="rounded border border-primary-600 p-[1px]"
+          className="rounded border border-primary-600 p-[1px] hover:cursor-pointer z-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +64,7 @@ const ColorPicker = ({ colors, category }) => {
             />
           </svg>
         </div>
-        <div ref={ref} className={`absolute${hide ? " hidden" : ""}`}>
+        <div ref={ref} className={`absolute${hide ? " hidden" : ""} z-0`}>
           <SketchPicker
             color={colors[category]}
             onChangeComplete={handleChangeComplete}
