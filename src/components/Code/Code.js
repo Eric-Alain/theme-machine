@@ -5,7 +5,7 @@ import { useSelector } from "react-redux"
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx"
-import { coy, okaidia } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 SyntaxHighlighter.registerLanguage("jsx", jsx)
 
@@ -15,7 +15,6 @@ const Code = () => {
   return (
     <section className="col-span-12">
       <h2>Code</h2>
-
       <SyntaxHighlighter language="css" style={okaidia}>
         {`
 :root {
@@ -34,10 +33,6 @@ h6 {
 }
         `}
       </SyntaxHighlighter>
-      <br />
-      <br />
-      <br />
-      <br />
     </section>
   )
 }

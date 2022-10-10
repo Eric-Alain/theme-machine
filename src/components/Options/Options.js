@@ -1,10 +1,25 @@
 import * as React from "react"
 import ColorPicker from "../ColorPicker/ColorPicker"
+
 //Redux
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { setFonts } from "../../state/actions/styles"
+
+import { camelCase } from "../../utils"
 
 const Options = () => {
+  const dispatch = useDispatch()
   const colors = useSelector(state => state.styles.colors)
+
+  const handleFontChange = (e, type) => {
+    const value = e.target.value
+    dispatch(
+      setFonts({
+        [type]: `'${value}', sans-serif`
+      })
+    )
+  }
+
   return (
     <section className="col-span-12 md:col-span-4 flex flex-col">
       <h2>Options</h2>
@@ -53,11 +68,21 @@ const Options = () => {
           </fieldset>
 
           <br />
-          <select>
-            <option value="one">One</option>
-            <option value="two">Two</option>
-            <option value="three">Three</option>
-            <option value="four">Four</option>
+          <label>General font</label>
+          <br />
+          <select onChange={e => handleFontChange(e, "general")}>
+            <option value="Jost">Jost</option>
+            <option value="Damion">Damion</option>
+            <option value="Fira One">Fira One</option>
+          </select>
+          <br />
+          <br />
+          <label>Heading font</label>
+          <br />
+          <select onChange={e => handleFontChange(e, "heading")}>
+            <option value="Jost">Jost</option>
+            <option value="Damion">Damion</option>
+            <option value="Fira One">Fira One</option>
           </select>
         </form>
       </div>

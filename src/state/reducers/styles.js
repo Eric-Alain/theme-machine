@@ -9,7 +9,9 @@ export const initialState = {
     tertiary: "#E5E5E5"
   },
   fonts: {
-    dosis: `'Dosis', sans-serif`
+    general: {
+      jost: `'Jost', sans-serif`
+    }
   },
   sizes: {
     xs: 360,
@@ -25,17 +27,25 @@ const stylesReducer = (state = initialState, action) => {
   const { type, payload } = action
 
   switch (type) {
-    case COLORS:      
+    case COLORS:
       return {
         ...state,
         colors: { ...state.colors, [payload.category]: payload.color }
       }
     case FONTS:
-      return {
-        ...state,
-        fonts: { ...state.fonts, payload }
+      const types = ["general", "heading"]
+      const returnValue = type => {
+        return {
+          ...state,
+          fonts: { ...state.fonts, [type]: payload[type] }
+        }
       }
-
+      if (payload.hasOwnProperty(types[0])) {
+        return returnValue(types[0])
+      } else if (payload.hasOwnProperty(types[1])) {
+        return returnValue(types[1])
+      }
+      break
     case SIZES:
       return {
         ...state,

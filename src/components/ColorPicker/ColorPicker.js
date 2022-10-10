@@ -30,7 +30,6 @@ const ColorPicker = ({ colors, category }) => {
   }
 
   const handleClickOutside = e => {
-    console.log("called also")
     if (ref.current && !ref.current.contains(e.target)) {
       setHide(true)
     }
