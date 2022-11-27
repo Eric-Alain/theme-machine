@@ -54,7 +54,7 @@ const ColorPicker = ({ colors, category }) => {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="w-4 h-4 text-primary-700"
+            className="h-4 text-primary-700"
           >
             <path
               fillRule="evenodd"
@@ -63,7 +63,7 @@ const ColorPicker = ({ colors, category }) => {
             />
           </svg>
         </div>
-        <div ref={ref} className={`absolute${hide ? " hidden" : ""} z-0`}>
+        <div ref={ref} className={`absolute${hide ? " hidden w-0" : " w-auto"} z-0`}>
           <SketchPicker
             color={colors[category]}
             onChangeComplete={handleChangeComplete}

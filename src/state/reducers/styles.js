@@ -1,17 +1,18 @@
 import { COLORS, FONTS, SIZES } from "../types/styles"
 
+const defaultFont = `'Jost', sans-serif`
+
 export const initialState = {
   colors: {
     black: "#292929",
     white: "#fff",
-    primary: "#14213D",
-    secondary: "#FCA311",
-    tertiary: "#E5E5E5"
+    primary: "#5800a1",
+    secondary: "#a10572",
+    tertiary: "#FFFFFF"
   },
   fonts: {
-    general: {
-      jost: `'Jost', sans-serif`
-    }
+    general: defaultFont,
+    heading: defaultFont
   },
   sizes: {
     xs: 360,

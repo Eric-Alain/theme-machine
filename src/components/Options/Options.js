@@ -27,7 +27,7 @@ const Options = () => {
         <form className="my-5">
           <fieldset>
             <legend>Theme colors</legend>
-            <div className="grid grid-cols-1 md:grid-cols-3">
+            <div className="grid grid-cols-3">
               <div className="inline-flex items-center">
                 <input
                   type="hidden"
@@ -66,24 +66,25 @@ const Options = () => {
               </div>
             </div>
           </fieldset>
-
           <br />
-          <label>General font</label>
-          <br />
-          <select onChange={e => handleFontChange(e, "general")}>
-            <option value="Jost">Jost</option>
-            <option value="Damion">Damion</option>
-            <option value="Fira One">Fira One</option>
-          </select>
-          <br />
-          <br />
-          <label>Heading font</label>
-          <br />
-          <select onChange={e => handleFontChange(e, "heading")}>
-            <option value="Jost">Jost</option>
-            <option value="Damion">Damion</option>
-            <option value="Fira One">Fira One</option>
-          </select>
+          <div className="mb-3">
+            <label>Heading font</label>
+            <br />
+            <select onChange={e => handleFontChange(e, "heading")}>
+              <option value="Jost">Jost</option>
+              <option value="Damion">Damion</option>
+              <option value="Fira Mono">Fira Mono</option>
+            </select>
+          </div>
+          <div className="mb-3">
+            <label>General font</label>
+            <br />
+            <select onChange={e => handleFontChange(e, "general")}>
+              <option value="Jost">Jost</option>
+              <option value="Damion">Damion</option>
+              <option value="Fira Mono">Fira Mono</option>
+            </select>
+          </div>
         </form>
       </div>
     </section>

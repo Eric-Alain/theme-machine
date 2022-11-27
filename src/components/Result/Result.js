@@ -1,56 +1,106 @@
-import * as React from "react"
+import React, { useState, useEffect } from "react"
+import ReactDOMServer from "react-dom/server"
 
 //Redux
 import { useSelector } from "react-redux"
+
+//Components
+import { RawHtml } from "../Code/Raw"
 
 const Result = () => {
   const colors = useSelector(state => state.styles.colors)
   const fonts = useSelector(state => state.styles.fonts)
 
-  return (
-    <>
-      <section id="result" className="col-span-12 md:col-span-8">
-        <h2>Result</h2>
-        <div
-          className="rounded border border-solid border-primary-300 pb-3 px-5 overflow-y-scroll max-h-[32rem]"
-          style={{ fontFamily: fonts.general }}
-        >
-          <h3
-            className="h1"
-            style={{ color: colors.primary, fontFamily: fonts.heading }}
-          >
-            Heading 1
-          </h3>
-          <h3
-            className="h2"
-            style={{ color: colors.primary, fontFamily: fonts.heading }}
-          >
-            Heading 2
-          </h3>
-          <h3
-            className="h3"
-            style={{ color: colors.primary, fontFamily: fonts.heading }}
-          >
-            Heading 3
-          </h3>
-          <h3
-            className="h4"
-            style={{ color: colors.primary, fontFamily: fonts.heading }}
-          >
-            Heading 4
-          </h3>
-          <h3
-            className="h5"
-            style={{ color: colors.primary, fontFamily: fonts.heading }}
-          >
-            Heading 5
-          </h3>
-          <h3
-            className="h6"
-            style={{ color: colors.primary, fontFamily: fonts.heading }}
-          >
-            Heading 6
-          </h3>
+  const [rawCSS, setRawCSS] = useState(`
+  :root {
+      --primary: ${colors.primary};
+      --secondary: ${colors.secondary};
+      --tertiary: ${colors.tertiary};
+      --font-general: ${fonts.general};
+      --font-heading: ${fonts.heading};
+
+      --blue: #1e90ff;
+  }
+
+  body {
+      font-family: var(--font-general)
+      background-color: var(--secondary)
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+      font-family: var(--font-heading)
+      color: var(--primary);
+      color: ${colors.primary};
+  }`)
+
+  useEffect(() => {
+    setRawCSS(`
+  :root {
+      --primary: ${colors.primary};
+      --secondary: ${colors.secondary};
+      --tertiary: ${colors.tertiary};
+      --font-general: ${fonts.general.replace(/'/gm, "")};
+      --font-heading: ${fonts.heading.replace(/'/gm, "")};
+  }
+
+  body {
+    font-family: var(--font-general);
+    background-color: var(--secondary);
+  }
+
+  main {
+    margin: 3rem;
+    padding: 0.25rem 1.5rem;
+    background-color: var(--tertiary)
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+      font-family: var(--font-heading);
+      color: var(--primary);
+  }
+  
+  `)
+  }, [colors, fonts])
+
+  const test = (
+    <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+        <title>Results boilerplate</title>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Jost"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Fira+Mono"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Damion"
+        />
+        <style type="text/css">{rawCSS}</style>
+      </head>
+      <body>
+        <main>
+          <h1>Heading 1</h1>
+          <h2>Heading 2</h2>
+          <h3>Heading 3</h3>
+          <h4>Heading 4</h4>
+          <h5>Heading 5</h5>
+          <h6>Heading 6</h6>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -70,9 +120,19 @@ const Result = () => {
             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
             culpa qui officia deserunt mollit anim id est laborum.
           </p>
-        </div>
-      </section>
-    </>
+        </main>
+      </body>
+    </html>
+  )
+  return (
+    <section id="result" className="col-span-12 md:col-span-8">
+      <h2>Result</h2>
+      <iframe
+        srcDoc={ReactDOMServer.renderToString(test)}
+        title="test"
+        className="rounded border border-solid border-primary-300 overflow-y-scroll min-h-[32rem] max-h-[32rem]"
+      ></iframe>
+    </section>
   )
 }
 
