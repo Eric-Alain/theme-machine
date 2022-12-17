@@ -5,8 +5,6 @@ import ColorPicker from "../ColorPicker/ColorPicker"
 import { useSelector, useDispatch } from "react-redux"
 import { setFonts } from "../../state/actions/styles"
 
-import { camelCase } from "../../utils"
-
 const Options = () => {
   const dispatch = useDispatch()
   const colors = useSelector(state => state.styles.colors)
@@ -70,7 +68,7 @@ const Options = () => {
           <div className="mb-3">
             <label>Heading font</label>
             <br />
-            <select onChange={e => handleFontChange(e, "heading")}>
+            <select onChange={e => handleFontChange(e, "heading")} value="Fira Mono">
               <option value="Jost">Jost</option>
               <option value="Damion">Damion</option>
               <option value="Fira Mono">Fira Mono</option>
@@ -79,7 +77,7 @@ const Options = () => {
           <div className="mb-3">
             <label>General font</label>
             <br />
-            <select onChange={e => handleFontChange(e, "general")}>
+            <select onChange={e => handleFontChange(e, "general")} value="Jost">
               <option value="Jost">Jost</option>
               <option value="Damion">Damion</option>
               <option value="Fira Mono">Fira Mono</option>

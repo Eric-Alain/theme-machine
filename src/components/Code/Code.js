@@ -1,5 +1,5 @@
 //React
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 //Redux
 import { useDispatch, useSelector } from "react-redux"
@@ -53,6 +53,10 @@ const Code = () => {
     }, 1000)
     return () => clearTimeout(dispatchCall)
   }
+
+  useEffect(() => {
+    localSetCss(reduxCss)
+  }, [reduxCss])
 
   return (
     <>
