@@ -1,23 +1,96 @@
-import * as React from "react"
+//React
+import React, { useState } from "react"
 
-//Components
-import { RawCss } from "./Raw"
+//Redux
+import { useDispatch, useSelector } from "react-redux"
+import { setBodyHtml, setCSS } from "../../state/actions/code"
 
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
-import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx"
-import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism"
+//Editor component
+import Editor from "react-simple-code-editor"
 
-SyntaxHighlighter.registerLanguage("jsx", jsx)
+//Prismjs syntax highlighter options for editor
+import { highlight, languages } from "prismjs/components/prism-core"
+import "prismjs/components/prism-markup"
+import "prismjs/components/prism-css"
+import "prismjs/themes/prism-okaidia.css"
 
 const Code = () => {
-  return (
-    <section className="col-span-12">
-      <h2>Code</h2>
+  const dispatch = useDispatch()
+  const reduxBodyHtml = useSelector(state => state.code.bodyHtml)
+  const reduxCss = useSelector(state => state.code.css)
 
-      <SyntaxHighlighter language="css" style={okaidia}>
-        {RawCss()}
-      </SyntaxHighlighter>
-    </section>
+  const [localHtml, localSetHtml] = useState(reduxBodyHtml.trim())
+  const [localCss, localSetCss] = useState(reduxCss.trim())
+
+  const handleHtmlChange = code => {
+    /*Update code state*/
+    localSetHtml(code)
+
+    /*Kill any existing timeouts */
+    let id = window.setTimeout(() => {}, 1000)
+    while (id--) {
+      window.clearTimeout(id)
+    }
+    //Call redux dispatch after timeout
+    const dispatchCall = setTimeout(() => {
+      dispatch(setBodyHtml(code))
+    }, 1000)
+    return () => clearTimeout(dispatchCall)
+  }
+
+  const handleCssChange = code => {
+    /*Update code state*/
+    localSetCss(code)
+
+    /*Kill any existing timeouts */
+    let id = window.setTimeout(() => {}, 1000)
+    while (id--) {
+      window.clearTimeout(id)
+    }
+    //Call redux dispatch after timeout
+    const dispatchCall = setTimeout(() => {
+      dispatch(setCSS(code))
+    }, 1000)
+    return () => clearTimeout(dispatchCall)
+  }
+
+  return (
+    <>
+      <section className="col-span-12 md:col-span-6">
+        <h2>HTML</h2>
+        <Editor
+          value={localHtml}
+          onValueChange={code => handleHtmlChange(code)}
+          highlight={code => highlight(code, languages.markup)}
+          padding={16}
+          tabSize={5}
+          insertSpaces={false}
+          className="rounded border border-solid border-primary-300 min-h-[32rem] max-h-[32rem] shadow-none"
+          style={{
+            backgroundColor: "#292929",
+            color: "#ffffff",
+            overflowY: "scroll"
+          }}
+        />
+      </section>
+      <section className="col-span-12 md:col-span-6">
+        <h2>CSS</h2>
+        <Editor
+          value={localCss}
+          onValueChange={code => handleCssChange(code)}
+          highlight={code => highlight(code, languages.css)}
+          padding={16}
+          tabSize={5}
+          insertSpaces={false}
+          className="rounded border border-solid border-primary-300 min-h-[32rem] max-h-[32rem] shadow-none"
+          style={{
+            backgroundColor: "#292929",
+            color: "#ffffff",
+            overflowY: "scroll"
+          }}
+        />
+      </section>
+    </>
   )
 }
 

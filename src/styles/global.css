@@ -110,6 +110,12 @@
   h6, .h6 {
     @apply text-base;
   }
+
+  textarea:focus {
+    outline: 0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+  }
 }
 
 @tailwind utilities;

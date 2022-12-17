@@ -4,10 +4,12 @@ import { combineReducers } from "redux"
 
 //Reducers
 import stylesReducer from "../state/reducers/styles"
+import codeReducer from "../state/reducers/code"
 
 //Create root reducer
 export const rootReducer = combineReducers({
-  styles: stylesReducer
+  styles: stylesReducer,
+  code: codeReducer
 })
 
 //Create store, pass preloadedState via plugin

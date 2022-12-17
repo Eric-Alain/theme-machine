@@ -1,45 +1,20 @@
 import React, { useState, useEffect } from "react"
-import ReactDOMServer from "react-dom/server"
 
 //Redux
-import { useSelector } from "react-redux"
-
-//Components
-import { RawHtml } from "../Code/Raw"
+import { useSelector, useDispatch } from "react-redux"
+import { setCSS } from "../../state/actions/code"
 
 const Result = () => {
   const colors = useSelector(state => state.styles.colors)
   const fonts = useSelector(state => state.styles.fonts)
+  const bodyHtml = useSelector(state => state.code.bodyHtml)
+  const css = useSelector(state => state.code.css)
 
-  const [rawCSS, setRawCSS] = useState(`
-  :root {
-      --primary: ${colors.primary};
-      --secondary: ${colors.secondary};
-      --tertiary: ${colors.tertiary};
-      --font-general: ${fonts.general};
-      --font-heading: ${fonts.heading};
-
-      --blue: #1e90ff;
-  }
-
-  body {
-      font-family: var(--font-general)
-      background-color: var(--secondary)
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-      font-family: var(--font-heading)
-      color: var(--primary);
-      color: ${colors.primary};
-  }`)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    setRawCSS(`
+    dispatch(
+      setCSS(`
   :root {
       --primary: ${colors.primary};
       --secondary: ${colors.secondary};
@@ -68,70 +43,58 @@ const Result = () => {
       font-family: var(--font-heading);
       color: var(--primary);
   }
-  
-  `)
-  }, [colors, fonts])
+    `)
+    )
+  }, [colors, fonts, dispatch])
 
-  const test = (
-    <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-        <title>Results boilerplate</title>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Jost"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Fira+Mono"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Damion"
-        />
-        <style type="text/css">{rawCSS}</style>
-      </head>
-      <body>
-        <main>
-          <h1>Heading 1</h1>
-          <h2>Heading 2</h2>
-          <h3>Heading 3</h3>
-          <h4>Heading 4</h4>
-          <h5>Heading 5</h5>
-          <h6>Heading 6</h6>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-          <br />
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-        </main>
-      </body>
-    </html>
-  )
+  const getGeneratedPageURL = ({ html, css }) => {
+    const getBlobURL = (code, type) => {
+      const blob = new Blob([code], { type })
+      return URL.createObjectURL(blob)
+    }
+
+    //const cssURL = getBlobURL(css, "text/css")
+    //const jsURL = getBlobURL(js, "text/javascript")
+    //${css && `<link rel="stylesheet" type="text/css" href="${cssURL}" />`}
+    const source = `
+      <html>
+        <head>          
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Jost"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Fira+Mono"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Damion"
+          />
+          <style>${css}</style>
+        </head>
+        <body>
+          ${html || ""}
+        </body>
+      </html>
+    `
+    return getBlobURL(source, "text/html")
+  }
+
+  const url = getGeneratedPageURL({
+    html: bodyHtml,
+    css: css
+  })
+
   return (
     <section id="result" className="col-span-12 md:col-span-8">
       <h2>Result</h2>
       <iframe
-        srcDoc={ReactDOMServer.renderToString(test)}
-        title="test"
+        key={"results-iframe"}
+        src={url}
+        title="Results"
         className="rounded border border-solid border-primary-300 overflow-y-scroll min-h-[32rem] max-h-[32rem]"
-      ></iframe>
+      />
     </section>
   )
 }
