@@ -62,35 +62,39 @@ const Code = () => {
     <>
       <section className="col-span-12 md:col-span-6">
         <h2>HTML</h2>
-        <Editor
-          value={localHtml}
-          onValueChange={code => handleHtmlChange(code)}
-          highlight={code => highlight(code, languages.markup)}
-          padding={16}
-          tabSize={5}
-          insertSpaces={false}
-          className="rounded border border-solid border-primary-300 shadow-none"
-          style={{
-            backgroundColor: "#292929",
-            color: "#ffffff"
-          }}
-        />
+        <div className="max-h-[32rem] min-h-[32rem] overflow-y-scroll">
+          <Editor
+            value={localHtml}
+            onValueChange={code => handleHtmlChange(code)}
+            highlight={code => highlight(code, languages.markup)}
+            padding={16}
+            tabSize={5}
+            insertSpaces={false}
+            className="rounded border border-solid border-primary-300 shadow-none"
+            style={{
+              backgroundColor: "#292929",
+              color: "#ffffff"
+            }}
+          />
+        </div>
       </section>
       <section className="col-span-12 md:col-span-6">
         <h2>CSS</h2>
-        <Editor
-          value={localCss}
-          onValueChange={code => handleCssChange(code)}
-          highlight={code => highlight(code, languages.css)}
-          padding={16}
-          tabSize={5}
-          insertSpaces={false}
-          className="rounded border border-solid border-primary-300 shadow-none"
-          style={{
-            backgroundColor: "#292929",
-            color: "#ffffff"
-          }}
-        />
+        <div className="max-h-[32rem] min-h-[32rem] overflow-y-scroll">
+          <Editor
+            value={localCss}
+            onValueChange={code => handleCssChange(code)}
+            highlight={code => highlight(code, languages.css)}
+            padding={16}
+            tabSize={5}
+            insertSpaces={false}
+            className="rounded border border-solid border-primary-300 shadow-none"
+            style={{
+              backgroundColor: "#292929",
+              color: "#ffffff"
+            }}
+          />
+        </div>
       </section>
     </>
   )
