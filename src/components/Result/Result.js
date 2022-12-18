@@ -13,39 +13,48 @@ const Result = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    //Complex, update only specific parts of css redux state whenever colors or fonts state changes, keeps everything in sync
+    //General idea:
+    // -make object of redux selectors used to update state
+    // -make array of regex patterns and corresponding replacements
+    // -save to local variable
+    // -dispatch update to redux using local variable
+
+    const cssVars = {
+      primary: colors.primary,
+      secondary: colors.secondary,
+      tertiary: colors.tertiary,
+      fontGeneral: fonts.general.replace(/'/gm, ""),
+      fontHeading: fonts.heading.replace(/'/gm, "")
+    }
+
+    const swapArr = [
+      { var: `--primary: ${cssVars.primary};`, reg: /--primary: *(.*?);/gm },
+      {
+        var: `--secondary: ${cssVars.secondary};`,
+        reg: /--secondary: *(.*?);/gm
+      },
+      { var: `--tertiary: ${cssVars.tertiary};`, reg: /--tertiary: *(.*?);/gm },
+      {
+        var: `--font-general: ${cssVars.fontGeneral};`,
+        reg: /--font-general: *(.*?);/gm
+      },
+      {
+        var: `--font-heading: ${cssVars.fontHeading};`,
+        reg: /--font-heading: *(.*?);/gm
+      }
+    ]
+
+    let tempString = css;
+
+    swapArr.forEach(swap => {
+      tempString = tempString.replace(swap.reg, swap.var)
+    })
+
     dispatch(
-      setCSS(`
-  :root {
-      --primary: ${colors.primary};
-      --secondary: ${colors.secondary};
-      --tertiary: ${colors.tertiary};
-      --font-general: ${fonts.general.replace(/'/gm, "")};
-      --font-heading: ${fonts.heading.replace(/'/gm, "")};
-  }
-
-  body {
-    font-family: var(--font-general);
-    background-color: var(--secondary);
-  }
-
-  main {
-    margin: 3rem;
-    padding: 0.25rem 1.5rem;
-    background-color: var(--tertiary)
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-      font-family: var(--font-heading);
-      color: var(--primary);
-  }
-    `)
+      setCSS(tempString)
     )
-  }, [colors, fonts, dispatch])
+  }, [colors, fonts, dispatch, css])
 
   const getGeneratedPageURL = ({ html, css }) => {
     const getBlobURL = (code, type) => {

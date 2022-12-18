@@ -69,11 +69,10 @@ const Code = () => {
           padding={16}
           tabSize={5}
           insertSpaces={false}
-          className="rounded border border-solid border-primary-300 min-h-[32rem] max-h-[32rem] shadow-none"
+          className="rounded border border-solid border-primary-300 shadow-none"
           style={{
             backgroundColor: "#292929",
-            color: "#ffffff",
-            overflowY: "scroll"
+            color: "#ffffff"
           }}
         />
       </section>
@@ -86,11 +85,10 @@ const Code = () => {
           padding={16}
           tabSize={5}
           insertSpaces={false}
-          className="rounded border border-solid border-primary-300 min-h-[32rem] max-h-[32rem] shadow-none"
+          className="rounded border border-solid border-primary-300 shadow-none"
           style={{
             backgroundColor: "#292929",
-            color: "#ffffff",
-            overflowY: "scroll"
+            color: "#ffffff"
           }}
         />
       </section>
