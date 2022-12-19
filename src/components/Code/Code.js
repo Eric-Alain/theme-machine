@@ -68,8 +68,9 @@ const Code = () => {
             onValueChange={code => handleHtmlChange(code)}
             highlight={code => highlight(code, languages.markup)}
             padding={16}
-            tabSize={5}
             insertSpaces={false}
+            tabSize={1}
+            ignoreTabKey={false}
             className="rounded border border-solid border-primary-300 shadow-none"
             style={{
               backgroundColor: "#292929",
@@ -86,8 +87,9 @@ const Code = () => {
             onValueChange={code => handleCssChange(code)}
             highlight={code => highlight(code, languages.css)}
             padding={16}
-            tabSize={5}
             insertSpaces={false}
+            tabSize={1}
+            ignoreTabKey={false}
             className="rounded border border-solid border-primary-300 shadow-none"
             style={{
               backgroundColor: "#292929",

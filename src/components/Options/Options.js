@@ -2,25 +2,14 @@ import * as React from "react"
 import ColorPicker from "../ColorPicker/ColorPicker"
 
 //Redux
-import { useSelector, useDispatch } from "react-redux"
-import { setFonts } from "../../state/actions/styles"
+import { useSelector } from "react-redux"
 
 //Components
 import FontSelector from "./FontSelector"
 
 const Options = () => {
-  const dispatch = useDispatch()
   const colors = useSelector(state => state.styles.colors)
-
-  const handleFontChange = (e, type) => {
-    const value = e.target.value
-    dispatch(
-      setFonts({
-        [type]: `'${value}', sans-serif`
-      })
-    )
-  }
-
+  const reduxCss = useSelector(state => state.code.css)
   return (
     <section className="col-span-12 md:col-span-4 flex flex-col">
       <h2>Options</h2>

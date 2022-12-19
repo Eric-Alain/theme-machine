@@ -1,11 +1,14 @@
-import * as React from "react"
+import React, { useEffect } from "react"
 
 //Redux
-import { useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { setFonts } from "../../state/actions/styles"
 
 const FontSelector = ({ label, elementToHandle, defaultFont }) => {
   const dispatch = useDispatch()
+
+  const reduxCss = useSelector(state => state.code.css)
+
   const handleFontChange = (e, type) => {
     const value = e.target.value
     dispatch(
@@ -14,6 +17,20 @@ const FontSelector = ({ label, elementToHandle, defaultFont }) => {
       })
     )
   }
+
+  useEffect(() => {
+    dispatch(
+      setFonts({
+        general: reduxCss
+          .match(/(?<=--font-general:[ *])(.*?)(?=;)/gm)
+          .toString(),
+        heading: reduxCss
+          .match(/(?<=--font-heading:[ *])(.*?)(?=;)/gm)
+          .toString()
+      })
+    )
+  }, [reduxCss, dispatch])
+
   return (
     <>
       <label>{label}</label>

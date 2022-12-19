@@ -2,10 +2,13 @@ import React, { useState, useEffect, useRef } from "react"
 import { SketchPicker } from "react-color"
 
 //Redux
-import { useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { setColors } from "../../state/actions/styles"
 
 const ColorPicker = ({ colors, category }) => {
+
+  const reduxCss = useSelector(state => state.code.css)
+
   //Local state for component
   const [hide, setHide] = useState(true)
   const [pickerOpen, setPickerOpen] = useState(false)
@@ -42,6 +45,22 @@ const ColorPicker = ({ colors, category }) => {
       document.removeEventListener("click", handleClickOutside, true)
     }
   }, [])
+  
+  useEffect(() => {
+    dispatch(setColors(["primary", reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm).toString()]))
+    dispatch(
+      setColors([
+        "secondary",
+        reduxCss.match(/(?<=--secondary:[ *])(.*?)(?=;)/gm).toString()
+      ])
+    )
+    dispatch(
+      setColors([
+        "tertiary",
+        reduxCss.match(/(?<=--tertiary:[ *])(.*?)(?=;)/gm).toString()
+      ])
+    )
+  }, [reduxCss, dispatch])
 
   return (
     <>
@@ -63,7 +82,10 @@ const ColorPicker = ({ colors, category }) => {
             />
           </svg>
         </div>
-        <div ref={ref} className={`absolute${hide ? " hidden w-0" : " w-auto"} z-0`}>
+        <div
+          ref={ref}
+          className={`absolute${hide ? " hidden w-0" : " w-auto"} z-0`}
+        >
           <SketchPicker
             color={colors[category]}
             onChangeComplete={handleChangeComplete}

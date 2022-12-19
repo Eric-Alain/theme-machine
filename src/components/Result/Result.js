@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 
 //Redux
 import { useSelector, useDispatch } from "react-redux"
@@ -13,6 +13,9 @@ const Result = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    /*console.log(
+      useSelector(state => state.styles.colors.primary)
+    )*/
     //Complex, update only specific parts of css redux state whenever colors or fonts state changes, keeps everything in sync
     //General idea:
     // -make object of redux selectors used to update state
@@ -45,16 +48,15 @@ const Result = () => {
       }
     ]
 
-    let tempString = css;
+    let tempString = css
 
     swapArr.forEach(swap => {
       tempString = tempString.replace(swap.reg, swap.var)
     })
-
-    dispatch(
-      setCSS(tempString)
-    )
-  }, [colors, fonts, dispatch, css])
+    dispatch(setCSS(tempString))
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colors, fonts])
 
   const getGeneratedPageURL = ({ html, css }) => {
     const getBlobURL = (code, type) => {
