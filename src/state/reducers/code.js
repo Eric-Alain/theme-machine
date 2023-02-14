@@ -92,7 +92,7 @@ export const initialState = {
 	--secondary: #24174b;
 	--tertiary: #FFFFFF;
 	--font-general: 'Jost', sans-serif;
-	--font-heading: 'Jost', sans-serif;
+	--font-heading: 'Fira Mono', sans-serif;
 	font-size: 16px;
 }
 
@@ -141,32 +141,26 @@ option {
 	transition: all 0.2s ease-out;
 }
 
-.list-container {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.list-container-child {
-	width: 50%;
-}
-
+form,
+.list-container,
 .button-container {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.button-container-child {
-	width: 50%;
-}
-
-form {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 1rem;
 }
 
-.form-group {
-	grid-column: span 1 / span 1;
+.form-group,
+.list-container-child,
+.button-container-child {
+	grid-column: span 2 / span 2;
+}
+
+@media only screen and (min-width: 768px) {
+	.form-group,
+	.list-container-child,
+	.button-container-child {
+		grid-column: span 1 / span 1;
+	}
 }
 
 .form-group.last {

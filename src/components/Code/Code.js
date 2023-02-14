@@ -14,6 +14,9 @@ import "prismjs/components/prism-markup"
 import "prismjs/components/prism-css"
 import "prismjs/themes/prism-okaidia.css"
 
+//Utils
+import { debounce } from "../../utils"
+
 const Code = () => {
   const dispatch = useDispatch()
   const reduxBodyHtml = useSelector(state => state.code.bodyHtml)
@@ -25,33 +28,13 @@ const Code = () => {
   const handleHtmlChange = code => {
     /*Update code state*/
     localSetHtml(code)
-
-    /*Kill any existing timeouts */
-    let id = window.setTimeout(() => {}, 1000)
-    while (id--) {
-      window.clearTimeout(id)
-    }
-    //Call redux dispatch after timeout
-    const dispatchCall = setTimeout(() => {
-      dispatch(setBodyHtml(code))
-    }, 1000)
-    return () => clearTimeout(dispatchCall)
+    debounce(1000, [() => dispatch(setBodyHtml(code))])
   }
 
   const handleCssChange = code => {
     /*Update code state*/
     localSetCss(code)
-
-    /*Kill any existing timeouts */
-    let id = window.setTimeout(() => {}, 1000)
-    while (id--) {
-      window.clearTimeout(id)
-    }
-    //Call redux dispatch after timeout
-    const dispatchCall = setTimeout(() => {
-      dispatch(setCSS(code))
-    }, 1000)
-    return () => clearTimeout(dispatchCall)
+    debounce(1000, [() => dispatch(setCSS(code))])
   }
 
   useEffect(() => {

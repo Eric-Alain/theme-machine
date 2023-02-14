@@ -7,7 +7,24 @@ export const megaTrim = (str = "") =>
 
 export const camelCase = str =>
   str
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-      return index === 0 ? word.toLowerCase() : word.toUpperCase()
-    })
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>
+      index === 0 ? word.toLowerCase() : word.toUpperCase()
+    )
     .replace(/\s+/g, "")
+
+export const debounce = (delay, callbacks) => {
+  /*Kill any existing timeouts */
+  let id = window.setTimeout(() => {}, delay)
+  while (id--) {
+    window.clearTimeout(id)
+  }
+  //Call desired function after timeout
+  const dispatchCall = setTimeout(() => {
+    callbacks.forEach(callback => {
+      callback()
+    })
+  }, delay)
+  return () => clearTimeout(dispatchCall)
+}
+
+

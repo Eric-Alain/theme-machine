@@ -38,6 +38,7 @@ const FontSelector = ({ label, elementToHandle, defaultFont }) => {
       <select
         onChange={e => handleFontChange(e, elementToHandle)}
         defaultValue={defaultFont}
+        className="appearance-none"
       >
         <option value="Jost">Jost</option>
         <option value="Damion">Damion</option>
