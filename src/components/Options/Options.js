@@ -1,16 +1,35 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import ColorPicker from "../ColorPicker/ColorPicker"
 
 //Redux
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { setShape } from "../../state/actions/styles"
 
 //Components
 import FontSelector from "./FontSelector"
+import RadioButton from "./RadioButton"
 import RangeSlider from "./RangeSlider"
 
+//Utils
+import { debounce } from "../../utils"
+
 const Options = () => {
+  const dispatch = useDispatch()
+
   const colors = useSelector(state => state.styles.colors)
   const fonts = useSelector(state => state.styles.fonts)
+  const shape = useSelector(state => state.styles.shape)
+
+  const handleShapeChange = e => {
+    dispatch(setShape({ rounded: e.target.checked }))
+  }
+
+  const [sliderValue, setSliderValue] = useState(shape.radius)
+
+  const handleRadiusChange = e => {
+    setSliderValue(e.target.value)
+    debounce(1000, [() => dispatch(setShape({ radius: e.target.value }))])
+  }
 
   return (
     <section className="col-span-12 md:col-span-4 flex flex-col">
@@ -83,22 +102,24 @@ const Options = () => {
             <legend className="h4">Shape</legend>
             <div className="grid grid-rows-2 gap-2">
               <div className="col-span-1">
-                <p>Rounded</p>
-                <label className="relative inline-flex items-center cursor-pointer mt-2">
-                  <input type="checkbox" value="" className="sr-only peer" />
-                  <div className="w-11 h-6 bg-primary-900 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-secondary-800 dark:peer-focus:ring-secondary-300 rounded-full peer dark:bg-primary-900 peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:after:bg-secondary-300 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-tertiary-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-tertiary-600 peer-checked:bg-primary-900"></div>
-                </label>
+                <RadioButton
+                  label="Rounded"
+                  id="shape-radio"
+                  handleRadioChange={handleShapeChange}
+                />
               </div>
               <div className="col-span-1">
+                {/*Seems silly, but can't use shape.radius to control range slider component, only works with useState*/}
                 <RangeSlider
                   min={1}
                   max={50}
-                  value={2}
+                  value={sliderValue}
                   label="Border radius"
                   id="borderRadiusSlider"
                   wrapperClasses=""
                   labelClasses="block"
                   inputClasses="w-2/4 bg-primary-300 accent-secondary-900 appearance-none cursor-pointer range-sm"
+                  handleSliderChange={handleRadiusChange}
                 />
               </div>
             </div>

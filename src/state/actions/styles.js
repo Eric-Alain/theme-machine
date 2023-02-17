@@ -1,4 +1,4 @@
-import { COLORS, FONTS, SIZES } from "../types/styles"
+import { COLORS, FONTS, SHAPE } from "../types/styles"
 
 export const setColors = arr => {
   return {
@@ -15,7 +15,7 @@ export const setFonts = obj => ({
   payload: obj
 })
 
-export const setSizes = obj => ({
-  type: SIZES,
+export const setShape = obj => ({
+  type: SHAPE,
   payload: obj
 })

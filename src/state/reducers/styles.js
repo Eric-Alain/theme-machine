@@ -1,4 +1,4 @@
-import { COLORS, FONTS, SIZES } from "../types/styles"
+import { COLORS, FONTS, SHAPE } from "../types/styles"
 
 export const initialState = {
   colors: {
@@ -12,13 +12,9 @@ export const initialState = {
     general: `'Jost', sans-serif`,
     heading: `'Fira Mono', sans-serif`
   },
-  sizes: {
-    xs: 360,
-    sm: 576,
-    md: 768,
-    lg: 992,
-    xl: 1200,
-    xxl: 1400
+  shape: {
+    rounded: false,
+    radius: 2
   }
 }
 
@@ -45,10 +41,12 @@ const stylesReducer = (state = initialState, action) => {
         return returnValue(types[1])
       }
       break
-    case SIZES:
+    case SHAPE:
+      const key = Object.keys(payload)[0]
+      const value = Object.values(payload)[0]
       return {
         ...state,
-        sizes: { ...state.sizes, payload }
+        shape: { ...state.shape, [key]: value }
       }
 
     default:

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import * as React from "react"
 
 const RangeSlider = ({
   min,
@@ -8,24 +8,18 @@ const RangeSlider = ({
   id,
   wrapperClasses,
   labelClasses,
-  inputClasses
+  inputClasses,
+  handleSliderChange
 }) => {
-  const [sliderValue, setSliderValue] = useState(value)
-
-  const handleSliderChange = e => {
-    console.log(e.target.value)
-    setSliderValue(e.target.value)
-  }
-
   return (
     <div className={wrapperClasses}>
       <label htmlFor={id} className={labelClasses}>
-        {label}: <span>{sliderValue} px</span>
+        {label}: <span>{value} px</span>
       </label>
       <input
         id={id}
         type="range"
-        value={sliderValue}
+        value={value}
         min={min}
         max={max}
         onChange={handleSliderChange}
