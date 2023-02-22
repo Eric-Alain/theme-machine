@@ -9,7 +9,8 @@ const RangeSlider = ({
   wrapperClasses,
   labelClasses,
   inputClasses,
-  handleSliderChange
+  handleSliderChange,
+  disabled
 }) => {
   return (
     <div className={wrapperClasses}>
@@ -24,6 +25,7 @@ const RangeSlider = ({
         max={max}
         onChange={handleSliderChange}
         className={inputClasses}
+        disabled={disabled}
       ></input>
     </div>
   )

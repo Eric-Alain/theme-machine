@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import ColorPicker from "../ColorPicker/ColorPicker"
 
 //Redux
@@ -19,17 +19,48 @@ const Options = () => {
   const colors = useSelector(state => state.styles.colors)
   const fonts = useSelector(state => state.styles.fonts)
   const shape = useSelector(state => state.styles.shape)
+  const reduxCss = useSelector(state => state.code.css)
 
   const handleShapeChange = e => {
     dispatch(setShape({ rounded: e.target.checked }))
   }
 
+  //Combining useState hook with redux state in order to make use of debouncing
+  //This way, the range slider works as expected, but the redux state only gets
+  //updated 1s after the user is done interacting with it. This reduces the amount
+  //of dispatch calls to update the redux store, which could be expensive
   const [sliderValue, setSliderValue] = useState(shape.radius)
 
   const handleRadiusChange = e => {
     setSliderValue(e.target.value)
-    debounce(1000, [() => dispatch(setShape({ radius: e.target.value }))])
+    debounce(300, [() => dispatch(setShape({ radius: e.target.value }))])
   }
+
+  useEffect(() => {
+    const borderRadius = parseInt(
+      reduxCss.match(/(?<=--tm-radius:[ *])(\d+)(?=[\s\S]*?\t\b)/gm)[0],
+      10
+    )
+    const val = shape.rounded ? borderRadius : 0
+    setSliderValue(val)
+    dispatch(
+      setShape({
+        radius: val
+      })
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduxCss, dispatch])
+
+  useEffect(() => {
+    const val = shape.rounded ? shape.radius : 0
+    setSliderValue(val)
+    dispatch(
+      setShape({
+        radius: val
+      })
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shape.rounded, dispatch])
 
   return (
     <section className="col-span-12 md:col-span-4 flex flex-col">
@@ -37,7 +68,9 @@ const Options = () => {
       <div className="grow rounded border border-solid border-primary-300 pb-3 px-5">
         <form className="my-5">
           <fieldset>
-            <legend className="h4">Colors</legend>
+            <legend className="h4 border-b border-solid border-primary-300 mb-3 w-full">
+              Colors
+            </legend>
             <div className="grid grid-rows-3 gap-2">
               <div className="inline-flex items-center">
                 <input
@@ -79,27 +112,37 @@ const Options = () => {
           </fieldset>
           <br />
           <fieldset>
-            <legend className="h4">Fonts</legend>
+            <legend className="h4 border-b border-solid border-primary-300 mb-3 w-full">
+              Fonts
+            </legend>
             <div className="grid grid-rows-2 gap-2">
               <div className="col-span-1">
                 <FontSelector
+                  fonts={fonts}
                   label="Heading font"
                   elementToHandle="heading"
-                  defaultFont={fonts.heading.match(/^.*?(?=,)/gm)[0]}
+                  defaultFont={fonts.heading
+                    .match(/^.*?(?=,)/gm)[0]
+                    .replace(/^(?:')(.*)(?:')$/, "$1")}
                 />
               </div>
               <div className="col-span-1">
                 <FontSelector
+                  fonts={fonts}
                   label="General font"
                   elementToHandle="general"
-                  defaultFont={fonts.general.match(/^.*?(?=,)/gm)[0]}
+                  defaultFont={fonts.general
+                    .match(/^.*?(?=,)/gm)[0]
+                    .replace(/^(?:')(.*)(?:')$/, "$1")}
                 />
               </div>
             </div>
           </fieldset>
           <br />
           <fieldset>
-            <legend className="h4">Shape</legend>
+            <legend className="h4 border-b border-solid border-primary-300 mb-3 w-full">
+              Shape
+            </legend>
             <div className="grid grid-rows-2 gap-2">
               <div className="col-span-1">
                 <RadioButton
@@ -109,7 +152,6 @@ const Options = () => {
                 />
               </div>
               <div className="col-span-1">
-                {/*Seems silly, but can't use shape.radius to control range slider component, only works with useState*/}
                 <RangeSlider
                   min={1}
                   max={50}
@@ -120,6 +162,7 @@ const Options = () => {
                   labelClasses="block"
                   inputClasses="w-2/4 bg-primary-300 accent-secondary-900 appearance-none cursor-pointer range-sm"
                   handleSliderChange={handleRadiusChange}
+                  disabled={!shape.rounded}
                 />
               </div>
             </div>

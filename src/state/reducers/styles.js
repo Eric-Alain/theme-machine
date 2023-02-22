@@ -14,7 +14,7 @@ export const initialState = {
   },
   shape: {
     rounded: false,
-    radius: 2
+    radius: 0
   }
 }
 

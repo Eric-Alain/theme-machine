@@ -5,8 +5,10 @@ import { SketchPicker } from "react-color"
 import { useSelector, useDispatch } from "react-redux"
 import { setColors } from "../../state/actions/styles"
 
-const ColorPicker = ({ colors, category }) => {
+//Utils
+import { lightOrDark } from "../../utils"
 
+const ColorPicker = ({ colors, category }) => {
   const reduxCss = useSelector(state => state.code.css)
 
   //Local state for component
@@ -45,9 +47,14 @@ const ColorPicker = ({ colors, category }) => {
       document.removeEventListener("click", handleClickOutside, true)
     }
   }, [])
-  
+
   useEffect(() => {
-    dispatch(setColors(["primary", reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm).toString()]))
+    dispatch(
+      setColors([
+        "primary",
+        reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm).toString()
+      ])
+    )
     dispatch(
       setColors([
         "secondary",
@@ -67,13 +74,15 @@ const ColorPicker = ({ colors, category }) => {
       <div className="relative z-0">
         <div
           onClick={toggleHide}
-          className="rounded border border-primary-600 p-[1px] hover:cursor-pointer z-1"
+          className="rounded border border-primary-600 hover:cursor-pointer z-1 p-1"
+          style={{ background: colors[category] }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="h-4 text-primary-700"
+            className="h-6"
+            style={{ color: lightOrDark(colors[category]) }}
           >
             <path
               fillRule="evenodd"
@@ -84,7 +93,7 @@ const ColorPicker = ({ colors, category }) => {
         </div>
         <div
           ref={ref}
-          className={`absolute${hide ? " hidden w-0" : " w-auto"} z-0`}
+          className={`absolute${hide ? " hidden w-0" : " w-auto"} left-[36px] top-0 z-2`}
         >
           <SketchPicker
             color={colors[category]}

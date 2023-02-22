@@ -7,6 +7,7 @@ import { setCSS } from "../../state/actions/code"
 const Result = () => {
   const colors = useSelector(state => state.styles.colors)
   const fonts = useSelector(state => state.styles.fonts)
+  const shape = useSelector(state => state.styles.shape)
   const bodyHtml = useSelector(state => state.code.bodyHtml)
   const css = useSelector(state => state.code.css)
 
@@ -28,7 +29,9 @@ const Result = () => {
       secondary: colors.secondary,
       tertiary: colors.tertiary,
       fontGeneral: fonts.general.replace(/'/gm, ""),
-      fontHeading: fonts.heading.replace(/'/gm, "")
+      fontHeading: fonts.heading.replace(/'/gm, ""),
+      rounded: shape.rounded,
+      radius: shape.radius
     }
 
     const swapArr = [
@@ -45,6 +48,10 @@ const Result = () => {
       {
         var: `--font-heading: ${cssVars.fontHeading};`,
         reg: /--font-heading: *(.*?);/gm
+      },
+      {
+        var: `--tm-radius: ${cssVars.rounded ? cssVars.radius : 0}px;`,
+        reg: /--tm-radius: *(\d+)[\s\S]*?(?=\n*\t[a-z]*-*[a-z]*:|\n*})/gm
       }
     ]
 
@@ -54,9 +61,9 @@ const Result = () => {
       tempString = tempString.replace(swap.reg, swap.var)
     })
     dispatch(setCSS(tempString))
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [colors, fonts])
+  }, [colors, fonts, shape])
 
   const getGeneratedPageURL = ({ html, css }) => {
     const getBlobURL = (code, type) => {
@@ -104,7 +111,7 @@ const Result = () => {
         key={"results-iframe"}
         src={url}
         title="Results"
-        className="rounded border border-solid border-primary-300 overflow-y-scroll min-h-[32rem] max-h-[32rem]"
+        className="rounded border border-solid border-primary-300 overflow-y-scroll min-h-[40rem] max-h-[40rem]"
       />
     </section>
   )

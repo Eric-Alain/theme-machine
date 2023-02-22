@@ -4,7 +4,7 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setFonts } from "../../state/actions/styles"
 
-const FontSelector = ({ label, elementToHandle, defaultFont }) => {
+const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
   const dispatch = useDispatch()
 
   const reduxCss = useSelector(state => state.code.css)
@@ -39,10 +39,20 @@ const FontSelector = ({ label, elementToHandle, defaultFont }) => {
         onChange={e => handleFontChange(e, elementToHandle)}
         defaultValue={defaultFont}
         className="appearance-none"
+        style={{ fontFamily: fonts[elementToHandle] }}
       >
-        <option value="Jost">Jost</option>
-        <option value="Damion">Damion</option>
-        <option value="Fira Mono">Fira Mono</option>
+        <option value="Jost" style={{ fontFamily: `'Jost', sans-serif` }}>
+          Jost
+        </option>
+        <option value="Damion" style={{ fontFamily: `'Damion', sans-serif` }}>
+          Damion
+        </option>
+        <option
+          value="Fira Mono"
+          style={{ fontFamily: `'Fira Mono', sans-serif` }}
+        >
+          Fira Mono
+        </option>
       </select>
     </>
   )

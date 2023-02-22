@@ -93,6 +93,8 @@ export const initialState = {
 	--tertiary: #FFFFFF;
 	--font-general: 'Jost', sans-serif;
 	--font-heading: 'Fira Mono', sans-serif;
+	--tm-rounded: 1px solid var(--secondary);
+	--tm-radius: 0px;
 	font-size: 16px;
 }
 
@@ -104,7 +106,9 @@ body {
 main {
 	margin: 3rem;
 	padding: 0.25rem 1.5rem;
-	background-color: var(--tertiary)
+	background-color: var(--tertiary);
+	border: var(--tm-rounded);
+	border-radius: var(--tm-radius);
 }
 
 h1,
@@ -119,14 +123,19 @@ h6 {
 
 button,
 select,
-option {
+option,
+input,
+fieldset {
 	font-family: var(--font-general);
+	border: var(--tm-rounded);
+	border-radius: var(--tm-radius);
 }
 
 .btn {
 	background-color: var(--secondary);
 	color: var(--tertiary);
 	border: 1px solid var(--tertiary);
+	border-radius: var(--tm-radius);
 	text-decoration: none;
 	font-size: 1rem;
 	padding: 0.25rem 0.5rem;
