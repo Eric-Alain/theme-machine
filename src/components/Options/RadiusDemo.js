@@ -7,7 +7,7 @@ const RadiusDemo = () => {
   const shape = useSelector(state => state.styles.shape)
 
   return (
-    <div className="ml-3 border border-primary-900 w-12 h-6" style={{borderRadius: shape.rounded ? `${shape.radius}px` : '0px'}}></div>
+    <div className="border border-primary-900 w-12 h-6" style={{borderRadius: shape.rounded ? `${shape.radius}px` : '0px'}}></div>
   )
 }
 

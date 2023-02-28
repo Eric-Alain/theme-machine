@@ -4,6 +4,9 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setCSS } from "../../state/actions/code"
 
+//Utils
+import { lightOrDark } from "../../utils"
+
 const Result = () => {
   const colors = useSelector(state => state.styles.colors)
   const fonts = useSelector(state => state.styles.fonts)
@@ -35,23 +38,37 @@ const Result = () => {
     }
 
     const swapArr = [
-      { var: `--primary: ${cssVars.primary};`, reg: /--primary: *(.*?);/gm },
+      {
+        var: `--primary: ${cssVars.primary};`,
+        reg: /--primary: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
       {
         var: `--secondary: ${cssVars.secondary};`,
-        reg: /--secondary: *(.*?);/gm
+        reg: /--secondary: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       },
-      { var: `--tertiary: ${cssVars.tertiary};`, reg: /--tertiary: *(.*?);/gm },
+      {
+        var: `--tertiary: ${cssVars.tertiary};`,
+        reg: /--tertiary: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--general-text-color: ${lightOrDark(cssVars.tertiary)};`,
+        reg: /--general-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--button-text-color: ${lightOrDark(cssVars.secondary)};`,
+        reg: /--button-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
       {
         var: `--font-general: ${cssVars.fontGeneral};`,
-        reg: /--font-general: *(.*?);/gm
+        reg: /--font-general: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       },
       {
         var: `--font-heading: ${cssVars.fontHeading};`,
-        reg: /--font-heading: *(.*?);/gm
+        reg: /--font-heading: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       },
       {
         var: `--tm-radius: ${cssVars.rounded ? cssVars.radius : 0}px;`,
-        reg: /--tm-radius: *(\d+)[\s\S]*?(?=\n*\t[a-z]*-*[a-z]*:|\n*})/gm
+        reg: /--tm-radius: *(\d+)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       }
     ]
 
@@ -76,18 +93,46 @@ const Result = () => {
     //${css && `<link rel="stylesheet" type="text/css" href="${cssURL}" />`}
     const source = `
       <html>
-        <head>          
+        <head>
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Jost"
-          />
+            href="https://fonts.googleapis.com/css?family=Damion"
+          />		 
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Fira+Mono"
           />
-          <link
+		<link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Damion"
+            href="https://fonts.googleapis.com/css?family=Jost"
+          />
+		<link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Mouse+Memoirs"
+          />
+		<link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Nova+Cut"
+          />
+		<link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto"
+          />
+		<link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Rubik+Dirt"
+          />
+		<link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Ubuntu"
+          />
+		<link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Urbanist"
+          />
+		<link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Viga"
           />
           <style>${css}</style>
         </head>

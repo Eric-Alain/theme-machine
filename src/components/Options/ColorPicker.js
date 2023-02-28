@@ -52,23 +52,30 @@ const ColorPicker = ({ colors, category }) => {
     dispatch(
       setColors([
         "primary",
-        reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm).toString()
+        reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm)
+          ? reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm).toString()
+          : "#000000"
       ])
     )
     dispatch(
       setColors([
         "secondary",
-        reduxCss.match(/(?<=--secondary:[ *])(.*?)(?=;)/gm).toString()
+        reduxCss.match(/(?<=--secondary:[ *])(.*?)(?=;)/gm)
+          ? reduxCss.match(/(?<=--secondary:[ *])(.*?)(?=;)/gm).toString()
+          : "#000000"
       ])
     )
     dispatch(
       setColors([
         "tertiary",
-        reduxCss.match(/(?<=--tertiary:[ *])(.*?)(?=;)/gm).toString()
+        reduxCss.match(/(?<=--tertiary:[ *])(.*?)(?=;)/gm)
+          ? reduxCss.match(/(?<=--tertiary:[ *])(.*?)(?=;)/gm).toString()
+          : "#000000"
       ])
     )
   }, [reduxCss, dispatch])
 
+  //Hero icons found at https://heroicons.com
   return (
     <>
       <div className="relative z-0">
@@ -93,7 +100,9 @@ const ColorPicker = ({ colors, category }) => {
         </div>
         <div
           ref={ref}
-          className={`absolute${hide ? " hidden w-0" : " w-auto"} left-[36px] top-0 z-2`}
+          className={`absolute${
+            hide ? " hidden w-0" : " w-auto"
+          } left-[36px] top-0 z-2`}
         >
           <SketchPicker
             color={colors[category]}

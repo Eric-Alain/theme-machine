@@ -21,12 +21,12 @@ const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
   useEffect(() => {
     dispatch(
       setFonts({
-        general: reduxCss
-          .match(/(?<=--font-general:[ *])(.*?)(?=;)/gm)
-          .toString(),
-        heading: reduxCss
-          .match(/(?<=--font-heading:[ *])(.*?)(?=;)/gm)
-          .toString()
+        general: reduxCss.match(/(?<=--font-general:[ *])(.*?)(?=;)/gm)
+          ? reduxCss.match(/(?<=--font-general:[ *])(.*?)(?=;)/gm).toString()
+          : `'Jost', sans-serif`,
+        heading: reduxCss.match(/(?<=--font-heading:[ *])(.*?)(?=;)/gm)
+          ? reduxCss.match(/(?<=--font-heading:[ *])(.*?)(?=;)/gm).toString()
+          : `'Jost', sans-serif`
       })
     )
   }, [reduxCss, dispatch])
@@ -41,9 +41,6 @@ const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
         className="appearance-none"
         style={{ fontFamily: fonts[elementToHandle] }}
       >
-        <option value="Jost" style={{ fontFamily: `'Jost', sans-serif` }}>
-          Jost
-        </option>
         <option value="Damion" style={{ fontFamily: `'Damion', sans-serif` }}>
           Damion
         </option>
@@ -52,6 +49,43 @@ const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
           style={{ fontFamily: `'Fira Mono', sans-serif` }}
         >
           Fira Mono
+        </option>
+        <option value="Jost" style={{ fontFamily: `'Jost', sans-serif` }}>
+          Jost
+        </option>
+
+        <option
+          value="Mouse Memoirs"
+          style={{ fontFamily: `'Mouse Memoirs', sans-serif` }}
+        >
+          Mouse Memoirs
+        </option>
+        <option
+          value="Nova Cut"
+          style={{ fontFamily: `'Nova Cut', sans-serif` }}
+        >
+          Nova Cut
+        </option>
+        <option value="Roboto" style={{ fontFamily: `'Roboto', sans-serif` }}>
+          Roboto
+        </option>
+        <option
+          value="Rubik Dirt"
+          style={{ fontFamily: `'Rubik Dirt', sans-serif` }}
+        >
+          Rubik Dirt
+        </option>
+        <option value="Ubuntu" style={{ fontFamily: `'Ubuntu', sans-serif` }}>
+          Ubuntu
+        </option>
+        <option
+          value="Urbanist"
+          style={{ fontFamily: `'Urbanist', sans-serif` }}
+        >
+          Urbanist
+        </option>
+        <option value="Viga" style={{ fontFamily: `'Viga', sans-serif` }}>
+          Viga
         </option>
       </select>
     </>

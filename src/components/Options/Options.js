@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import ColorPicker from "../ColorPicker/ColorPicker"
+import ColorPicker from "./ColorPicker"
 
 //Redux
 import { useSelector, useDispatch } from "react-redux"
@@ -9,6 +9,7 @@ import { setShape } from "../../state/actions/styles"
 import FontSelector from "./FontSelector"
 import RadioButton from "./RadioButton"
 import RangeSlider from "./RangeSlider"
+import RadiusDemo from "./RadiusDemo"
 
 //Utils
 import { debounce } from "../../utils"
@@ -38,7 +39,9 @@ const Options = () => {
 
   useEffect(() => {
     const borderRadius = parseInt(
-      reduxCss.match(/(?<=--tm-radius:[ *])(\d+)(?=[\s\S]*?\t\b)/gm)[0],
+      reduxCss.match(/(?<=--tm-radius:[ *])(\d+)(?=[\s\S]*?\t\b)/gm)
+        ? reduxCss.match(/(?<=--tm-radius:[ *])(\d+)(?=[\s\S]*?\t\b)/gm)[0]
+        : 0,
       10
     )
     const val = shape.rounded ? borderRadius : 0
@@ -121,9 +124,13 @@ const Options = () => {
                   fonts={fonts}
                   label="Heading font"
                   elementToHandle="heading"
-                  defaultFont={fonts.heading
-                    .match(/^.*?(?=,)/gm)[0]
-                    .replace(/^(?:')(.*)(?:')$/, "$1")}
+                  defaultFont={
+                    fonts.heading.match(/^.*?(?=,)/gm)
+                      ? fonts.heading
+                          .match(/^.*?(?=,)/gm)[0]
+                          .replace(/^(?:')(.*)(?:')$/, "$1")
+                      : fonts.heading
+                  }
                 />
               </div>
               <div className="col-span-1">
@@ -131,9 +138,13 @@ const Options = () => {
                   fonts={fonts}
                   label="General font"
                   elementToHandle="general"
-                  defaultFont={fonts.general
-                    .match(/^.*?(?=,)/gm)[0]
-                    .replace(/^(?:')(.*)(?:')$/, "$1")}
+                  defaultFont={
+                    fonts.general.match(/^.*?(?=,)/gm)
+                      ? fonts.general
+                          .match(/^.*?(?=,)/gm)[0]
+                          .replace(/^(?:')(.*)(?:')$/, "$1")
+                      : fonts.general
+                  }
                 />
               </div>
             </div>
@@ -145,11 +156,19 @@ const Options = () => {
             </legend>
             <div className="grid grid-rows-2 gap-2">
               <div className="col-span-1">
-                <RadioButton
-                  label="Rounded"
-                  id="shape-radio"
-                  handleRadioChange={handleShapeChange}
-                />
+                <div className="grid grid-cols-6 gap-4 justify-items-start items-end">
+                  <div className="col-span-1">
+                    <RadioButton
+                      label="Rounded"
+                      id="shape-radio"
+                      handleRadioChange={handleShapeChange}
+                      sliderClasses="w-11 h-6 bg-primary-900 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-secondary-800 dark:peer-focus:ring-secondary-300 rounded-full peer dark:bg-primary-900 peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:after:bg-secondary-300 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-tertiary-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-tertiary-600 peer-checked:bg-primary-900"
+                    />
+                  </div>
+                  <div className="col-span-5">
+                    <RadiusDemo />
+                  </div>
+                </div>
               </div>
               <div className="col-span-1">
                 <RangeSlider

@@ -91,6 +91,8 @@ export const initialState = {
 	--primary: #994100;
 	--secondary: #24174b;
 	--tertiary: #FFFFFF;
+	--general-text-color: #000000;
+	--button-text-color: var(--secondary);
 	--font-general: 'Jost', sans-serif;
 	--font-heading: 'Fira Mono', sans-serif;
 	--tm-rounded: 1px solid var(--secondary);
@@ -121,6 +123,18 @@ h6 {
 	color: var(--primary);
 }
 
+p,
+span,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+div {
+	color: var(--general-text-color)
+}
+
 button,
 select,
 option,
@@ -133,7 +147,7 @@ fieldset {
 
 .btn {
 	background-color: var(--secondary);
-	color: var(--tertiary);
+	color: var(--button-text-color);
 	border: 1px solid var(--tertiary);
 	border-radius: var(--tm-radius);
 	text-decoration: none;
@@ -144,7 +158,7 @@ fieldset {
 
 .btn:hover {
 	cursor: pointer;
-	background-color: var(--tertiary);
+	background-color: var(--button-text-color);
 	color: var(--secondary);
 	border: 1px solid var(--secondary);
 	transition: all 0.2s ease-out;
@@ -178,18 +192,6 @@ form,
 
 .form-label {
 	display: block;
-}
-
-.form-input {
-
-}
-
-.form-select {
-
-}
-
-.form-button {
-
 }
 `
 }
