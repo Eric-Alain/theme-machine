@@ -8,6 +8,7 @@ import Result from "../components/Result/Result"
 import Code from "../components/Code/Code"
 
 const IndexPage = () => (
+	
   <Layout>
     <Seo title="Home" />
     <div className="container mx-auto pt-1 pb-5 px-5 bg-tertiary-100 rounded">

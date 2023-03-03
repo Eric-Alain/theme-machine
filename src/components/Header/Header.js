@@ -1,9 +1,21 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 //import { Link } from "gatsby"
+
+//Redux
+import { useSelector, useDispatch } from "react-redux"
+import { setTheme } from "../../state/actions/theme"
+
 import RadioButton from "../Options/RadioButton"
 
 const Header = ({ siteTitle }) => {
+  const dispatch = useDispatch()
+  const theme = useSelector(state => state.theme)
+
+  const handleThemeChange = e => {
+    dispatch(setTheme(e.target.checked ? "dark" : "light"))
+  }
+
   return (
     <section className="bg-primary-900 fixed w-full z-10">
       <header className="container mx-auto text-white py-3 px-2 lg:px-0">
@@ -30,6 +42,8 @@ const Header = ({ siteTitle }) => {
               <RadioButton
                 id="theme-toggle-radio"
                 sliderClasses="w-11 h-6 bg-primary-900 border peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-secondary-800 dark:peer-focus:ring-secondary-300 rounded-full peer dark:bg-primary-900 dark:border-white peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:after:bg-secondary-300 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:border-tertiary-300 after:border-tertiary-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-tertiary-600 peer-checked:bg-primary-900"
+                value={theme === "dark" ? true : false}
+                handleRadioChange={handleThemeChange}
               />
             </div>
             <div>

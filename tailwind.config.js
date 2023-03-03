@@ -5,6 +5,7 @@ module.exports = {
     "./src/components/**/*.{js,jsx,ts,tsx}"
   ],
   mode: "jit",
+  darkMode: "class",
   theme: {
     screens: {
       sm: "576px",

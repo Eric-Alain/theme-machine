@@ -8,11 +8,13 @@ import { getPersistConfig } from "redux-deep-persist"
 //Reducers
 import stylesReducer from "../state/reducers/styles"
 import codeReducer from "../state/reducers/code"
+import themeReducer from "../state/reducers/theme"
 
 //Create root reducer
 export const rootReducer = combineReducers({
   styles: stylesReducer,
-  code: codeReducer
+  code: codeReducer,
+  theme: themeReducer
 })
 
 const createNoopStorage = () => {
@@ -49,7 +51,8 @@ const persistConfig = getPersistConfig({
     "styles.shape.rounded",
     "styles.shape.radius",
     "code.bodyHtml",
-    "code.css"
+    "code.css",
+    "theme"
   ],
   rootReducer
 })
