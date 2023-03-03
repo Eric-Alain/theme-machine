@@ -21,6 +21,7 @@
     "gatsby-plugin-manifest": "^4.23.0",
     "gatsby-plugin-purgecss": "^6.1.2",
     "gatsby-plugin-react-redux": "^1.1.0",
+    "gatsby-plugin-react-redux-persist": "^1.1.0",
     "gatsby-plugin-sharp": "^4.23.0",
     "gatsby-source-filesystem": "^4.23.0",
     "gatsby-transformer-sharp": "^4.23.0",
@@ -29,9 +30,11 @@
     "react": "^18.1.0",
     "react-color": "^2.19.3",
     "react-dom": "^18.1.0",
-    "react-redux": "^8.0.2",
+    "react-redux": "^8.0.5",
     "react-simple-code-editor": "^0.13.1",
-    "redux": "^4.2.0"
+    "redux": "^4.2.1",
+    "redux-deep-persist": "^1.0.7",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
@@ -65,7 +68,10 @@
     "immer": "^9.0.12",
     "nth-check": "^2.0.1",
     "parse-url": "^8.1.0",
-    "ws": "^8.5.0"
+    "ws": "^8.5.0",
+    "babel-plugin-lodash": {
+      "@babel/types": "~7.20.0"
+    }
   },
   "repository": {
     "type": "git",

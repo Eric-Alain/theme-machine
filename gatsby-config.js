@@ -7,7 +7,7 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: `gatsby-plugin-react-redux`,
+      resolve: `gatsby-plugin-react-redux-persist`,
       options: {
         // [required] - path to your createStore module
         pathToCreateStoreModule: "./src/state/createStore",
@@ -58,6 +58,6 @@ module.exports = {
       options: {
         tailwind: true
       }
-    }    
+    }
   ]
 }
