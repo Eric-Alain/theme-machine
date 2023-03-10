@@ -1,21 +1,11 @@
 //Redux
 import { configureStore } from "@reduxjs/toolkit"
-import { combineReducers } from "redux"
 import { persistStore, persistReducer } from "redux-persist"
 import createWebStorage from "redux-persist/lib/storage/createWebStorage"
 import { getPersistConfig } from "redux-deep-persist"
 
-//Reducers
-import stylesReducer from "../state/reducers/styles"
-import codeReducer from "../state/reducers/code"
-import themeReducer from "../state/reducers/theme"
 
-//Create root reducer
-export const rootReducer = combineReducers({
-  styles: stylesReducer,
-  code: codeReducer,
-  theme: themeReducer
-})
+import rootReducer from "./reducers/root"
 
 const createNoopStorage = () => {
   return {
@@ -31,7 +21,7 @@ const createNoopStorage = () => {
   }
 }
 
-const storage =
+export const storage =
   typeof window !== "undefined"
     ? createWebStorage("local")
     : createNoopStorage()

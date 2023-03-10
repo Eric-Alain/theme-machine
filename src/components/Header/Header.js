@@ -5,6 +5,7 @@ import PropTypes from "prop-types"
 //Redux
 import { useSelector, useDispatch } from "react-redux"
 import { setTheme } from "../../state/actions/theme"
+import { resetStore } from "../../state/actions/root"
 
 import RadioButton from "../Options/RadioButton"
 
@@ -16,12 +17,24 @@ const Header = ({ siteTitle }) => {
     dispatch(setTheme(e.target.checked ? "dark" : "light"))
   }
 
+  const handleThemeReset = () => {
+    dispatch(resetStore())
+  }
+
   return (
     <section className="bg-primary-900 dark:bg-gray-700 fixed w-full z-10">
       <header className="container mx-auto text-white py-3 px-2 lg:px-0">
         <div className="grid grid-cols-10 gap-2">
           <div className="col-span-8">{siteTitle}</div>
-          <div className="col-span-2 flex justify-self-end justify-items-end">
+          <div className="col-span-1 flex justify-self-end justify-items-end">
+            <button
+              onClick={handleThemeReset}
+              className="text-tertiary-100 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-secondary-900"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="col-span-1 flex justify-self-end justify-items-end">
             <div className="justify-self-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

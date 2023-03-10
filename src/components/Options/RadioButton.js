@@ -19,7 +19,8 @@ const RadioButton = ({
         <input
           type="checkbox"
           value={value ? value : false}
-          defaultChecked={value === true && value !== undefined ? true : false}
+          checked={value ? value : false}
+          defaultChecked={value ? value : false}
           className="sr-only peer"
           onChange={handleRadioChange}
         />
