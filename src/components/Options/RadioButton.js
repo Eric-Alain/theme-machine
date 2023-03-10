@@ -20,7 +20,6 @@ const RadioButton = ({
           type="checkbox"
           value={value ? value : false}
           checked={value ? value : false}
-          defaultChecked={value ? value : false}
           className="sr-only peer"
           onChange={handleRadioChange}
         />
