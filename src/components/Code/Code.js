@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 //Redux
 import { useDispatch, useSelector } from "react-redux"
@@ -12,16 +12,17 @@ import Editor from "react-simple-code-editor"
 import { highlight, languages } from "prismjs/components/prism-core"
 import "prismjs/components/prism-markup"
 import "prismjs/components/prism-css"
-import "prismjs/themes/prism-okaidia.css"
+
+import { dark, light } from "./editorStyles"
 
 //Utils
 import { debounce } from "../../utils"
 
 const Code = () => {
   const dispatch = useDispatch()
+  const theme = useSelector(state => state.theme)
   const reduxBodyHtml = useSelector(state => state.code.bodyHtml)
   const reduxCss = useSelector(state => state.code.css)
-
   const [localHtml, localSetHtml] = useState(reduxBodyHtml.trim())
   const [localCss, localSetCss] = useState(reduxCss.trim())
 
@@ -43,41 +44,32 @@ const Code = () => {
 
   return (
     <>
-      <section className="col-span-12 md:col-span-6">
-        <h2>HTML</h2>
-        <div className="max-h-[32rem] min-h-[32rem] overflow-y-scroll">
+      <style>{theme === "dark" ? dark : light}</style>
+      <section className="col-span-12 md:col-span-6 flex flex-col">
+        <h2 className="dark:text-tertiary-100">HTML</h2>
+        <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1">
           <Editor
             value={localHtml}
             onValueChange={code => handleHtmlChange(code)}
             highlight={code => highlight(code, languages.markup)}
-            padding={16}
             insertSpaces={false}
             tabSize={1}
             ignoreTabKey={false}
-            className="rounded border border-solid border-primary-300 shadow-none"
-            style={{
-              backgroundColor: "#292929",
-              color: "#ffffff"
-            }}
+            className="language-html bg-white dark:bg-gray-900 m-3"
           />
         </div>
       </section>
-      <section className="col-span-12 md:col-span-6">
-        <h2>CSS</h2>
-        <div className="max-h-[32rem] min-h-[32rem] overflow-y-scroll">
+      <section className="col-span-12 md:col-span-6 flex flex-col">
+        <h2 className="dark:text-tertiary-100">CSS</h2>
+        <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1">
           <Editor
             value={localCss}
             onValueChange={code => handleCssChange(code)}
             highlight={code => highlight(code, languages.css)}
-            padding={16}
             insertSpaces={false}
             tabSize={1}
             ignoreTabKey={false}
-            className="rounded border border-solid border-primary-300 shadow-none"
-            style={{
-              backgroundColor: "#292929",
-              color: "#ffffff"
-            }}
+            className="language-css bg-white dark:bg-gray-900 m-3"
           />
         </div>
       </section>

@@ -2,19 +2,25 @@
 
 @layer base {
   ::selection {
-    /* Optional */
-    /* It can be really hard to read highlighted text with a text-shadow, it should be removed when selected */
-    text-shadow: none;
+    @apply bg-primary-700 text-tertiary-100 dark:bg-tertiary-100 dark:text-gray-900;
+  }
 
-    /* NOTE: Using this means the color and background-color are set to transparent for selected text... */
-    /* So you can customise your styles below */
-    color: #fff;
-    background-color: #00f;
+  .light textarea::selection {
+    @apply bg-primary-700 text-tertiary-100 dark:bg-tertiary-100 dark:text-gray-900;
+  }
+
+  .light textarea::selection {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .dark textarea::selection {
+    background: rgba(255, 255, 255, 0.3);
   }
 
   html {
     /* Make base font-size 100% of browser font-size */
     font-size: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -150,24 +156,24 @@
 
   /*Tailwind*/
   input[type="range"]::-ms-fill-upper {
-    @apply bg-primary-600;
+    @apply bg-primary-600 dark:bg-gray-600;
   }
 
   input[type="range"]:focus::-ms-fill-upper {
-    @apply bg-secondary-700;
+    @apply bg-secondary-700 dark:bg-white;
   }
 
   input[type="range"]::-ms-fill-lower,
   input[type="range"]:focus::-ms-fill-lower {
-    @apply bg-primary-900;
+    @apply bg-primary-900 dark:bg-gray-600;
   }
 
   input[type="range"]::-ms-thumb {
-    @apply bg-secondary-300;
+    @apply bg-secondary-300 dark:bg-white;
   }
 
   input[type="range"]:focus::-ms-thumb {
-    @apply bg-secondary-600;
+    @apply bg-secondary-600 dark:bg-gray-600;
   }
 
   input[type="range"]::-ms-track {
@@ -212,15 +218,15 @@
   }
 
   input[type="range"]:focus::-moz-range-track {
-    @apply bg-primary-600 border border-solid border-primary-600;
+    @apply bg-primary-600 border border-solid border-primary-600 dark:bg-white dark:border-white;
   }
 
   input[type="range"]::-moz-range-thumb {
-    @apply bg-secondary-300;
+    @apply bg-secondary-300 dark:bg-white;
   }
 
   input[type="range"]:focus::-moz-range-thumb {
-    @apply bg-secondary-600;
+    @apply bg-secondary-600 dark:bg-gray-600;
   }
 
   input[type="range"]::-moz-range-track {
@@ -249,19 +255,19 @@
 
   /*Tailwind*/
   input[type="range"]::-webkit-slider-runnable-track {
-    @apply bg-primary-900;
+    @apply bg-primary-900 dark:bg-gray-600;
   }
 
   input[type="range"]:focus::-webkit-slider-runnable-track {
-    @apply bg-primary-600 border border-solid border-primary-600;
+    @apply bg-primary-600 border border-solid border-primary-600 dark:bg-white dark:border-white;
   }
 
   input[type="range"]::-webkit-slider-thumb {
-    @apply bg-secondary-300 border border-solid border-primary-900;
+    @apply bg-secondary-300 border border-solid border-primary-900 dark:bg-white dark:border-white;
   }
 
   input[type="range"]:focus::-webkit-slider-thumb {
-    @apply bg-secondary-600 border-solid border-primary-900;
+    @apply bg-secondary-600 border-solid border-primary-900 dark:bg-gray-600 dark:border-white;
   }
 
   input[type="range"]::-webkit-slider-runnable-track {
@@ -288,7 +294,48 @@
   }
 
   input[type="range"]:disabled::-webkit-slider-thumb {
-    @apply bg-primary-300;
+    @apply bg-primary-300 dark:bg-white;
+  }
+
+  /************/
+  /*SCROLLBARS*/
+  /************/
+
+  html {
+    --scrollbarBG: #d4d4d4;
+    --thumbBG: #5b6477;
+  }
+  html.dark {
+    --scrollbarBG: #525252;
+    --thumbBG: #d4d4d4;
+  }
+
+  body::-webkit-scrollbar,
+  .scrollbar::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  body,
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  }
+
+  body,
+  .scrollbar {
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  }
+
+  body::-webkit-scrollbar-track,
+  .scrollbar::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+  }
+
+  body::-webkit-scrollbar-thumb,
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG);
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
   }
 }
 

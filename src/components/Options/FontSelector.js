@@ -38,7 +38,7 @@ const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
       <select
         onChange={e => handleFontChange(e, elementToHandle)}
         defaultValue={defaultFont}
-        className="appearance-none"
+        className="appearance-none dark:bg-gray-900"
         style={{ fontFamily: fonts[elementToHandle] }}
       >
         <option value="Damion" style={{ fontFamily: `'Damion', sans-serif` }}>
@@ -53,7 +53,6 @@ const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
         <option value="Jost" style={{ fontFamily: `'Jost', sans-serif` }}>
           Jost
         </option>
-
         <option
           value="Mouse Memoirs"
           style={{ fontFamily: `'Mouse Memoirs', sans-serif` }}

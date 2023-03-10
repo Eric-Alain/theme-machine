@@ -25,9 +25,9 @@ const Layout = ({ children }) => {
   }, [theme])
 
   return (
-    <div className="flex flex-col bg-primary-100 min-h-screen">
+    <div className="flex flex-col bg-gray-300 dark:bg-gray-900 min-h-screen">
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div className="py-10 mt-10 grow bg-primary-900 dark:bg-secondary-700">
+      <div className="py-10 mt-10 grow bg-gray-300 dark:bg-gray-900">
         <main>{children}</main>
       </div>
       <Footer />

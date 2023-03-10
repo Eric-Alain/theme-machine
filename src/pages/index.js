@@ -11,8 +11,8 @@ const IndexPage = () => (
 	
   <Layout>
     <Seo title="Home" />
-    <div className="container mx-auto pt-1 pb-5 px-5 bg-tertiary-100 rounded">
-      <h1>Theme Machine</h1>
+    <div className="container mx-auto pt-1 pb-5 px-5 border bg-tertiary-100 dark:bg-gray-900 dark:border-tertiary-100 dark:text-tertiary-100 rounded">
+      <h1 className="dark:text-tertiary-100">Theme Machine</h1>
       <p>
         A sandbox to play around with colors, fonts and sizing to quickly mock
         the CSS of your next project <strong>before</strong> writing any code.

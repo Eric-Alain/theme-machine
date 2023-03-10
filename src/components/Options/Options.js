@@ -67,7 +67,7 @@ const Options = () => {
 
   return (
     <section className="col-span-12 md:col-span-4 flex flex-col">
-      <h2>Options</h2>
+      <h2 className="dark:text-tertiary-100">Options</h2>
       <div className="grow rounded border border-solid border-primary-300 pb-3 px-5">
         <form className="my-5">
           <fieldset>
@@ -163,11 +163,11 @@ const Options = () => {
                       id="shape-radio"
                       value={shape.rounded}
                       handleRadioChange={handleShapeChange}
-                      sliderClasses="w-11 h-6 bg-primary-900 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-secondary-800 dark:peer-focus:ring-secondary-300 rounded-full peer dark:bg-primary-900 peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:after:bg-secondary-300 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-tertiary-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-tertiary-600 peer-checked:bg-primary-900"
+                      sliderClasses="bg-primary-900 h-6 w-11 border rounded-full peer after:bg-white after:border-tertiary-300 after:h-5 after:w-5 after:content-[''] after:absolute after:left-[2px] after:top-[2px] after:border after:rounded-full after:transition-all peer-checked:bg-primary-900 peer-checked:after:bg-secondary-300 peer-checked:after:border-white peer-checked:bg-primary-900 peer-focus:ring-secondary-800 peer-checked:after:translate-x-full peer-focus:outline-none peer-focus:ring-2 dark:bg-gray-900 dark:after:bg-white dark:border-tertiary-100 dark:after:border-tertiary-100 dark:peer-focus:ring-gray-900 dark:peer-checked:after:bg-gray-600 dark:peer-checked:after:bg-gray-600 dark:peer-checked:after:border-tertiary-100 dark:peer-checked:bg-gray-900 dark:peer-focus:ring-tertiary-100"
                     />
                   </div>
                   <div className="col-span-5">
-                    <RadiusDemo />
+                    <RadiusDemo classes="border-primary-900 dark:border-tertiary-100"/>
                   </div>
                 </div>
               </div>

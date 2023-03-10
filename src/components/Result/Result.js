@@ -134,7 +134,12 @@ const Result = () => {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Viga"
           />
-          <style>${css}</style>
+          <style>
+		body {
+			overflow-y: clip;
+		}
+			${css}
+		</style>
         </head>
         <body>
           ${html || ""}
@@ -150,14 +155,16 @@ const Result = () => {
   })
 
   return (
-    <section id="result" className="col-span-12 md:col-span-8">
-      <h2>Result</h2>
-      <iframe
-        key={"results-iframe"}
-        src={url}
-        title="Results"
-        className="rounded border border-solid border-primary-300 overflow-y-scroll min-h-[40rem] max-h-[40rem]"
-      />
+    <section id="result" className="col-span-12 md:col-span-8 flex flex-col">
+      <h2 className="dark:text-tertiary-100">Result</h2>
+      <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[40rem] flex-1">
+        <iframe
+          key={"results-iframe"}
+          src={url}
+          title="Results"
+          className="h-[calc(100vh+12%)]"
+        />
+      </div>
     </section>
   )
 }
