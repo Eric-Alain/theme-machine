@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
 //import { Link } from "gatsby"
 
@@ -7,7 +7,9 @@ import { useSelector, useDispatch } from "react-redux"
 import { setTheme } from "../../state/actions/theme"
 import { resetStore } from "../../state/actions/root"
 
+//Components
 import RadioButton from "../Options/RadioButton"
+import BooleanModal from "../Modals/BooleanModal"
 
 const Header = ({ siteTitle }) => {
   const dispatch = useDispatch()
@@ -17,8 +19,11 @@ const Header = ({ siteTitle }) => {
     dispatch(setTheme(e.target.checked ? "dark" : "light"))
   }
 
+  const [showModal, setShowModal] = useState(false)
+
   const handleThemeReset = () => {
     dispatch(resetStore())
+    setShowModal(false)
   }
 
   return (
@@ -28,11 +33,16 @@ const Header = ({ siteTitle }) => {
           <div className="col-span-8">{siteTitle}</div>
           <div className="col-span-1 flex justify-self-end justify-items-end">
             <button
-              onClick={handleThemeReset}
+              onClick={() => setShowModal(true)}
               className="text-tertiary-100 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-secondary-900"
             >
               Reset
             </button>
+            <BooleanModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+              callback={handleThemeReset}
+            />
           </div>
           <div className="col-span-1 flex justify-self-end justify-items-end">
             <div className="justify-self-start">

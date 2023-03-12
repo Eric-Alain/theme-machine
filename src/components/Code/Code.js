@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 
 //Redux
 import { useDispatch, useSelector } from "react-redux"
@@ -37,6 +37,10 @@ const Code = () => {
     localSetCss(code)
     debounce(1000, [() => dispatch(setCSS(code))])
   }
+
+  useEffect(() => {
+    localSetHtml(reduxBodyHtml)
+  }, [reduxBodyHtml])
 
   useEffect(() => {
     localSetCss(reduxCss)

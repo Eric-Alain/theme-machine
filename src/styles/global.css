@@ -5,7 +5,7 @@
     @apply bg-primary-700 text-tertiary-100 dark:bg-tertiary-100 dark:text-gray-900;
   }
 
-  .light textarea::selection {
+  textarea::selection {
     @apply bg-primary-700 text-tertiary-100 dark:bg-tertiary-100 dark:text-gray-900;
   }
 

@@ -1,6 +1,6 @@
 import { THEME } from "../types/theme"
 
-export const initialState = "system-default"
+export const initialState = "light"
 
 const themeReducer = (state = initialState, action) => {
   const { type, payload } = action

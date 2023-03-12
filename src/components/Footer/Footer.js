@@ -2,7 +2,7 @@ import * as React from "react"
 
 const Footer = () => {
   return (
-    <footer className="container mx-auto py-3 px-2 dark:text-tertiary-100">
+    <footer className="container mx-auto py-3 dark:text-tertiary-100">
       © {new Date().getFullYear()} &middot; Built by
       {` `}
       <a

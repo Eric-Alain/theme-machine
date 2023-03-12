@@ -88,62 +88,37 @@ const Result = () => {
       return URL.createObjectURL(blob)
     }
 
+    //Must be fonts available in google apis as well as font source, addl fonts must be installed via npm fontsource and added to gatsby-node.js
+    const fonts = [
+      "Damion",
+      "Fira+Mono",
+      "Jost",
+      "Mouse+Memoirs",
+      "Nova+Cut",
+      "Roboto",
+      "Rubik+Dirt",
+      "Ubuntu",
+      "Urbanist",
+      "Viga"
+    ]
+
     //const cssURL = getBlobURL(css, "text/css")
     //const jsURL = getBlobURL(js, "text/javascript")
     //${css && `<link rel="stylesheet" type="text/css" href="${cssURL}" />`}
     const source = `
       <html>
         <head>
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Damion"
-          />		 
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Fira+Mono"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Jost"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Mouse+Memoirs"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Nova+Cut"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Rubik+Dirt"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Ubuntu"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Urbanist"
-          />
-		<link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Viga"
-          />
+          ${fonts.map(font => {
+            return `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=${font}" />`
+          })}
           <style>
-		body {
-			overflow-y: clip;
-		}
+			body {
+				overflow-y: clip;
+			}
 			${css}
 		</style>
         </head>
-        <body>
-          ${html || ""}
-        </body>
+        <body>${html || ""}</body>
       </html>
     `
     return getBlobURL(source, "text/html")
