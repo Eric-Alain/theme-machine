@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { setCSS } from "../../state/actions/code"
 
 //Utils
-import { lightOrDark } from "../../utils"
+import { lightOrDark, decodeHtmlEntities } from "../../utils"
 
 const Result = () => {
   const colors = useSelector(state => state.styles.colors)
@@ -17,9 +17,9 @@ const Result = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    /*console.log(
-      useSelector(state => state.styles.colors.primary)
-    )*/
+    //Decode the css stored in redux store, as we need to complete some find/replace operations with it
+    const tempCss = decodeHtmlEntities(css)
+
     //Complex, update only specific parts of css redux state whenever colors or fonts state changes, keeps everything in sync
     //General idea:
     // -make object of redux selectors used to update state
@@ -72,7 +72,7 @@ const Result = () => {
       }
     ]
 
-    let tempString = css
+    let tempString = tempCss
 
     swapArr.forEach(swap => {
       tempString = tempString.replace(swap.reg, swap.var)
@@ -88,7 +88,8 @@ const Result = () => {
       return URL.createObjectURL(blob)
     }
 
-    //Must be fonts available in google apis as well as font source, addl fonts must be installed via npm fontsource and added to gatsby-node.js
+    //Must be fonts available in google apis as well as font source, addl fonts must be installed via npm fontsource and added to gatsby-browser.js
+    //Easy rule to remember, font needs to exist in Google fonts and FontSource
     const fonts = [
       "Damion",
       "Fira+Mono",
@@ -118,7 +119,7 @@ const Result = () => {
 			${css}
 		</style>
         </head>
-        <body>${html || ""}</body>
+        <body>${decodeHtmlEntities(html) || ""}</body>
       </html>
     `
     return getBlobURL(source, "text/html")

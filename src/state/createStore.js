@@ -1,9 +1,11 @@
+// eslint-disable-next-line
+import Symbol_observable from "symbol-observable"
+
 //Redux
 import { configureStore } from "@reduxjs/toolkit"
 import { persistStore, persistReducer } from "redux-persist"
 import createWebStorage from "redux-persist/lib/storage/createWebStorage"
 import { getPersistConfig } from "redux-deep-persist"
-
 
 import rootReducer from "./reducers/root"
 

@@ -35,4 +35,20 @@ export const lightOrDark = hexcolor => {
   return yiq >= 128 ? "#000000" : "#FFFFFF"
 }
 
+export const htmlEntities = str =>
+  String(str)
+    .replace(/&/gm, "&amp;")
+    .replace(/</gm, "&lt;")
+    .replace(/>/gm, "&gt;")
+    .replace(/"/gm, "&quot;")
+    .replace(/\n/gm, "\\n")
+    .replace(/\t/gm, "\\t")
 
+export const decodeHtmlEntities = str =>
+  String(str)
+    .replace(/&amp;/gm, "&")
+    .replace(/&lt;/gm, "<")
+    .replace(/&gt;/gm, ">")
+    .replace(/&quot;/gm, '"')
+    .replace(/\\n/gm, "\n")
+    .replace(/\\t/gm, "\t")

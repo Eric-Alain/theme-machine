@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 //Redux
 import { useDispatch, useSelector } from "react-redux"
@@ -16,34 +16,38 @@ import "prismjs/components/prism-css"
 import { dark, light } from "./editorStyles"
 
 //Utils
-import { debounce } from "../../utils"
+import { debounce, htmlEntities, decodeHtmlEntities } from "../../utils"
 
 const Code = () => {
   const dispatch = useDispatch()
+
+  //Theme selector
   const theme = useSelector(state => state.theme)
+
+  // Redux selectors to trigger useEffect whenever they change
   const reduxBodyHtml = useSelector(state => state.code.bodyHtml)
   const reduxCss = useSelector(state => state.code.css)
-  const [localHtml, localSetHtml] = useState(reduxBodyHtml.trim())
-  const [localCss, localSetCss] = useState(reduxCss.trim())
+
+  // useState for component rendering
+  const [localHtml, localSetHtml] = useState(reduxBodyHtml)
+  const [localCss, localSetCss] = useState(reduxCss)
 
   const handleHtmlChange = code => {
-    /*Update code state*/
-    localSetHtml(code)
-    debounce(1000, [() => dispatch(setBodyHtml(code))])
+    localSetHtml(decodeHtmlEntities(code))
+    debounce(1000, [() => dispatch(setBodyHtml(htmlEntities(code)))])
   }
 
   const handleCssChange = code => {
-    /*Update code state*/
     localSetCss(code)
-    debounce(1000, [() => dispatch(setCSS(code))])
+    debounce(1000, [() => dispatch(setCSS(htmlEntities(code)))])
   }
 
   useEffect(() => {
-    localSetHtml(reduxBodyHtml)
+    localSetHtml(decodeHtmlEntities(reduxBodyHtml))
   }, [reduxBodyHtml])
 
   useEffect(() => {
-    localSetCss(reduxCss)
+    localSetCss(decodeHtmlEntities(reduxCss))
   }, [reduxCss])
 
   return (
