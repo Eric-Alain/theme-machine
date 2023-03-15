@@ -1,4 +1,6 @@
+//React
 import * as React from "react"
+import PropTypes from "prop-types"
 
 const RadioButton = ({
   label,
@@ -27,6 +29,15 @@ const RadioButton = ({
       </label>
     </div>
   )
+}
+
+RadioButton.propTypes = {
+  label: PropTypes.string,
+  id: PropTypes.string,
+  value: PropTypes.bool,
+  wrapperClasses: PropTypes.string,
+  sliderClasses: PropTypes.string,
+  handleRadioChange: PropTypes.func
 }
 
 export default RadioButton

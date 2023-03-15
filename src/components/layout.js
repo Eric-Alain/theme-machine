@@ -13,6 +13,8 @@ const Layout = ({ children }) => {
       site {
         siteMetadata {
           title
+		author
+		siteUrl
         }
       }
     }
@@ -26,11 +28,14 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex flex-col bg-gray-300 dark:bg-gray-900 min-h-screen">
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      <Header siteTitle={data.site.siteMetadata?.title || `Theme Machine`} />
       <div className="py-10 mt-10 grow bg-gray-300 dark:bg-gray-900">
         <main>{children}</main>
       </div>
-      <Footer />
+      <Footer
+        author={data.site.siteMetadata?.author || `Eric Alain`}
+        siteUrl={data.site.siteMetadata?.siteUrl || `https://ericalain.ca`}
+      />
     </div>
   )
 }

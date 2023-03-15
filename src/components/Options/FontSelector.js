@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import PropTypes from "prop-types"
 
 //Redux
 import { useSelector, useDispatch } from "react-redux"
@@ -89,6 +90,13 @@ const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
       </select>
     </>
   )
+}
+
+FontSelector.propTypes = {
+  label: PropTypes.string,
+  elementToHandle: PropTypes.string,
+  fonts: PropTypes.object,
+  defaultFont: PropTypes.string
 }
 
 export default FontSelector

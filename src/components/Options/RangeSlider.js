@@ -1,4 +1,6 @@
+//React
 import * as React from "react"
+import PropTypes from "prop-types"
 
 const RangeSlider = ({
   min,
@@ -29,6 +31,20 @@ const RangeSlider = ({
       ></input>
     </div>
   )
+}
+
+RangeSlider.propTypes = {
+  min: PropTypes.number,
+  max: PropTypes.number,
+  label: PropTypes.string,
+  value: PropTypes.number,
+  id: PropTypes.string,
+  wrapperClasses: PropTypes.string,
+  labelClasses: PropTypes.string,
+  inputClasses: PropTypes.string,
+  handleSliderChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  author: PropTypes.string
 }
 
 export default RangeSlider

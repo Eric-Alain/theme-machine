@@ -1,9 +1,13 @@
+//React
 import React, { useState, useEffect, useRef } from "react"
-import { SketchPicker } from "react-color"
+import PropTypes from "prop-types"
 
 //Redux
 import { useSelector, useDispatch } from "react-redux"
 import { setColors } from "../../state/actions/styles"
+
+//Components
+import { SketchPicker } from "react-color"
 
 //Utils
 import { lightOrDark } from "../../utils"
@@ -112,6 +116,11 @@ const ColorPicker = ({ colors, category }) => {
       </div>
     </>
   )
+}
+
+ColorPicker.propTypes = {
+  colors: PropTypes.object,
+  category: PropTypes.string
 }
 
 export default ColorPicker

@@ -1,5 +1,6 @@
 //React
 import React from "react"
+import PropTypes from "prop-types"
 
 const BooleanModal = ({ showModal, setShowModal, callback }) => {
   return (
@@ -59,6 +60,12 @@ const BooleanModal = ({ showModal, setShowModal, callback }) => {
       ) : null}
     </>
   )
+}
+
+BooleanModal.propTypes = {
+  showModal: PropTypes.bool,
+  setShowModal: PropTypes.func,
+  callback: PropTypes.func
 }
 
 export default BooleanModal
