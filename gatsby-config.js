@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Theme Machine`,
+    version: `1.0.0`,
     description: `A React/Redux sandbox to play around with colors, fonts and sizing to quickly mock the CSS of your next project before writing any code. Spend less time writing and more time on what matters.`,
     author: `Eric Alain`,
     siteUrl: `https://ericalain.ca`

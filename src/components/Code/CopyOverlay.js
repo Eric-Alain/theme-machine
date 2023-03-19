@@ -1,5 +1,6 @@
 //React
-import React, { useState, useEffect, useRef } from "react"
+import React from "react"
+import PropTypes from "prop-types"
 
 const CopyOverlay = ({
   divClasses,
@@ -15,7 +16,7 @@ const CopyOverlay = ({
         <span
           className={`transition-all${copied ? " opacity-100" : " opacity-0"}`}
         >
-          COPIED!
+          Copied!
         </span>
         <button
           className={`transition-all ${
@@ -29,7 +30,7 @@ const CopyOverlay = ({
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className={`w-6 h-6 transition-all${
+            className={`${display ? "w-6 h-6 " : "w-0 h-0 "} transition-all${
               iconClasses ? ` ${iconClasses}` : ""
             }`}
           >
@@ -43,6 +44,15 @@ const CopyOverlay = ({
       </div>
     </>
   )
+}
+
+CopyOverlay.propTypes = {
+  divClasses: PropTypes.string,
+  buttonClasses: PropTypes.string,
+  iconClasses: PropTypes.string,
+  display: PropTypes.bool,
+  copied: PropTypes.bool,
+  handleClick: PropTypes.func
 }
 
 export default CopyOverlay

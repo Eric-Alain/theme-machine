@@ -13,8 +13,9 @@ const Layout = ({ children }) => {
       site {
         siteMetadata {
           title
-		author
-		siteUrl
+          version
+          author
+          siteUrl
         }
       }
     }
@@ -33,6 +34,7 @@ const Layout = ({ children }) => {
         <main>{children}</main>
       </div>
       <Footer
+        version={data.site.siteMetadata?.version}
         author={data.site.siteMetadata?.author || `Eric Alain`}
         siteUrl={data.site.siteMetadata?.siteUrl || `https://ericalain.ca`}
       />
