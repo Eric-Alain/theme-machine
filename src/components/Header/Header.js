@@ -11,6 +11,8 @@ import { resetStore } from "../../state/actions/root"
 import RadioButton from "../Options/RadioButton"
 import BooleanModal from "../Modals/BooleanModal"
 
+//Icon svgs from heroicons.com
+
 const Header = ({ siteTitle }) => {
   const dispatch = useDispatch()
   const theme = useSelector(state => state.theme)
