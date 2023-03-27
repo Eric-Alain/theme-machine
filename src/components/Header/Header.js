@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 //import { Link } from "gatsby"
 
@@ -9,7 +9,10 @@ import { resetStore } from "../../state/actions/root"
 
 //Components
 import RadioButton from "../Options/RadioButton"
+import AuthenticateModal from "../Modals/AuthenticateModal"
 import BooleanModal from "../Modals/BooleanModal"
+
+import { Link, navigate } from "gatsby"
 
 //Icon svgs from heroicons.com
 
@@ -23,6 +26,8 @@ const Header = ({ siteTitle }) => {
 
   const [showModal, setShowModal] = useState(false)
 
+  const [showAuthenticateModal, setShowAuthenticateModal] = useState(false)
+
   const handleThemeReset = () => {
     dispatch(resetStore())
     setShowModal(false)
@@ -33,7 +38,18 @@ const Header = ({ siteTitle }) => {
       <header className="container mx-auto text-white py-3 px-2 lg:px-0">
         <div className="grid grid-cols-10 gap-2">
           <div className="col-span-8">{siteTitle}</div>
-          <div className="col-span-1 flex justify-self-end justify-items-end">
+
+          <div className="col-span-1 flex justify-self-end justify-items-end items-end -mr-4">
+            <button
+              onClick={() => setShowAuthenticateModal(true)}
+              className="mr-3 text-tertiary-100 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-secondary-900"
+            >
+              Login
+            </button>
+            <AuthenticateModal
+              showModal={showAuthenticateModal}
+              setShowModal={setShowAuthenticateModal}
+            />
             <button
               onClick={() => setShowModal(true)}
               className="text-tertiary-100 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-secondary-900"
