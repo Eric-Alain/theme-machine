@@ -2,21 +2,75 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 
-import Login from "../Authentication/Login"
-import Signup from "../Authentication/Signup"
+const Snackbar = ({ snackObj, setShow }) => {
+  const { variant, show, message } = snackObj
+  const colors = {
+    success: {
+      bgColor: "bg-[#4b9d00]",
+      textColor: "text-tertiary-100",
+      borderColor: "border-tertiary-100",
+      hoverBgColor: "hover:bg-tertiary-100",
+      hoverTextColor: "hover:text-[#4b9d00]",
+      hoverBorderColor: "hover:border-[#4b9d00]",
+      offset: "tertiary-100"
+    },
+    info: {
+      bgColor: "bg-[#7100c7]",
+      textColor: "text-tertiary-100",
+      borderColor: "border-tertiary-100",
+      hoverBgColor: "hover:bg-tertiary-100",
+      hoverTextColor: "hover:text-[#7100c7]",
+      hoverBorderColor: "hover:border-[#7100c7]",
+      offset: "tertiary-100"
+    },
+    warning: {
+      bgColor: "bg-[#ffc800]",
+      textColor: "text-gray-900",
+      borderColor: "border-gray-900",
+      hoverBgColor: "hover:bg-gray-900",
+      hoverTextColor: "hover:text-[#ffc800]",
+      hoverBorderColor: "hover:border-[#ffc800]",
+      offset: "gray-900"
+    },
+    danger: {
+      bgColor: "bg-[#c70b0b]",
+      textColor: "text-tertiary-100",
+      borderColor: "border-tertiary-100",
+      hoverBgColor: "hover:bg-tertiary-100",
+      hoverTextColor: "hover:text-[#c70b0b]",
+      hoverBorderColor: "hover:border-[#c70b0b]",
+      offset: "tertiary-100"
+    }
+  }
 
-const Snackbar = ({ variant, children, show, setShow }) => {
+  const handleClick = () => {
+    setShow({ ...show, show: false })
+  }
+
   return (
     <div
-      class="bg-[#c70b0b] text-tertiary-100 font-bold uppercase text-sm transition-all px-4 py-3 rounded max-w-[65ch]"
+      className={`${!show ? "hidden h-0" : ""}${
+        variant in colors ? colors[variant].bgColor : colors["success"].bgColor
+      } ${
+        variant in colors
+          ? `text-${colors[variant].offset}`
+          : `text-${colors["success"].offset}`
+      } font-bold uppercase text-sm transition-all px-4 py-3 rounded max-w-[65ch]`}
       role="alert"
     >
       <div className="flex flex-row items-start">
-        <div>{children}</div>
+        <div>{message}</div>
         <div>
-          <button className="p-0 m-0 -mt-[1px] hover:bg-tertiary-100 hover:text-black hover:border-black transition-colors rounded">
+          <button
+            onClick={() => handleClick()}
+            className={`p-0 m-0 -mt-[1px] ml-2 border ${
+              variant in colors
+                ? `${colors[variant].bgColor} ${colors[variant].hoverBgColor} ${colors[variant].textColor} ${colors[variant].hoverTextColor} ${colors[variant].borderColor} ${colors[variant].hoverBorderColor}`
+                : `${colors["success"].bgColor} ${colors["success"].hoverBgColor} ${colors["success"].textColor} ${colors["success"].hoverTextColor} ${colors["success"].borderColor} ${colors["success"].hoverBorderColor}`
+            } transition-colors rounded`}
+          >
             <svg
-              class="fill-current h-6 w-6"
+              className="fill-current h-6 w-6"
               role="button"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -29,6 +83,11 @@ const Snackbar = ({ variant, children, show, setShow }) => {
       </div>
     </div>
   )
+}
+
+Snackbar.propTypes = {
+  snackObj: PropTypes.object.isRequired,
+  setShow: PropTypes.func.isRequired
 }
 
 export default Snackbar

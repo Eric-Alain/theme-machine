@@ -28,7 +28,7 @@ const Login = () => {
           <input
             type="email"
             name="email"
-            className="w-full rounded"
+            className="w-full rounded text-black"
             value={data.email}
             onChange={handleChange}
           />
@@ -41,7 +41,7 @@ const Login = () => {
           <input
             type="password"
             name="password"
-            className="w-full rounded"
+            className="w-full rounded text-black"
             value={data.password}
             onChange={handleChange}
           />

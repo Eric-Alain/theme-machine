@@ -23,7 +23,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="w-1/4 relative w-auto my-6 mx-auto">
+            <div className="w-1/4 relative my-6 mx-auto">
               {/*content*/}
               <div className="rounded-md shadow-lg relative flex flex-col w-full bg-tertiary-100 dark:bg-gray-900 border border-solid border-primary-300 outline-none focus:outline-none">
                 {/*header*/}
@@ -74,7 +74,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                   ) : (
                     /*Sign up*/
                     <Signup />
-                  )}                  
+                  )}
                 </div>
               </div>
             </div>
