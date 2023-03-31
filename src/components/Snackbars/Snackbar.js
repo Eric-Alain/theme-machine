@@ -58,7 +58,7 @@ const Snackbar = ({ snackObj, setShow }) => {
       } font-bold uppercase text-sm transition-all px-4 py-3 rounded max-w-[65ch]`}
       role="alert"
     >
-      <div className="flex flex-row items-start">
+      <div className="flex flex-row items-start justify-between">
         <div>{message}</div>
         <div>
           <button

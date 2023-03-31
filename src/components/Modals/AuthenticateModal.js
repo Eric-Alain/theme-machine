@@ -6,18 +6,7 @@ import Login from "../Authentication/Login"
 import Signup from "../Authentication/Signup"
 
 const AuthenticateModal = ({ showModal, setShowModal }) => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-    error: null
-  })
-
   const [signUp, setSignUp] = useState(false)
-
-  const handleChange = e => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-
   return (
     <>
       {showModal ? (
@@ -70,7 +59,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                 <div className="relative mx-3 mt-3 mb-5 flex-auto">
                   {!signUp ? (
                     /*Login*/
-                    <Login />
+                    <Login setShowModal={setShowModal} />
                   ) : (
                     /*Sign up*/
                     <Signup />
