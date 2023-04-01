@@ -337,6 +337,19 @@
     border-radius: 6px;
     border: 3px solid var(--scrollbarBG);
   }
+
+  /*Inputs and buttons*/
+  .auth-input {
+    @apply w-full rounded text-black border-gray-600 outline-0 outline-offset-0 focus:ring-primary-900 focus:border-gray-600 dark:bg-gray-800 dark:text-tertiary-100 dark:placeholder-gray-400 dark:focus:ring-secondary-900 dark:focus:border-secondary-900;
+  }
+
+  .btn-main {
+    @apply p-2 bg-primary-900 text-tertiary-100 hover:bg-secondary-900 hover:text-primary-900 hover:font-bold border-primary-900 dark:bg-gray-700 dark:hover:bg-secondary-900 dark:hover:text-primary-900 dark:hover:font-bold dark:border-gray-400 dark:hover:border-gray-900 border rounded transition-all;
+  }
+
+  .btn-secondary {
+    @apply p-2 text-primary-900 border-primary-900 hover:bg-primary-900 hover:text-tertiary-100 hover:font-bold dark:text-secondary-900 dark:hover:bg-secondary-900 dark:hover:text-gray-900 dark:hover:font-bold dark:border-secondary-900 border rounded transition-all;
+  }
 }
 
 @tailwind utilities;

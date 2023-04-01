@@ -1,13 +1,14 @@
 import React, { useState, useEffect, createContext } from "react"
 import Snackbar from "../Snackbars/Snackbar"
-import {
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "firebase/auth"
-import { auth } from "../Firebase/Firebase"
-
-const Login = ({ setShowModal }) => {
+import { signInWithEmailAndPassword, signOut } from "firebase/auth"
+const Login = ({
+  auth,
+  authShow,
+  setShowModal,
+  passwordPlaceholder,
+  setPasswordPlaceholder,
+  passwordPlaceholders
+}) => {
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -46,33 +47,21 @@ const Login = ({ setShowModal }) => {
     }
   }
 
-  const [authShow, setAuthShow] = useState(false)
-
   useEffect(() => {
-    onAuthStateChanged(auth, currentUser => {
-      if (currentUser) {
-        setAuthShow(true)
-      } else {
-        setAuthShow(false)
-      }
-      console.log("user Changed")
-      console.log(auth)
-    })
+    setPasswordPlaceholder(
+      passwordPlaceholders[
+        Math.floor(Math.random() * passwordPlaceholders.length)
+      ]
+    )
   }, [])
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="grid grid-rows-1 gap-4">
-        <div>
-          <h2 className="h4 pb-0 mt-0 mb-0 pt-0 dark:text-tertiary-100 border-b border-solid border-primary-300">
-            Login
-          </h2>
-        </div>
-
         {authShow ? (
           <>
-            <p className="text-black">
-              Welcome back,{" "}
+            <p className="text-black dark:text-tertiary-100">
+              Welcome,{" "}
               <strong className="font-bold">
                 {auth.currentUser.displayName}
               </strong>
@@ -80,7 +69,7 @@ const Login = ({ setShowModal }) => {
             </p>
             <div>
               <button
-                className="p-2 text-primary-900 hover:bg-primary-900 hover:text-tertiary-100  hover:font-bold border border-primary-900 rounded transition-all"
+                className="btn-secondary"
                 type="button"
                 onClick={() => {
                   signOut(auth)
@@ -89,7 +78,7 @@ const Login = ({ setShowModal }) => {
                 Logout
               </button>
               <button
-                className="ml-3 p-2 bg-primary-900 text-tertiary-100 hover:bg-secondary-900 hover:text-primary-900 hover:font-bold border border-primary-900 rounded transition-all"
+                className="ml-3 btn-main"
                 type="button"
                 onClick={() => setShowModal(false)}
               >
@@ -100,34 +89,39 @@ const Login = ({ setShowModal }) => {
         ) : (
           <>
             <div>
-              <label className="block text-black" htmlFor="email">
+              <label
+                className="block text-black dark:text-tertiary-100"
+                htmlFor="email"
+              >
                 Email
               </label>
               <input
                 type="email"
                 name="email"
-                className="w-full rounded text-black"
+                className="auth-input"
+                placeholder="example@email.com"
                 value={data.email}
                 onChange={handleChange}
               />
             </div>
             <div>
-              <label className="block text-black" htmlFor="password">
+              <label
+                className="block text-black dark:text-tertiary-100"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
                 type="password"
                 name="password"
-                className="w-full rounded text-black"
+                className="auth-input"
+                placeholder={passwordPlaceholder}
                 value={data.password}
                 onChange={handleChange}
               />
             </div>
             <div>
-              <button
-                className="p-2 bg-primary-900 text-tertiary-100 hover:bg-secondary-900 hover:text-primary-900 hover:font-bold border border-primary-900 rounded transition-all"
-                type="submit"
-              >
+              <button className="btn-main" type="submit" disabled={authShow}>
                 Login
               </button>
             </div>

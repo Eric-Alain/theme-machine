@@ -1,9 +1,14 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
-import React, { useState, createContext } from "react"
+import React, { useState, useEffect, createContext } from "react"
 import Snackbar from "../Snackbars/Snackbar"
-import { auth } from "../Firebase/Firebase"
 
-const Signup = () => {
+const Signup = ({
+  auth,
+  authShow,
+  passwordPlaceholder,
+  setPasswordPlaceholder,
+  passwordPlaceholders
+}) => {
   const [data, setData] = useState({
     displayName: "",
     email: "",
@@ -80,70 +85,96 @@ const Signup = () => {
     }
   }
 
+  useEffect(() => {
+    setPasswordPlaceholder(
+      passwordPlaceholders[
+        Math.floor(Math.random() * passwordPlaceholders.length)
+      ]
+    )
+  }, [])
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="grid grid-rows-1 gap-4">
         <div>
-          <h2 className="h4 pb-0 mt-0 mb-0 pt-0 dark:text-tertiary-100 border-b border-solid border-primary-300">
-            Sign up
-          </h2>
-        </div>
-        <div>
-          <label className="block text-black" htmlFor="displayName">
+          <label
+            className="block text-black dark:text-tertiary-100 dark:text-tertiary-100"
+            htmlFor="displayName"
+          >
             User name
           </label>
           <input
             type="text"
             name="displayName"
-            className="w-full rounded text-black"
+            className="auth-input"
             placeholder="What would you like us to call you?"
             value={data.displayName}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label className="block text-black" htmlFor="email">
+          <label
+            className="block text-black dark:text-tertiary-100"
+            htmlFor="email"
+          >
             Email
           </label>
           <input
             type="email"
             name="email"
-            className="w-full rounded text-black"
+            className="auth-input"
             placeholder="example@email.com"
             value={data.email}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label className="block text-black" htmlFor="password">
+          <label
+            className="block text-black dark:text-tertiary-100"
+            htmlFor="password"
+          >
             Password
           </label>
           <input
             type="password"
             name="password"
-            className="w-full rounded text-black"
-            placeholder="Super secret"
+            className="auth-input"
+            placeholder={passwordPlaceholder}
             value={data.password}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label className="block text-black" htmlFor="confirmPassword">
+          <label
+            className="block text-black dark:text-tertiary-100"
+            htmlFor="confirmPassword"
+          >
             Confirm password
           </label>
           <input
             type="password"
             name="confirmPassword"
-            className="w-full rounded text-black"
-            placeholder="Just to be sure"
+            className="auth-input"
+            placeholder="Just to be sure."
             value={data.confirmPassword}
             onChange={handleChange}
           />
         </div>
+        {authShow ? (
+          <>
+            <div>
+              <p className="text-black dark:text-tertiary-100">
+                You're already signed up.
+              </p>
+            </div>
+          </>
+        ) : null}
+
         <div>
           <button
-            className="p-2 bg-primary-900 text-tertiary-100 hover:bg-secondary-900 hover:text-primary-900 hover:font-bold border border-primary-900 rounded transition-all"
+            className={`btn-main${authShow ? " cursor-not-allowed" : ""}`}
             type="submit"
+            disabled={authShow}
           >
             Sign up
           </button>

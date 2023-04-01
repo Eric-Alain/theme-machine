@@ -14,6 +14,9 @@ import BooleanModal from "../Modals/BooleanModal"
 
 import { Link, navigate } from "gatsby"
 
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../Firebase/Firebase"
+
 //Icon svgs from heroicons.com
 
 const Header = ({ siteTitle }) => {
@@ -33,26 +36,53 @@ const Header = ({ siteTitle }) => {
     setShowModal(false)
   }
 
+  const [authShow, setAuthShow] = useState(false)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, currentUser => {
+      if (currentUser) {
+        setAuthShow(true)
+      } else {
+        setAuthShow(false)
+      }
+    })
+  }, [])
+
   return (
     <section className="bg-primary-900 dark:bg-gray-700 fixed w-full z-10">
       <header className="container mx-auto text-white py-3 px-2 lg:px-0">
-        <div className="grid grid-cols-10 gap-2">
+        <div className="grid grid-cols-10 gap-2 items-start">
           <div className="col-span-8">{siteTitle}</div>
 
           <div className="col-span-1 flex justify-self-end justify-items-end items-end -mr-4">
             <button
               onClick={() => setShowAuthenticateModal(true)}
-              className="mr-3 text-tertiary-100 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-secondary-900"
+              className="mr-3 text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
+              title="Account options"
             >
-              Login
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                />
+              </svg>
             </button>
             <AuthenticateModal
               showModal={showAuthenticateModal}
               setShowModal={setShowAuthenticateModal}
             />
+
             <button
               onClick={() => setShowModal(true)}
-              className="text-tertiary-100 hover:text-secondary-900 dark:text-secondary-400 dark:hover:text-secondary-900"
+              className="leading-none text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
             >
               Reset
             </button>
