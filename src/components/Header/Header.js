@@ -38,6 +38,12 @@ const Header = ({ siteTitle }) => {
 
   const [authShow, setAuthShow] = useState(false)
 
+  const [toggleHamburger, setToggleHamburger] = useState(false)
+
+  const handleHamburgerClick = () => {
+    setToggleHamburger(!toggleHamburger)
+  }
+
   useEffect(() => {
     onAuthStateChanged(auth, currentUser => {
       if (currentUser) {
@@ -51,10 +57,20 @@ const Header = ({ siteTitle }) => {
   return (
     <section className="bg-primary-900 dark:bg-gray-700 fixed w-full z-10">
       <header className="container mx-auto text-white py-3 px-2 lg:px-0">
-        <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-start">
+        <div
+          className={`${
+            toggleHamburger ? "h-[8.5rem] min-h-fit" : "h-5"
+          } md:h-fit overflow-hidden transition-all duration-500 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-start relative`}
+        >
           <div className="md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-7 xl:col-start-1 xl:col-end-9">
             {siteTitle}
           </div>
+          <button
+            className="absolute top-0 right-0 md:hidden"
+            onClick={handleHamburgerClick}
+          >
+            {toggleHamburger ? "O" : "X"}
+          </button>
 
           <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-9 xl:col-end-10 flex flex-col md:flex-row md:justify-self-end md:justify-items-end md:items-end">
             <div className="">
@@ -87,7 +103,7 @@ const Header = ({ siteTitle }) => {
             <div className="">
               <button
                 onClick={() => setShowModal(true)}
-                className="leading-none text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
+                className="leading-[1.725rem] text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
               >
                 Reset
               </button>
