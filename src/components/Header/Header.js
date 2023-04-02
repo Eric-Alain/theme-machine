@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
-//import { Link } from "gatsby"
 
 //Redux
 import { useSelector, useDispatch } from "react-redux"
@@ -11,6 +10,7 @@ import { resetStore } from "../../state/actions/root"
 import RadioButton from "../Options/RadioButton"
 import AuthenticateModal from "../Modals/AuthenticateModal"
 import BooleanModal from "../Modals/BooleanModal"
+import LogoSvg from "./LogoSvg"
 
 import { Link, navigate } from "gatsby"
 
@@ -57,15 +57,18 @@ const Header = ({ siteTitle }) => {
   }, [])
 
   return (
-    <section className="bg-primary-900 dark:bg-gray-700 fixed w-full z-10">
+    <section className="bg-primary-900 dark:bg-gray-700 fixed relative w-full z-10">
       <header className="container mx-auto text-white py-3 px-2 lg:px-0">
         <div
           className={`${
-            toggleHamburger ? "h-[8.5rem] min-h-fit" : "h-6"
+            toggleHamburger ? "h-[12rem] min-h-fit" : "h-14"
           } md:h-fit overflow-hidden md:overflow-visible transition-all duration-500 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-start relative`}
         >
-          <div className="md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-7 xl:col-start-1 xl:col-end-9">
-            {siteTitle}
+          <div
+            className="md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-7 xl:col-start-1 xl:col-end-9"
+            title={siteTitle}
+          >
+            <LogoSvg classNames="w-[6rem] h-auto" baseColor={"#fff"} />
           </div>
           <button
             className="absolute top-0 right-0 md:hidden group"

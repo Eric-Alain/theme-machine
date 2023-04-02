@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
   return (
     <div className="flex flex-col bg-gray-300 dark:bg-gray-900 min-h-screen">
       <Header siteTitle={data.site.siteMetadata?.title || `Theme Machine`} />
-      <div className="py-10 mt-10 grow bg-gray-300 dark:bg-gray-900">
+      <div className="py-10 grow bg-gray-300 dark:bg-gray-900 px-3 md:px-0">
         <main>{children}</main>
       </div>
       <Footer

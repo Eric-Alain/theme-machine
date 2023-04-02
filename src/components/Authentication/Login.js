@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import PropTypes from "prop-types"
 import {
   signInWithEmailAndPassword,
   signOut,
@@ -150,6 +151,17 @@ const Login = ({
       </div>
     </form>
   )
+}
+
+Login.propTypes = {
+  auth: PropTypes.object,
+  authShow: PropTypes.bool,
+  setShowModal: PropTypes.func,
+  passwordPlaceholder: PropTypes.string,
+  setPasswordPlaceholder: PropTypes.func,
+  passwordPlaceholders: PropTypes.array,
+  snackBar: PropTypes.object,
+  setSnackBar: PropTypes.func
 }
 
 export default Login

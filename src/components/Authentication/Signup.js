@@ -1,4 +1,5 @@
-import React, { useState, useEffect, createContext } from "react"
+import React, { useState, useEffect } from "react"
+import PropTypes from "prop-types"
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { randomStringFromArray } from "../../utils"
 
@@ -174,6 +175,16 @@ const Signup = ({
       </div>
     </form>
   )
+}
+
+Signup.propTypes = {
+  auth: PropTypes.object,
+  authShow: PropTypes.bool,
+  passwordPlaceholder: PropTypes.string,
+  setPasswordPlaceholder: PropTypes.func,
+  passwordPlaceholders: PropTypes.array,
+  snackBar: PropTypes.object,
+  setSnackBar: PropTypes.func
 }
 
 export default Signup

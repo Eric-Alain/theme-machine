@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 
 const Footer = ({ version, author, siteUrl }) => {
   return (
-    <footer className="container mx-auto py-3 dark:text-tertiary-100">
+    <footer className="container mx-auto py-3 dark:text-tertiary-100 px-3 md:px-0">
       <p>Version: {version}</p>
       <p>
         © {new Date().getFullYear()} &middot; Built by
