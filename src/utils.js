@@ -52,3 +52,18 @@ export const decodeHtmlEntities = str =>
     .replace(/&quot;/gm, '"')
     .replace(/\\n/gm, "\n")
     .replace(/\\t/gm, "\t")
+
+export const randomStringFromArray = (string, array) => {
+	let tempStr = string
+	
+	const getString = () => {
+		tempStr = array[Math.floor(Math.random() * array.length)]
+	}
+
+	while (tempStr === string) {
+		getString()
+	}
+
+	return tempStr;
+}
+

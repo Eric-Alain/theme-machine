@@ -1,6 +1,12 @@
 import React, { useState, useEffect, createContext } from "react"
 import Snackbar from "../Snackbars/Snackbar"
-import { signInWithEmailAndPassword, signOut } from "firebase/auth"
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  fetchSignInMethodsForEmail
+} from "firebase/auth"
+import { randomStringFromArray } from "../../utils"
+
 const Login = ({
   auth,
   authShow,
@@ -30,8 +36,31 @@ const Login = ({
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      // Create user account using email and password
-      signInWithEmailAndPassword(auth, data.email, data.password)
+      // Check if the email entered has an email and password sign in method
+      fetchSignInMethodsForEmail(auth, data.email).then(result => {
+        console.log(result)
+        //If so, attempt to sign in using email and password
+        if (result.some(str => str === "password")) {
+          console.log("called")
+          // Create user account using email and password
+          signInWithEmailAndPassword(auth, data.email, data.password)
+        }
+
+        // Otherwise, set a warning snackbar that an account exists with another method
+        else {
+          setSnackbar({
+            ...snackBar,
+            variant: "warning",
+            show: true,
+            message: (
+              <p>
+                It seems this email is associated to a different sign-in method.
+                Why don't you try logging using a sign-in provider?
+              </p>
+            )
+          })
+        }
+      })
     } catch (e) {
       // Otherwise display the error message to the user
       setSnackbar({
@@ -49,9 +78,7 @@ const Login = ({
 
   useEffect(() => {
     setPasswordPlaceholder(
-      passwordPlaceholders[
-        Math.floor(Math.random() * passwordPlaceholders.length)
-      ]
+      randomStringFromArray(passwordPlaceholder, passwordPlaceholders)
     )
   }, [])
 

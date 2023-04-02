@@ -2,47 +2,19 @@
 import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  onAuthStateChanged
-} from "firebase/auth"
+import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../Firebase/Firebase"
 
 import Login from "../Authentication/Login"
 import Signup from "../Authentication/Signup"
+import GoogleAuth from "../Authentication/GoogleAuth"
+import FacebookAuth from "../Authentication/FacebookAuth"
+import GithubAuth from "../Authentication/GithubAuth"
 
 const AuthenticateModal = ({ showModal, setShowModal }) => {
   const [signUp, setSignUp] = useState(false)
 
-  const googleProvider = new GoogleAuthProvider()
-  googleProvider.addScope("https://www.googleapis.com/auth/contacts.readonly")
-
   auth.languageCode = "it"
-
-  const handleGoogleAuth = () => {
-    signInWithPopup(auth, googleProvider)
-      .then(result => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result)
-        const token = credential.accessToken
-        // The signed-in user info.
-        const user = result.user
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-        console.log(result)
-      })
-      .catch(error => {
-        // Handle Errors here.
-        const errorCode = error.code
-        const errorMessage = error.message
-        // The email of the user's account used.
-        const email = error.customData.email
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error)
-        // ...
-      })
-  }
 
   const [passwordPlaceholder, setPasswordPlaceholder] = useState("")
 
@@ -50,7 +22,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
     "My password is so secret, even I forget it.",
     "I used my ex's name as my password, but it was too easy.",
     "Changed password to 'incorrect.' Reminds me when I forget.",
-    "My password's like a plant, needs change to stay healthy.",
+    "My password's like a plant: it needs change to stay healthy.",
     "My password's a mystery novel, full of twists and characters.",
     "My password's a good joke... nobody gets it.",
     "My password's a choose-your-own-adventure book. Not sure where it goes."
@@ -149,54 +121,17 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                       <p className="mb-3 text-black dark:text-tertiary-100">
                         Or use a sign-in partner.
                       </p>
-                      <button
-                        className="w-fit p-2
-				    hover:bg-gray-200
-				    border-primary-900
-				    dark:bg-gray-700
-				    dark:hover:bg-gray-800
-				    dark:border-gray-500
-				    border rounded transition-all"
-                        title="Google"
-                        onClick={handleGoogleAuth}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          viewBox="0 0 48 48"
-                          className="h-10 w-10"
-                        >
-                          <defs>
-                            <path
-                              id="a"
-                              d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"
-                            ></path>
-                          </defs>
-                          <clipPath id="b">
-                            <use overflow="visible" xlinkHref="#a"></use>
-                          </clipPath>
-                          <path
-                            fill="#FBBC05"
-                            d="M0 37V11l17 13z"
-                            clipPath="url(#b)"
-                          ></path>
-                          <path
-                            fill="#EA4335"
-                            d="M0 11l17 13 7-6.1L48 14V0H0z"
-                            clipPath="url(#b)"
-                          ></path>
-                          <path
-                            fill="#34A853"
-                            d="M0 37l30-23 7.9 1L48 0v48H0z"
-                            clipPath="url(#b)"
-                          ></path>
-                          <path
-                            fill="#4285F4"
-                            d="M48 48L17 24l-4-3 35-10z"
-                            clipPath="url(#b)"
-                          ></path>
-                        </svg>
-                      </button>
+                      <div className="grid grid-cols-6 gap-4 justify-start">
+                        <div>
+                          <GoogleAuth auth={auth} />
+                        </div>
+                        <div>
+                          <FacebookAuth auth={auth} />
+                        </div>
+                        <div>
+                          <GithubAuth auth={auth} />
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
@@ -209,6 +144,11 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
       ) : null}
     </>
   )
+}
+
+AuthenticateModal.propTypes = {
+  showModal: PropTypes.bool.isRequired,
+  setShowModal: PropTypes.func.isRequired
 }
 
 export default AuthenticateModal

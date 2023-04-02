@@ -1,6 +1,7 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import React, { useState, useEffect, createContext } from "react"
 import Snackbar from "../Snackbars/Snackbar"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { randomStringFromArray } from "../../utils"
 
 const Signup = ({
   auth,
@@ -87,9 +88,7 @@ const Signup = ({
 
   useEffect(() => {
     setPasswordPlaceholder(
-      passwordPlaceholders[
-        Math.floor(Math.random() * passwordPlaceholders.length)
-      ]
+      randomStringFromArray(passwordPlaceholder, passwordPlaceholders)
     )
   }, [])
 
