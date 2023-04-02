@@ -40,6 +40,8 @@ const Header = ({ siteTitle }) => {
 
   const [toggleHamburger, setToggleHamburger] = useState(false)
 
+  const genericHamburgerLine = `h-[3px] w-6 my-1 rounded-full bg-tertiary-100 transition ease transform duration-300`
+
   const handleHamburgerClick = () => {
     setToggleHamburger(!toggleHamburger)
   }
@@ -59,17 +61,38 @@ const Header = ({ siteTitle }) => {
       <header className="container mx-auto text-white py-3 px-2 lg:px-0">
         <div
           className={`${
-            toggleHamburger ? "h-[8.5rem] min-h-fit" : "h-5"
-          } md:h-fit overflow-hidden transition-all duration-500 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-start relative`}
+            toggleHamburger ? "h-[8.5rem] min-h-fit" : "h-6"
+          } md:h-fit overflow-hidden md:overflow-visible transition-all duration-500 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-start relative`}
         >
           <div className="md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-7 xl:col-start-1 xl:col-end-9">
             {siteTitle}
           </div>
           <button
-            className="absolute top-0 right-0 md:hidden"
+            className="absolute top-0 right-0 md:hidden group"
+            title="Expand/collapse"
             onClick={handleHamburgerClick}
           >
-            {toggleHamburger ? "O" : "X"}
+            <div
+              className={`${genericHamburgerLine} ${
+                toggleHamburger
+                  ? "rotate-45 translate-y-[0.45rem] opacity-50 group-hover:opacity-100"
+                  : "opacity-50 group-hover:opacity-100"
+              }`}
+            />
+            <div
+              className={`${genericHamburgerLine} ${
+                toggleHamburger
+                  ? "opacity-0"
+                  : "opacity-50 group-hover:opacity-100"
+              }`}
+            />
+            <div
+              className={`${genericHamburgerLine} ${
+                toggleHamburger
+                  ? "-rotate-45 -translate-y-[0.45rem] opacity-50 group-hover:opacity-100"
+                  : "opacity-50 group-hover:opacity-100"
+              }`}
+            />
           </button>
 
           <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-9 xl:col-end-10 flex flex-col md:flex-row md:justify-self-end md:justify-items-end md:items-end">
