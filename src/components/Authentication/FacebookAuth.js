@@ -4,17 +4,28 @@ import PropTypes from "prop-types"
 
 import { signInWithPopup, FacebookAuthProvider } from "firebase/auth"
 
-const FacebookAuth = ({ auth }) => {
+const FacebookAuth = ({ auth, snackBar, setSnackBar }) => {
   const facebookProvider = new FacebookAuthProvider()
 
   const handleFacebookAuth = () => {
     signInWithPopup(auth, facebookProvider)
-      .then(result => {
-      })
+      //.then(result => {})
       .catch(e => {
         if (e.code === "auth/account-exists-with-different-credential") {
-          console.log(FacebookAuthProvider.credentialFromError(e))
-          console.log(e.customData.email)
+          setSnackBar({
+            ...snackBar,
+            variant: "warning",
+            show: true,
+            message: (
+              <>
+                <p className="mb-3">
+                  It seems that an account was created for "{e.customData.email}
+                  " using a different sign-in method.
+                </p>
+                <p>Why don't you try logging using a sign-in provider?</p>
+              </>
+            )
+          })
         }
       })
   }
@@ -44,7 +55,9 @@ const FacebookAuth = ({ auth }) => {
 }
 
 FacebookAuth.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  snackBar: PropTypes.object,
+  setSnackBar: PropTypes.func
 }
 
 export default FacebookAuth

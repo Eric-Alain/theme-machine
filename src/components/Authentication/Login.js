@@ -1,5 +1,4 @@
-import React, { useState, useEffect, createContext } from "react"
-import Snackbar from "../Snackbars/Snackbar"
+import React, { useState, useEffect } from "react"
 import {
   signInWithEmailAndPassword,
   signOut,
@@ -13,21 +12,15 @@ const Login = ({
   setShowModal,
   passwordPlaceholder,
   setPasswordPlaceholder,
-  passwordPlaceholders
+  passwordPlaceholders,
+  snackBar,
+  setSnackBar
 }) => {
   const [data, setData] = useState({
     email: "",
     password: "",
     error: null
   })
-
-  const [snackBar, setSnackbar] = useState({
-    variant: "success",
-    show: false,
-    message: null
-  })
-
-  const SnackContext = createContext(snackBar)
 
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })
@@ -48,7 +41,7 @@ const Login = ({
 
         // Otherwise, set a warning snackbar that an account exists with another method
         else {
-          setSnackbar({
+          setSnackBar({
             ...snackBar,
             variant: "warning",
             show: true,
@@ -63,7 +56,7 @@ const Login = ({
       })
     } catch (e) {
       // Otherwise display the error message to the user
-      setSnackbar({
+      setSnackBar({
         ...snackBar,
         variant: "danger",
         show: true,
@@ -154,10 +147,6 @@ const Login = ({
             </div>
           </>
         )}
-
-        <SnackContext.Provider value={{ snackBar, setSnackbar }}>
-          <Snackbar snackObj={snackBar} setShow={setSnackbar} />
-        </SnackContext.Provider>
       </div>
     </form>
   )

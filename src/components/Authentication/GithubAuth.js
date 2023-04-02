@@ -4,16 +4,28 @@ import PropTypes from "prop-types"
 
 import { signInWithPopup, GithubAuthProvider } from "firebase/auth"
 
-const GithubAuth = ({ auth }) => {
+const GithubAuth = ({ auth, snackBar, setSnackBar }) => {
   const githubProvider = new GithubAuthProvider()
 
   const handleGithubAuth = () => {
     signInWithPopup(auth, githubProvider)
-      .then(result => {})
+      //.then(result => {})
       .catch(e => {
         if (e.code === "auth/account-exists-with-different-credential") {
-          console.log(GithubAuthProvider.credentialFromError(e))
-          console.log(e.customData.email)
+          setSnackBar({
+            ...snackBar,
+            variant: "warning",
+            show: true,
+            message: (
+              <>
+                <p className="mb-3">
+                  It seems that an account was created for "{e.customData.email}
+                  " using a different sign-in method.
+                </p>
+                <p>Why don't you try logging using a sign-in provider?</p>
+              </>
+            )
+          })
         }
       })
   }
@@ -41,7 +53,9 @@ const GithubAuth = ({ auth }) => {
 }
 
 GithubAuth.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  snackBar: PropTypes.object,
+  setSnackBar: PropTypes.func
 }
 
 export default GithubAuth

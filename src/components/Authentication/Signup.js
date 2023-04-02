@@ -1,5 +1,4 @@
 import React, { useState, useEffect, createContext } from "react"
-import Snackbar from "../Snackbars/Snackbar"
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { randomStringFromArray } from "../../utils"
 
@@ -8,7 +7,9 @@ const Signup = ({
   authShow,
   passwordPlaceholder,
   setPasswordPlaceholder,
-  passwordPlaceholders
+  passwordPlaceholders,
+  snackBar,
+  setSnackBar
 }) => {
   const [data, setData] = useState({
     displayName: "",
@@ -18,14 +19,6 @@ const Signup = ({
     error: null
   })
 
-  const [snackBar, setSnackbar] = useState({
-    variant: "success",
-    show: false,
-    message: null
-  })
-
-  const SnackContext = createContext(snackBar)
-
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
@@ -34,7 +27,7 @@ const Signup = ({
     e.preventDefault()
     // Display error message if password and confirm password fields don't match
     if (data.password !== data.confirmPassword) {
-      setSnackbar({
+      setSnackBar({
         ...snackBar,
         variant: "danger",
         show: true,
@@ -57,7 +50,7 @@ const Signup = ({
       // Wait for account to be created, update the user name key based on what was entered in sign up form
       await updateProfile(result.user, { displayName: data.displayName })
       // If succesful, display a nice l'il message
-      setSnackbar({
+      setSnackBar({
         ...snackBar,
         variant: "success",
         show: true,
@@ -73,7 +66,7 @@ const Signup = ({
       })
     } catch (e) {
       // Otherwise display the error message to the user
-      setSnackbar({
+      setSnackBar({
         ...snackBar,
         variant: "danger",
         show: true,
@@ -178,10 +171,6 @@ const Signup = ({
             Sign up
           </button>
         </div>
-
-        <SnackContext.Provider value={{ snackBar, setSnackbar }}>
-          <Snackbar snackObj={snackBar} setShow={setSnackbar} />
-        </SnackContext.Provider>
       </div>
     </form>
   )

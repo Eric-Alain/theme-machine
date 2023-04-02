@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, createContext } from "react"
 import PropTypes from "prop-types"
 
 import { onAuthStateChanged } from "firebase/auth"
@@ -11,8 +11,18 @@ import GoogleAuth from "../Authentication/GoogleAuth"
 import FacebookAuth from "../Authentication/FacebookAuth"
 import GithubAuth from "../Authentication/GithubAuth"
 
+import Snackbar from "../Snackbars/Snackbar"
+
 const AuthenticateModal = ({ showModal, setShowModal }) => {
   const [signUp, setSignUp] = useState(false)
+
+  const [snackBar, setSnackBar] = useState({
+    variant: "success",
+    show: false,
+    message: null
+  })
+
+  const SnackContext = createContext(snackBar)
 
   auth.languageCode = "it"
 
@@ -103,6 +113,8 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                       passwordPlaceholder={passwordPlaceholder}
                       setPasswordPlaceholder={setPasswordPlaceholder}
                       passwordPlaceholders={passwordPlaceholders}
+                      snackBar={snackBar}
+                      setSnackBar={setSnackBar}
                     />
                   ) : (
                     /*Sign up*/
@@ -112,24 +124,42 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                       passwordPlaceholder={passwordPlaceholder}
                       setPasswordPlaceholder={setPasswordPlaceholder}
                       passwordPlaceholders={passwordPlaceholders}
+                      snackBar={snackBar}
+                      setSnackBar={setSnackBar}
                     />
                   )}
-
+                  <div className="mt-3">
+                    <SnackContext.Provider value={{ snackBar, setSnackBar }}>
+                      <Snackbar snackObj={snackBar} setShow={setSnackBar} />
+                    </SnackContext.Provider>
+                  </div>
                   {authShow ? null : (
                     <>
                       <hr className="mt-4 mb-3" />
                       <p className="mb-3 text-black dark:text-tertiary-100">
-                        Or use a sign-in partner.
+                        Sign-in partners.
                       </p>
                       <div className="grid grid-cols-6 gap-4 justify-start">
                         <div>
-                          <GoogleAuth auth={auth} />
+                          <GoogleAuth
+                            auth={auth}
+                            snackBar={snackBar}
+                            setSnackBar={setSnackBar}
+                          />
                         </div>
                         <div>
-                          <FacebookAuth auth={auth} />
+                          <FacebookAuth
+                            auth={auth}
+                            snackBar={snackBar}
+                            setSnackBar={setSnackBar}
+                          />
                         </div>
                         <div>
-                          <GithubAuth auth={auth} />
+                          <GithubAuth
+                            auth={auth}
+                            snackBar={snackBar}
+                            setSnackBar={setSnackBar}
+                          />
                         </div>
                       </div>
                     </>
