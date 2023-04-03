@@ -12,7 +12,6 @@ const firebaseConfig = {
   appId: process.env.GATSBY_FIREBASE_APP_ID,
   measurementId: process.env.GATSBY_FIREBASE_MEASUREMENT_ID
 }
-console.log(firebaseConfig)
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig)
