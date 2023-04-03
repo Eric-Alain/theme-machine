@@ -11,6 +11,7 @@ import RadioButton from "../Options/RadioButton"
 import AuthenticateModal from "../Modals/AuthenticateModal"
 import BooleanModal from "../Modals/BooleanModal"
 import LogoSvg from "./LogoSvg"
+import Hamburger from "./Hamburger"
 
 import { Link, navigate } from "gatsby"
 
@@ -19,7 +20,7 @@ import { auth } from "../Firebase/Firebase"
 
 //Icon svgs from heroicons.com
 
-const Header = ({ siteTitle }) => {
+const Header = ({ siteTitle, width }) => {
   const dispatch = useDispatch()
   const theme = useSelector(state => state.theme)
 
@@ -39,8 +40,6 @@ const Header = ({ siteTitle }) => {
   const [authShow, setAuthShow] = useState(false)
 
   const [toggleHamburger, setToggleHamburger] = useState(false)
-
-  const genericHamburgerLine = `h-[3px] w-6 my-1 rounded-full bg-tertiary-100 transition ease transform duration-300`
 
   const handleHamburgerClick = () => {
     setToggleHamburger(!toggleHamburger)
@@ -70,55 +69,40 @@ const Header = ({ siteTitle }) => {
           >
             <LogoSvg classNames="w-[6rem] h-auto" baseColor={"#fff"} />
           </div>
-          <button
-            className="absolute top-0 right-0 md:hidden group"
-            title="Expand/collapse"
-            onClick={handleHamburgerClick}
-          >
-            <div
-              className={`${genericHamburgerLine} ${
-                toggleHamburger
-                  ? "rotate-45 translate-y-[0.45rem] opacity-50 group-hover:opacity-100"
-                  : "opacity-50 group-hover:opacity-100"
-              }`}
-            />
-            <div
-              className={`${genericHamburgerLine} ${
-                toggleHamburger
-                  ? "opacity-0"
-                  : "opacity-50 group-hover:opacity-100"
-              }`}
-            />
-            <div
-              className={`${genericHamburgerLine} ${
-                toggleHamburger
-                  ? "-rotate-45 -translate-y-[0.45rem] opacity-50 group-hover:opacity-100"
-                  : "opacity-50 group-hover:opacity-100"
-              }`}
-            />
-          </button>
-
+          <Hamburger
+            toggleHamburger={toggleHamburger}
+            handleHamburgerClick={handleHamburgerClick}
+          />
+          <hr
+            className={`${
+              toggleHamburger ? "opacity-100" : "opacity-0"
+            } md:hidden transition-all duration-500 border-primary-300 mx-1`}
+          />
           <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-9 xl:col-end-10 flex flex-col md:flex-row md:justify-self-end md:justify-items-end md:items-end">
-            <div className="">
+            <div>
               <button
                 onClick={() => setShowAuthenticateModal(true)}
                 className="mr-3 text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
                 title="Account options"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                  />
-                </svg>
+                {width > 768 ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6 md:translate-y-[3px]"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                    />
+                  </svg>
+                ) : (
+                  <span>Account</span>
+                )}
               </button>
               <AuthenticateModal
                 showModal={showAuthenticateModal}
@@ -126,10 +110,10 @@ const Header = ({ siteTitle }) => {
               />
             </div>
 
-            <div className="">
+            <div>
               <button
                 onClick={() => setShowModal(true)}
-                className="leading-[1.725rem] text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
+                className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
               >
                 Reset
               </button>
@@ -148,9 +132,7 @@ const Header = ({ siteTitle }) => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className={`w-6 h-6${
-                  theme !== "dark" ? " " : " text-gray-500"
-                }`}
+                className={`w-6 h-6 dark:text-gray-500`}
               >
                 <path
                   strokeLinecap="round"
@@ -158,9 +140,11 @@ const Header = ({ siteTitle }) => {
                   d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
                 />
               </svg>
-              {theme !== "dark" ? (
-                <div className="w-[70%] transform translate-x-[25%] border-b mt-[2px] border-gray-400" />
-              ) : null}
+              <div
+                className={`w-[70%] transform translate-x-[25%] border-b mt-[2px] border-gray-400 ${
+                  theme !== "dark" ? "opacity-100" : "opacity-0"
+                }`}
+              />
             </div>
             <div className="mx-1">
               <RadioButton
@@ -177,7 +161,7 @@ const Header = ({ siteTitle }) => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-6 h-5 mt-[2px]"
+                className="w-6 h-5 mt-[2px] text-gray-500 dark:text-tertiary-100"
               >
                 <path
                   strokeLinecap="round"
@@ -185,9 +169,11 @@ const Header = ({ siteTitle }) => {
                   d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
                 />
               </svg>
-              {theme === "dark" ? (
-                <div className="w-[70%] transform translate-x-[25%] border-b mt-[2px] border-gray-400" />
-              ) : null}
+              <div
+                className={`w-[70%] transform translate-x-[25%] border-b mt-[2px] border-gray-400 ${
+                  theme === "dark" ? "opacity-100" : "opacity-0"
+                }`}
+              />
             </div>
           </div>
         </div>
@@ -197,7 +183,8 @@ const Header = ({ siteTitle }) => {
 }
 
 Header.propTypes = {
-  siteTitle: PropTypes.string
+  siteTitle: PropTypes.string,
+  width: PropTypes.number
 }
 
 Header.defaultProps = {

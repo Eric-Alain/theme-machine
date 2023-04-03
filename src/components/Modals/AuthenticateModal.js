@@ -34,8 +34,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
     "Changed password to 'incorrect.' Reminds me when I forget.",
     "My password's like a plant: it needs change to stay healthy.",
     "My password's a mystery novel, full of twists and characters.",
-    "My password's a good joke... nobody gets it.",
-    "My password's a choose-your-own-adventure book. Not sure where it goes."
+    "My password's a good joke... nobody gets it."
   ]
 
   const [authShow, setAuthShow] = useState(false)
@@ -55,7 +54,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="w-1/4 relative my-6 mx-auto">
+            <div className="w-[360px] relative my-6 mx-auto">
               {/*content*/}
               <div className="rounded-md shadow-lg relative flex flex-col w-full bg-tertiary-100 dark:bg-gray-900 border border-solid border-primary-300 outline-none focus:outline-none">
                 {/*header*/}
@@ -139,7 +138,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                       <p className="mb-3 text-black dark:text-tertiary-100">
                         Sign-in partners.
                       </p>
-                      <div className="grid grid-cols-6 gap-4 justify-start">
+                      <div className="grid grid-cols-5 gap-4 justify-start">
                         <div>
                           <GoogleAuth
                             auth={auth}

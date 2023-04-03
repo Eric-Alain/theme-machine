@@ -7,7 +7,7 @@ import Footer from "./Footer/Footer"
 //Redux
 import { useSelector } from "react-redux"
 
-const Layout = ({ children }) => {
+const Layout = ({ width, children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -29,7 +29,10 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex flex-col bg-gray-300 dark:bg-gray-900 min-h-screen">
-      <Header siteTitle={data.site.siteMetadata?.title || `Theme Machine`} />
+      <Header
+        siteTitle={data.site.siteMetadata?.title || `Theme Machine`}
+        width={width}
+      />
       <div className="py-10 grow bg-gray-300 dark:bg-gray-900 px-3 md:px-0">
         <main>{children}</main>
       </div>
@@ -43,6 +46,7 @@ const Layout = ({ children }) => {
 }
 
 Layout.propTypes = {
+  width: PropTypes.number,
   children: PropTypes.node.isRequired
 }
 

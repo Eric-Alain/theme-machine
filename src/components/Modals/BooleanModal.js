@@ -8,11 +8,11 @@ const BooleanModal = ({ showModal, setShowModal, callback }) => {
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+            <div className="relative w-[360px] my-6 mx-auto">
               {/*content*/}
               <div className="rounded-md shadow-lg relative flex flex-col w-full bg-tertiary-100 dark:bg-gray-900 border border-solid border-primary-300 outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-end justify-between rounded-t bg-primary-900 dark:bg-gray-700 dark:text-tertiary-100">
+                <div className="flex items-center justify-between rounded-t bg-primary-900 dark:bg-gray-700 dark:text-tertiary-100">
                   <h3 className="ml-3 my-0 pt-2 pb-1 text-tertiary-100">
                     Are you certain?
                   </h3>
@@ -33,7 +33,7 @@ const BooleanModal = ({ showModal, setShowModal, callback }) => {
                   </p>
                 </div>
                 {/*footer*/}
-                <div className="flex items-center justify-end mx-3 mb-5 rounded-b">
+                <div className="flex items-center justify-start mx-3 mb-5 rounded-b">
                   <button
                     className="bg-tertiary-100 hover:bg-primary-900 dark:bg-gray-700 dark:hover:bg-gray-400 text-black dark:text-tertiary-100 hover:text-tertiary-100 dark:hover:text-gray-900 border border-solid border-primary-900 dark:border-gray-400 rounded-md font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"

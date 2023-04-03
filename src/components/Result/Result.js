@@ -13,6 +13,7 @@ const Result = () => {
   const shape = useSelector(state => state.styles.shape)
   const bodyHtml = useSelector(state => state.code.bodyHtml)
   const css = useSelector(state => state.code.css)
+  const theme = useSelector(state => state.theme)
 
   const dispatch = useDispatch()
 
@@ -107,14 +108,55 @@ const Result = () => {
     //const jsURL = getBlobURL(js, "text/javascript")
     //${css && `<link rel="stylesheet" type="text/css" href="${cssURL}" />`}
     const source = `
-      <html>
+      <html class="${theme === "dark" ? "dark" : "light"}">
         <head>
-          ${fonts.map(font => {
-            return `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=${font}" />`
-          })}
+          ${fonts
+            .map(font => {
+              return `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=${font}" />`
+            })
+            .join("\n")}
           <style>
 			body {
 				overflow-y: clip;
+			}
+
+			html {
+				--scrollbarBG: #d4d4d4;
+				--thumbBG: #5b6477;
+				overflow-y: scroll;
+			}
+
+			html.dark {
+				--scrollbarBG: #525252;
+				--thumbBG: #d4d4d4;
+			}
+
+			body::-webkit-scrollbar,
+			.scrollbar::-webkit-scrollbar {
+				width: 11px;
+			}
+
+			body,
+			.scrollbar {
+				scrollbar-width: thin;
+				scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+			}
+
+			body,
+			.scrollbar {
+				scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+			}
+
+			body::-webkit-scrollbar-track,
+			.scrollbar::-webkit-scrollbar-track {
+				background: var(--scrollbarBG);
+			}
+
+			body::-webkit-scrollbar-thumb,
+			.scrollbar::-webkit-scrollbar-thumb {
+				background-color: var(--thumbBG);
+				border-radius: 6px;
+				border: 3px solid var(--scrollbarBG);
 			}
 			${css}
 		</style>
@@ -133,13 +175,8 @@ const Result = () => {
   return (
     <section id="result" className="col-span-12 md:col-span-8 flex flex-col">
       <h2 className="dark:text-tertiary-100">Result</h2>
-      <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[40rem] flex-1">
-        <iframe
-          key={"results-iframe"}
-          src={url}
-          title="Results"
-          className="h-[calc(100vh+12%)]"
-        />
+      <div className="rounded border border-solid border-primary-300 h-[40rem]">
+        <iframe key={"results-iframe"} src={url} title="Results" />
       </div>
     </section>
   )
