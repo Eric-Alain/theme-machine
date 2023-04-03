@@ -11,6 +11,13 @@ const IndexPage = () => {
   /*Listener for viewport width, used for hamburger menu*/
   const [width, setWidth] = useState(null)
 
+  //Set initial width of window
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    setWidth(window.innerWidth)
+  }, [])
+
+  //Listen to width change when user resizes window
   useEffect(() => {
     if (typeof window === "undefined") return
 
