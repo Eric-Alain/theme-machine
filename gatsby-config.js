@@ -63,6 +63,7 @@ module.exports = {
       options: {
         tailwind: true
       }
-    }
+    },
+    `gatsby-plugin-netlify`
   ]
 }
