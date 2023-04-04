@@ -35,14 +35,14 @@ const BooleanModal = ({ showModal, setShowModal, callback }) => {
                 {/*footer*/}
                 <div className="flex items-center justify-start mx-3 mb-5 rounded-b">
                   <button
-                    className="bg-tertiary-100 hover:bg-primary-900 dark:bg-gray-700 dark:hover:bg-gray-400 text-black dark:text-tertiary-100 hover:text-tertiary-100 dark:hover:text-gray-900 border border-solid border-primary-900 dark:border-gray-400 rounded-md font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="btn-main"
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
                     Close
                   </button>
                   <button
-                    className="bg-[#b91c1c] text-tertiary-100 hover:bg-[#7f1d1d] border border-solid border-black dark:border-gray-400 rounded-md font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="ml-3 btn-danger"
                     type="button"
                     onClick={() => {
                       setShowModal(false)

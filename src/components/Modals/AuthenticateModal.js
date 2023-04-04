@@ -29,12 +29,16 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
   const [passwordPlaceholder, setPasswordPlaceholder] = useState("")
 
   const passwordPlaceholders = [
-    "My password is so secret, even I forget it.",
-    "I used my ex's name as my password, but it was too easy.",
-    "Changed password to 'incorrect.' Reminds me when I forget.",
-    "My password's like a plant: it needs change to stay healthy.",
-    "My password's a mystery novel, full of twists and characters.",
-    "My password's a good joke... nobody gets it."
+    "AllYourBaseAreBelongToUs",
+    "passwordispassword",
+    "NotTodayHackers!",
+    "IHaveNoIdeaWhatIAmDoing",
+    "letmeinpls123",
+    "ILoveJavaScriptMoreThanMyDog",
+    "idontlikemyboss",
+    "LetMeInIAmNoHacker",
+    "CanIHazPasswordPlz",
+    "YouShallNotPass(word)"
   ]
 
   const [authShow, setAuthShow] = useState(false)

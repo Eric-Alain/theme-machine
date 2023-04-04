@@ -339,8 +339,26 @@
   }
 
   /*Inputs and buttons*/
+  .auth-input:-webkit-autofill,
+  .auth-input:-webkit-autofill:hover,
+  .auth-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: black;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  .dark .auth-input:-webkit-autofill,
+  .dark .auth-input:-webkit-autofill:hover,
+  .dark .auth-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #fafafa;
+  }
+
   .auth-input {
-    @apply w-full rounded text-black border-gray-600 outline-0 outline-offset-0 focus:ring-primary-900 focus:border-gray-600 dark:bg-gray-800 dark:text-tertiary-100 dark:placeholder-gray-400 dark:focus:ring-secondary-900 dark:focus:border-secondary-900;
+    @apply w-full border rounded bg-white text-black border-gray-600 outline-0 outline-offset-0 focus:ring-primary-900 focus:border-gray-600 dark:bg-gray-800 dark:text-tertiary-100 dark:placeholder-gray-400 dark:focus:ring-secondary-900 dark:focus:border-secondary-900;
+  }
+
+  .auth-input::file-selector-button {
+    @apply p-2 bg-primary-900 text-tertiary-100 hover:bg-secondary-900 hover:text-primary-900 hover:font-bold dark:bg-gray-700 dark:hover:bg-secondary-900 dark:hover:text-primary-900 dark:hover:font-bold rounded-r hover:cursor-pointer transition-all;
   }
 
   .btn-main {
@@ -349,6 +367,10 @@
 
   .btn-secondary {
     @apply p-2 text-primary-900 border-primary-900 hover:bg-primary-900 hover:text-tertiary-100 hover:font-bold dark:text-secondary-900 dark:hover:bg-secondary-900 dark:hover:text-gray-900 dark:hover:font-bold dark:border-secondary-900 border rounded transition-all;
+  }
+
+  .btn-danger {
+    @apply p-2 text-tertiary-100 border-primary-900 bg-[#b91c1c] hover:bg-[#ed0000] hover:font-bold border rounded transition-all;
   }
 }
 

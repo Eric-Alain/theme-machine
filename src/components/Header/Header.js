@@ -9,11 +9,11 @@ import { resetStore } from "../../state/actions/root"
 //Components
 import RadioButton from "../Options/RadioButton"
 import AuthenticateModal from "../Modals/AuthenticateModal"
+import UserProfileModal from "../Modals/UserProfileModal"
+import SaveThemeModal from "../Modals/SaveThemeModal"
 import BooleanModal from "../Modals/BooleanModal"
 import LogoSvg from "./LogoSvg"
 import Hamburger from "./Hamburger"
-
-import { Link, navigate } from "gatsby"
 
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../Firebase/Firebase"
@@ -29,8 +29,9 @@ const Header = ({ siteTitle, width }) => {
   }
 
   const [showModal, setShowModal] = useState(false)
-
   const [showAuthenticateModal, setShowAuthenticateModal] = useState(false)
+  const [showUserProfileModal, setShowUserProfileModal] = useState(false)
+  const [showSaveThemeModal, setShowSaveThemeModal] = useState(false)
 
   const handleThemeReset = () => {
     dispatch(resetStore())
@@ -78,11 +79,15 @@ const Header = ({ siteTitle, width }) => {
               toggleHamburger ? "opacity-100" : "opacity-0"
             } md:hidden transition-all duration-500 border-primary-300 mx-1`}
           />
-          <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-9 xl:col-end-10 flex flex-col md:flex-row md:justify-self-end md:justify-items-end md:items-end">
+          <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-9 xl:col-end-10 grid grid-cols-1 md:grid-cols-3 items-end">
             <div>
               <button
-                onClick={() => setShowAuthenticateModal(true)}
-                className="mr-3 text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
+                onClick={
+                  authShow
+                    ? () => setShowUserProfileModal(true)
+                    : () => setShowAuthenticateModal(true)
+                }
+                className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
                 title="Account options"
               >
                 {width > 768 ? (
@@ -108,8 +113,25 @@ const Header = ({ siteTitle, width }) => {
                 showModal={showAuthenticateModal}
                 setShowModal={setShowAuthenticateModal}
               />
+              <UserProfileModal
+                auth={auth}
+                showModal={showUserProfileModal}
+                setShowModal={setShowUserProfileModal}
+              />
             </div>
-
+            <div>
+              <button
+                onClick={() => setShowSaveThemeModal(true)}
+                className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
+              >
+                Save
+              </button>
+              <SaveThemeModal
+                auth={auth}
+                showModal={showSaveThemeModal}
+                setShowModal={setShowSaveThemeModal}
+              />
+            </div>
             <div>
               <button
                 onClick={() => setShowModal(true)}
