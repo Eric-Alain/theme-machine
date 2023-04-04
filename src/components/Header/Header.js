@@ -16,7 +16,7 @@ import LogoSvg from "./LogoSvg"
 import Hamburger from "./Hamburger"
 
 import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "../Firebase/Firebase"
+import { auth, db } from "../Firebase/Firebase"
 
 //Icon svgs from heroicons.com
 
@@ -128,6 +128,7 @@ const Header = ({ siteTitle, width }) => {
               </button>
               <SaveThemeModal
                 auth={auth}
+                db={db}
                 showModal={showSaveThemeModal}
                 setShowModal={setShowSaveThemeModal}
               />

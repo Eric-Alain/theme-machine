@@ -50,6 +50,7 @@ const Signup = ({
       )
       // Wait for account to be created, update the user name key based on what was entered in sign up form
       await updateProfile(result.user, { displayName: data.displayName })
+
       // If succesful, display a nice l'il message
       setSnackBar({
         ...snackBar,

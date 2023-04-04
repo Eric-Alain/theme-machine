@@ -1,14 +1,46 @@
 //React
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, createContext } from "react"
 import PropTypes from "prop-types"
+
+import {
+  doc,
+  collection,
+  addDoc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  serverTimestamp
+} from "firebase/firestore"
+
+import Snackbar from "../Snackbars/Snackbar"
+import { capitalizeFirstLetter } from "../../utils"
 
 //Redux
 import { useSelector } from "react-redux"
 
-const SaveThemeModal = ({ auth, showModal, setShowModal }) => {
+const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
+  const [uid, setUid] = useState(null)
+
+  useEffect(() => {
+    if (auth.currentUser) {
+      setUid(auth.currentUser.uid)
+    }
+  }, [auth])
+
+  const [snackBar, setSnackBar] = useState({
+    variant: "success",
+    show: false,
+    message: null
+  })
+
+  const SnackContext = createContext(snackBar)
+
   const colors = useSelector(state => state.styles.colors)
   const fonts = useSelector(state => state.styles.fonts)
   const shape = useSelector(state => state.styles.shape)
+
+  const styles = useSelector(state => state.styles)
+  const code = useSelector(state => state.code)
 
   const [data, setData] = useState({
     themeName: "",
@@ -21,6 +53,55 @@ const SaveThemeModal = ({ auth, showModal, setShowModal }) => {
 
   const handleSubmit = async e => {
     e.preventDefault()
+
+    // Reset our snackbar
+    setSnackBar({
+      ...snackBar,
+      variant: "success",
+      show: false,
+      message: <p></p>
+    })
+
+    // Try catch operation with firestore
+    try {
+      const themeRef = doc(db, `users`, uid, "themes", data.themeName)
+      const themeSnap = await getDoc(themeRef)
+
+      if (themeSnap.exists()) {
+        // This means we know that a theme with this name already exists in our collection, return an error for the snackbar
+        const error = new Error("This theme already exists!")
+        error.code = "theme-already-exists"
+        throw error
+      } else {
+        // This means it doesn't exist, so we should create it
+        await setDoc(doc(db, `users`, uid, "themes", data.themeName), {
+          state: {
+            styles: styles,
+            code: code
+          },
+          timestamp: serverTimestamp()
+        })
+        setSnackBar({
+          ...snackBar,
+          variant: "success",
+          show: true,
+          message: <p>Theme "{data.themeName}" saved!</p>
+        })
+      }
+    } catch (e) {
+      setSnackBar({
+        ...snackBar,
+        variant: "danger",
+        show: true,
+        message: (
+          <p>
+            {capitalizeFirstLetter(
+              e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+            )}
+          </p>
+        )
+      })
+    }
   }
 
   const [roundnessDesc, setRoundnessDesc] = useState("")
@@ -175,6 +256,9 @@ const SaveThemeModal = ({ auth, showModal, setShowModal }) => {
                           Save
                         </button>
                       </div>
+                      <SnackContext.Provider value={{ snackBar, setSnackBar }}>
+                        <Snackbar snackObj={snackBar} setShow={setSnackBar} />
+                      </SnackContext.Provider>
                     </div>
                   </form>
                 </div>
