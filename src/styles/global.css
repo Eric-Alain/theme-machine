@@ -347,10 +347,18 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
+  .auth-input:-webkit-autofill::selection {
+    -webkit-text-fill-color: #fafafa;
+  }
+
   .dark .auth-input:-webkit-autofill,
   .dark .auth-input:-webkit-autofill:hover,
   .dark .auth-input:-webkit-autofill:focus {
     -webkit-text-fill-color: #fafafa;
+  }
+
+  .dark .auth-input:-webkit-autofill::selection {
+    -webkit-text-fill-color: black;
   }
 
   .auth-input {

@@ -4,6 +4,8 @@ import PropTypes from "prop-types"
 
 import { signInWithPopup, GithubAuthProvider } from "firebase/auth"
 
+import { capitalizeFirstLetter } from "../../utils"
+
 const GithubAuth = ({ auth, snackBar, setSnackBar }) => {
   const githubProvider = new GithubAuthProvider()
 
@@ -19,10 +21,27 @@ const GithubAuth = ({ auth, snackBar, setSnackBar }) => {
             message: (
               <>
                 <p className="mb-3">
-                  It seems that an account was created for "{e.customData.email}
-                  " using a different sign-in method.
+                  {capitalizeFirstLetter(
+                    e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+                  )}{" "}
+                  for "{e.customData.email}".
                 </p>
-                <p>Why don't you try logging using a sign-in provider?</p>
+                <p>Why don't you try signing in a different way?</p>
+              </>
+            )
+          })
+        } else {
+          setSnackBar({
+            ...snackBar,
+            variant: "danger",
+            show: true,
+            message: (
+              <>
+                <p className="mb-3">
+                  {capitalizeFirstLetter(
+                    e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+                  )}
+                </p>
               </>
             )
           })

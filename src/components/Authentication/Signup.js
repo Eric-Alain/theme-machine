@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
-import { randomStringFromArray } from "../../utils"
+import { randomStringFromArray, capitalizeFirstLetter } from "../../utils"
 
 const Signup = ({
   auth,
@@ -73,7 +73,9 @@ const Signup = ({
         show: true,
         message: (
           <p>
-            {e.code}: {e.message}
+            {capitalizeFirstLetter(
+              e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+            )}
           </p>
         )
       })

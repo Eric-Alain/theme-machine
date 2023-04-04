@@ -55,7 +55,7 @@ const Snackbar = ({ snackObj, setShow }) => {
         variant in colors
           ? `text-${colors[variant].offset}`
           : `text-${colors["success"].offset}`
-      } font-bold uppercase text-sm transition-all px-4 py-3 rounded max-w-[65ch]`}
+      } font-bold text-sm transition-all px-4 py-3 rounded max-w-[65ch]`}
       role="alert"
     >
       <div className="flex flex-row items-start justify-between">

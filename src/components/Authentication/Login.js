@@ -5,7 +5,7 @@ import {
   signOut,
   fetchSignInMethodsForEmail
 } from "firebase/auth"
-import { randomStringFromArray } from "../../utils"
+import { randomStringFromArray, capitalizeFirstLetter } from "../../utils"
 
 const Login = ({
   auth,
@@ -35,11 +35,49 @@ const Login = ({
         console.log(result)
         //If so, attempt to sign in using email and password
         if (result.some(str => str === "password")) {
-          console.log("called")
-          // Create user account using email and password
-          signInWithEmailAndPassword(auth, data.email, data.password)
+          // Try to create user account using email and password
+          signInWithEmailAndPassword(auth, data.email, data.password).catch(
+            e => {
+              if (e.code === "auth/account-exists-with-different-credential") {
+                setSnackBar({
+                  ...snackBar,
+                  variant: "warning",
+                  show: true,
+                  message: (
+                    <>
+                      <p className="mb-3">
+                        {capitalizeFirstLetter(
+                          e.code
+                            .replace(/^auth\/(.*?)$/gm, "$1")
+                            .replace(/-/gm, " ")
+                        )}{" "}
+                        for "{e.customData.email}".
+                      </p>
+                      <p>Why don't you try signing in a different way?</p>
+                    </>
+                  )
+                })
+              } else {
+                setSnackBar({
+                  ...snackBar,
+                  variant: "danger",
+                  show: true,
+                  message: (
+                    <>
+                      <p className="mb-3">
+                        {capitalizeFirstLetter(
+                          e.code
+                            .replace(/^auth\/(.*?)$/gm, "$1")
+                            .replace(/-/gm, " ")
+                        )}
+                      </p>
+                    </>
+                  )
+                })
+              }
+            }
+          )
         }
-
         // Otherwise, set a warning snackbar that an account exists with another method
         else {
           setSnackBar({
@@ -47,10 +85,12 @@ const Login = ({
             variant: "warning",
             show: true,
             message: (
-              <p>
-                It seems this email is associated to a different sign-in method.
-                Why don't you try logging using a sign-in provider?
-              </p>
+              <>
+                <p className="mb-3">
+                  Account exists with different credential for "{data.email}".
+                </p>
+                <p>Why don't you try signing in a different way?</p>
+              </>
             )
           })
         }

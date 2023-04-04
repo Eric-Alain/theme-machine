@@ -54,16 +54,21 @@ export const decodeHtmlEntities = str =>
     .replace(/\\t/gm, "\t")
 
 export const randomStringFromArray = (string, array) => {
-	let tempStr = string
-	
-	const getString = () => {
-		tempStr = array[Math.floor(Math.random() * array.length)]
-	}
+  let tempStr = string
 
-	while (tempStr === string) {
-		getString()
-	}
+  const getString = () => {
+    tempStr = array[Math.floor(Math.random() * array.length)]
+  }
 
-	return tempStr;
+  while (tempStr === string) {
+    getString()
+  }
+
+  return tempStr
 }
 
+export const capitalizeFirstLetter = string => {
+  console.log(string)
+  console.log(string.charAt(0).toUpperCase() + string.slice(1))
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}

@@ -1,8 +1,10 @@
 //React
-import React, { useState, useEffect } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+
+import { capitalizeFirstLetter } from "../../utils"
 
 const GoogleAuth = ({ auth, snackBar, setSnackBar }) => {
   const googleProvider = new GoogleAuthProvider()
@@ -20,10 +22,27 @@ const GoogleAuth = ({ auth, snackBar, setSnackBar }) => {
             message: (
               <>
                 <p className="mb-3">
-                  It seems that an account was created for "{e.customData.email}
-                  " using a different sign-in method.
+                  {capitalizeFirstLetter(
+                    e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+                  )}{" "}
+                  for "{e.customData.email}".
                 </p>
-                <p>Why don't you try logging using a sign-in provider?</p>
+                <p>Why don't you try signing in a different way?</p>
+              </>
+            )
+          })
+        } else {
+          setSnackBar({
+            ...snackBar,
+            variant: "danger",
+            show: true,
+            message: (
+              <>
+                <p className="mb-3">
+                  {capitalizeFirstLetter(
+                    e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+                  )}
+                </p>
               </>
             )
           })
