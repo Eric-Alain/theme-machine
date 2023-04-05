@@ -4,11 +4,8 @@ import PropTypes from "prop-types"
 
 import {
   doc,
-  collection,
-  addDoc,
   setDoc,
   getDoc,
-  updateDoc,
   serverTimestamp
 } from "firebase/firestore"
 
@@ -64,7 +61,7 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
 
     // Try catch operation with firestore
     try {
-      const themeRef = doc(db, `users`, uid, "themes", data.themeName)
+      const themeRef = doc(db, "users", uid, "themes", data.themeName)
       const themeSnap = await getDoc(themeRef)
 
       if (themeSnap.exists()) {
@@ -74,7 +71,7 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
         throw error
       } else {
         // This means it doesn't exist, so we should create it
-        await setDoc(doc(db, `users`, uid, "themes", data.themeName), {
+        await setDoc(doc(db, "users", uid, "themes", data.themeName), {
           state: {
             styles: styles,
             code: code
@@ -89,6 +86,7 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
         })
       }
     } catch (e) {
+	console.log(e.code)
       setSnackBar({
         ...snackBar,
         variant: "danger",
@@ -96,7 +94,7 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
         message: (
           <p>
             {capitalizeFirstLetter(
-              e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+              e.code.replace(/-/gm, " ")
             )}
           </p>
         )

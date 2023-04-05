@@ -1,22 +1,55 @@
 //React
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 
-import { signOut } from "firebase/auth"
+import { signOut, onAuthStateChanged } from "firebase/auth"
+import { collection, onSnapshot } from "firebase/firestore"
 
 import ImageUpload from "../ImageUpload/ImageUpload"
 
-const UserProfileModal = ({ auth, showModal, setShowModal }) => {
+const UserProfileModal = ({ auth, db, showModal, setShowModal }) => {
+  // Create state variable to store values from our db, will be used to render jsx
+  const [loadables, setLoadables] = useState(null)
+
+  // Do things once component mounts
+  useEffect(() => {
+    // Subscribe to user authentication
+    onAuthStateChanged(auth, async currentUser => {
+      if (currentUser) {
+        // Subscribe to database folder changes, but only if our user is authenticated
+        onSnapshot(
+          collection(db, "users", auth.currentUser.uid, "themes"),
+          doc => {
+            let arr = []
+            doc.forEach(doc => {
+              const colors = doc.data().state.styles.colors
+              arr.push({
+                themeName: doc.id,
+                primary: colors.primary,
+                secondary: colors.secondary,
+                tertiary: colors.tertiary
+              })
+              setLoadables(arr)
+            })
+          }
+        )
+      }
+    })
+  }, [auth, db])
+
+  // Form controls
   const [data, setData] = useState({
     name: "",
     image: null,
     error: null
   })
 
+  // Handle form field changes
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
 
+  // Handle form submit
   const handleSubmit = async e => {
     e.preventDefault()
   }
@@ -51,36 +84,34 @@ const UserProfileModal = ({ auth, showModal, setShowModal }) => {
                     Load theme
                   </h4>
                   <ul className="unstyled text-black dark:text-tertiary-100 transition-all">
-                    <li className="mb-1 p-1 rounded hover:bg-primary-300">
-                      <a href="#test" className="flex justify-between">
-                        <div>Theme title 1</div>
-                        <div className="grid grid-cols-3 gap-1">
-                          <div className="h-6 w-6 bg-primary-900 rounded"></div>
-                          <div className="h-6 w-6 bg-secondary-900 rounded"></div>
-                          <div className="h-6 w-6 bg-[purple] rounded"></div>
-                        </div>
-                      </a>
-                    </li>
-                    <li className="mb-1 p-1 rounded hover:bg-primary-300">
-                      <a href="#test" className="flex justify-between">
-                        <div>Theme title 2</div>
-                        <div className="grid grid-cols-3 gap-1">
-                          <div className="h-6 w-6 bg-primary-900 rounded"></div>
-                          <div className="h-6 w-6 bg-secondary-900 rounded"></div>
-                          <div className="h-6 w-6 bg-[purple] rounded"></div>
-                        </div>
-                      </a>
-                    </li>
-                    <li className="mb-1 p-1 rounded hover:bg-primary-300">
-                      <a href="#test" className="flex justify-between">
-                        <div>Theme title 3</div>
-                        <div className="grid grid-cols-3 gap-1">
-                          <div className="h-6 w-6 bg-primary-900 rounded"></div>
-                          <div className="h-6 w-6 bg-secondary-900 rounded"></div>
-                          <div className="h-6 w-6 bg-[purple] rounded"></div>
-                        </div>
-                      </a>
-                    </li>
+                    {loadables
+                      ? loadables.map((item, i) => {
+                          return (
+                            <li
+                              key={i}
+                              className="mb-1 p-1 rounded hover:bg-primary-300 hover:text-black transition-all"
+                            >
+                              <a href="#test" className="flex justify-between">
+                                <div>{item.themeName}</div>
+                                <div className="grid grid-cols-3 gap-1">
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.primary }}
+                                  ></div>
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.secondary }}
+                                  ></div>
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.tertiary }}
+                                  ></div>
+                                </div>
+                              </a>
+                            </li>
+                          )
+                        })
+                      : null}
                   </ul>
                   <h4 className="h5 mb-3 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Update profile

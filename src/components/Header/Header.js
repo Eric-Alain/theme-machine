@@ -115,6 +115,7 @@ const Header = ({ siteTitle, width }) => {
               />
               <UserProfileModal
                 auth={auth}
+                db={db}
                 showModal={showUserProfileModal}
                 setShowModal={setShowUserProfileModal}
               />
