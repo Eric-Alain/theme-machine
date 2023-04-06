@@ -1,7 +1,7 @@
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 
 const ImageUpload = ({ state, setState }) => {
-  const inputRef = useRef(null)
+  const ref = useRef()
 
   const handleFileChange = e => {
     const fileObj = e.target.files && e.target.files[0]
@@ -12,8 +12,8 @@ const ImageUpload = ({ state, setState }) => {
   }
 
   const handleRemove = () => {
-    setState({ ...state, image: null })
-    inputRef.current.value = null
+    setState({ ...state, image: "" })
+    ref.current.value = ""
   }
 
   return (
@@ -26,14 +26,14 @@ const ImageUpload = ({ state, setState }) => {
           Profile picture
         </label>
         <input
-          ref={inputRef}
+          ref={ref}
           type="file"
           name="profile-picture"
           className="auth-input"
           onChange={handleFileChange}
         />
       </div>
-      {state.image && (
+      {state.image ? (
         <div>
           <img
             alt=""
@@ -45,7 +45,7 @@ const ImageUpload = ({ state, setState }) => {
             Remove
           </button>
         </div>
-      )}
+      ) : null}
     </>
   )
 }

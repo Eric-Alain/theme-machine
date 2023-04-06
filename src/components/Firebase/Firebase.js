@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
+import { getStorage } from "firebase/storage"
 
 const firebaseConfig = {
   apiKey: process.env.GATSBY_FIREBASE_API_KEY,
@@ -21,3 +22,6 @@ export const auth = getAuth(firebaseApp)
 
 // Initialize Firebase Firestore and get a reference to the service
 export const db = getFirestore(firebaseApp)
+
+// Initialize Firebase Storage and get a reference to the service
+export const storage = getStorage()

@@ -1,21 +1,74 @@
 //React
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, createContext } from "react"
 import PropTypes from "prop-types"
 
-import { signOut, onAuthStateChanged } from "firebase/auth"
+import { signOut, onAuthStateChanged, updateProfile } from "firebase/auth"
 import { collection, onSnapshot } from "firebase/firestore"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 import ImageUpload from "../ImageUpload/ImageUpload"
+import Snackbar from "../Snackbars/Snackbar"
 
-const UserProfileModal = ({ auth, db, showModal, setShowModal }) => {
+const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
+  /*************/
+  /*STATE HOOKS*/
+  /*************/
+
+  // Snackbar
+  const [snackBar, setSnackBar] = useState({
+    variant: "success",
+    show: false,
+    message: null
+  })
+
+  // Form controls
+  const [data, setData] = useState({
+    displayName: "",
+    image: "",
+    error: null
+  })
+
+  // For storing data about our user
+  const [user, setUser] = useState(null)
+
   // Create state variable to store values from our db, will be used to render jsx
   const [loadables, setLoadables] = useState(null)
 
-  // Do things once component mounts
+  const [showSave, setShowSave] = useState(false)
+
+  /************/
+  /*VARS/INITS*/
+  /************/
+
+  // Context init for snackbar
+  const SnackContext = createContext(snackBar)
+
+  /******************/
+  /*USE EFFECT HOOKS*/
+  /******************/
+
+  // When component mounts, revert some state
+  useEffect(() => {
+    console.log("Called")
+
+    if (showModal) {
+      setSnackBar({
+        ...snackBar,
+        variant: "success",
+        show: false,
+        message: <p></p>
+      })
+      setShowSave(false)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showModal])
+
   useEffect(() => {
     // Subscribe to user authentication
     onAuthStateChanged(auth, async currentUser => {
       if (currentUser) {
+        setUser(currentUser)
         // Subscribe to database folder changes, but only if our user is authenticated
         onSnapshot(
           collection(db, "users", auth.currentUser.uid, "themes"),
@@ -33,25 +86,77 @@ const UserProfileModal = ({ auth, db, showModal, setShowModal }) => {
             })
           }
         )
+
+        // Find all the prefixes and items.
+        getDownloadURL(ref(storage, `images/${currentUser.uid}/displayImage`))
+          .then(url => {
+            console.log(ref(url))
+            fetch(ref(url))
+              .then(res => res.blob())
+              .then(imageBlob => {
+                const imageFile = new File([imageBlob], "image.jpeg", {
+                  type: imageBlob.type
+                })
+                console.log(imageFile)
+                setData({
+                  ...data,
+                  image: imageFile
+                })
+              })
+          })
+          .catch(e => {
+            console.log(e)
+          })
       }
     })
   }, [auth, db])
 
-  // Form controls
-  const [data, setData] = useState({
-    name: "",
-    image: null,
-    error: null
-  })
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
 
   // Handle form field changes
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })
+    if (!showSave) {
+      setShowSave(true)
+    }
   }
 
   // Handle form submit
   const handleSubmit = async e => {
     e.preventDefault()
+    // Wait for account to be created, update the user name key based on what was entered in sign up form
+    await updateProfile(user, {
+      displayName:
+        data.displayName.length > 0 ? data.displayName : user.displayName
+    })
+      .then(async () => {
+        if (data.image) {
+          const storageRef = ref(storage, `images/${user.uid}/displayImage`)
+          await uploadBytes(storageRef, data.image).catch(e => {
+            setSnackBar({
+              ...snackBar,
+              variant: "danger",
+              show: true,
+              message: <p>Error uploading image</p>
+            })
+          })
+        }
+      })
+      .then(() => {
+        // If succesful, display a nice l'il message
+        setSnackBar({
+          ...snackBar,
+          variant: "success",
+          show: true,
+          message: <p>Changes saved successfully!</p>
+        })
+        setShowSave(false)
+      })
+      .catch(e => {
+        console.log(e)
+      })
   }
 
   return (
@@ -121,29 +226,34 @@ const UserProfileModal = ({ auth, db, showModal, setShowModal }) => {
                       <div>
                         <label
                           className="block text-black dark:text-tertiary-100"
-                          htmlFor="name"
+                          htmlFor="displayName"
                         >
                           User name
                         </label>
                         <input
                           type="text"
-                          name="name"
+                          name="displayName"
                           className="auth-input"
                           placeholder="Themy Themerton"
-                          value={data.name}
+                          value={
+                            data.displayName !== ""
+                              ? data.displayName
+                              : user.displayName
+                          }
                           onChange={handleChange}
                         />
                       </div>
                       <ImageUpload state={data} setState={setData} />
-                      <div>
-                        <button
-                          className="btn-main"
-                          type="button"
-                          onClick={console.log("Changes saved!")}
-                        >
-                          Save changes
-                        </button>
-                      </div>
+                      {showSave ? (
+                        <div>
+                          <button className="btn-main" type="submit">
+                            Save changes
+                          </button>
+                        </div>
+                      ) : null}
+                      <SnackContext.Provider value={{ snackBar, setSnackBar }}>
+                        <Snackbar snackObj={snackBar} setShow={setSnackBar} />
+                      </SnackContext.Provider>
                     </div>
                   </form>
                   <h4 className="h5 mb-3 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
@@ -160,11 +270,7 @@ const UserProfileModal = ({ auth, db, showModal, setShowModal }) => {
                     >
                       Logout
                     </button>
-                    <button
-                      className="ml-3 btn-danger"
-                      type="button"
-                      onClick={console.log("Account deleted!")}
-                    >
+                    <button className="ml-3 btn-danger" type="button">
                       Delete account
                     </button>
                   </div>

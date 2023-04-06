@@ -16,7 +16,8 @@ import LogoSvg from "./LogoSvg"
 import Hamburger from "./Hamburger"
 
 import { onAuthStateChanged } from "firebase/auth"
-import { auth, db } from "../Firebase/Firebase"
+import { auth, db, storage } from "../Firebase/Firebase"
+import { ref, getDownloadURL } from "firebase/storage"
 
 //Icon svgs from heroicons.com
 
@@ -40,6 +41,12 @@ const Header = ({ siteTitle, width }) => {
 
   const [authShow, setAuthShow] = useState(false)
 
+  //For storing data about our user
+  const [user, setUser] = useState(null)
+
+  //User img
+  const [displaySrc, setDisplaySrc] = useState(null)
+
   const [toggleHamburger, setToggleHamburger] = useState(false)
 
   const handleHamburgerClick = () => {
@@ -50,6 +57,15 @@ const Header = ({ siteTitle, width }) => {
     onAuthStateChanged(auth, currentUser => {
       if (currentUser) {
         setAuthShow(true)
+        setUser(currentUser)
+        // Find all the prefixes and items.
+        getDownloadURL(ref(storage, `images/${currentUser.uid}/displayImage`))
+          .then(url => {
+            setDisplaySrc(ref(url))
+          })
+          .catch(e => {
+            console.log(e)
+          })
       } else {
         setAuthShow(false)
       }
@@ -62,10 +78,10 @@ const Header = ({ siteTitle, width }) => {
         <div
           className={`${
             toggleHamburger ? "h-[12rem] min-h-fit" : "h-14"
-          } md:h-fit overflow-hidden md:overflow-visible transition-all duration-500 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-start relative`}
+          } md:h-fit overflow-hidden md:overflow-visible transition-all duration-500 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-end relative`}
         >
           <div
-            className="md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-7 xl:col-start-1 xl:col-end-9"
+            className="md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-7 xl:col-start-1 xl:col-end-8"
             title={siteTitle}
           >
             <LogoSvg classNames="w-[6rem] h-auto" baseColor={"#fff"} />
@@ -79,32 +95,46 @@ const Header = ({ siteTitle, width }) => {
               toggleHamburger ? "opacity-100" : "opacity-0"
             } md:hidden transition-all duration-500 border-primary-300 mx-1`}
           />
-          <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-9 xl:col-end-10 grid grid-cols-1 md:grid-cols-3 items-end">
-            <div>
+          <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-8 xl:col-end-10 grid grid-cols-1 md:grid-cols-4 justify-self-end items-end w-full">
+            <div className="xl:col-start-1 xl:col-end-3 justify-self-end">
               <button
                 onClick={
                   authShow
                     ? () => setShowUserProfileModal(true)
                     : () => setShowAuthenticateModal(true)
                 }
-                className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
+                className="group text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900 transition-all"
                 title="Account options"
               >
                 {width > 768 ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6 md:translate-y-[3px]"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                    />
-                  </svg>
+                  user ? (
+                    <div className="grid grid-cols-2 justify-self-end items-end">
+                      <div className="mr-1">{user.displayName}</div>
+                      <div>
+                        <img
+                          src={displaySrc}
+                          alt="profile"
+                          className="h-10 w-10 object-cover object-center rounded-[50px] border border-2 border-primary-300 dark:border-gray-400 group-hover:border-secondary-900 transition-all"
+                          width="120"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6 md:translate-y-[3px]"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                      />
+                    </svg>
+                  )
                 ) : (
                   <span>Account</span>
                 )}
@@ -116,11 +146,12 @@ const Header = ({ siteTitle, width }) => {
               <UserProfileModal
                 auth={auth}
                 db={db}
+                storage={storage}
                 showModal={showUserProfileModal}
                 setShowModal={setShowUserProfileModal}
               />
             </div>
-            <div>
+            <div className="xl:col-start-3 xl:col-end-4 justify-self-end">
               <button
                 onClick={() => setShowSaveThemeModal(true)}
                 className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
@@ -134,7 +165,7 @@ const Header = ({ siteTitle, width }) => {
                 setShowModal={setShowSaveThemeModal}
               />
             </div>
-            <div>
+            <div className="xl:col-start-4 xl:col-end-5 justify-self-end">
               <button
                 onClick={() => setShowModal(true)}
                 className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
