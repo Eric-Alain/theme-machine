@@ -66,7 +66,7 @@ const Options = () => {
   }, [shape.rounded, dispatch])
 
   return (
-    <section className="col-span-12 md:col-span-4 flex flex-col">
+    <section className="col-span-12 lg:col-span-3 flex flex-col">
       <h2 className="dark:text-tertiary-100">Options</h2>
       <div className="grow rounded border border-solid border-primary-300 pb-3 px-5">
         <form className="my-5">
@@ -109,6 +109,30 @@ const Options = () => {
                 <ColorPicker colors={colors} category={"tertiary"} />
                 <label className="ml-3" htmlFor="theme-tertiary">
                   Tertiary
+                </label>
+              </div>
+              <div className="inline-flex items-center">
+                <input
+                  type="hidden"
+                  name="theme-background"
+                  id="theme-background"
+                  value={colors.background}
+                />
+                <ColorPicker colors={colors} category={"background"} />
+                <label className="ml-3" htmlFor="theme-background">
+                  Background
+                </label>
+              </div>
+              <div className="inline-flex items-center">
+                <input
+                  type="hidden"
+                  name="theme-foreground"
+                  id="theme-foreground"
+                  value={colors.foreground}
+                />
+                <ColorPicker colors={colors} category={"foreground"} />
+                <label className="ml-3" htmlFor="theme-foreground">
+                  Foreground
                 </label>
               </div>
             </div>
@@ -157,7 +181,7 @@ const Options = () => {
             <div className="grid grid-rows-2 gap-2">
               <div className="col-span-1">
                 <div className="grid grid-cols-6 gap-4 justify-items-start items-end">
-                  <div className="col-span-1">
+                  <div className="col-start-1 col-end-3">
                     <RadioButton
                       label="Rounded"
                       id="shape-radio"
@@ -166,8 +190,8 @@ const Options = () => {
                       sliderClasses="bg-primary-900 h-6 w-11 border rounded-full peer after:bg-white after:border-tertiary-300 after:h-5 after:w-5 after:content-[''] after:absolute after:left-[2px] after:top-[2px] after:border after:rounded-full after:transition-all peer-checked:bg-primary-900 peer-checked:after:bg-secondary-300 peer-checked:after:border-white peer-checked:bg-primary-900 peer-focus:ring-secondary-800 peer-checked:after:translate-x-full peer-focus:outline-none peer-focus:ring-2 dark:bg-gray-900 dark:after:bg-white dark:border-tertiary-100 dark:after:border-tertiary-100 dark:peer-focus:ring-gray-900 dark:peer-checked:after:bg-gray-600 dark:peer-checked:after:bg-gray-600 dark:peer-checked:after:border-tertiary-100 dark:peer-checked:bg-gray-900 dark:peer-focus:ring-tertiary-100"
                     />
                   </div>
-                  <div className="col-span-5">
-                    <RadiusDemo classes="border-primary-900 dark:border-tertiary-100"/>
+                  <div className="col-start-3 col-end-6">
+                    <RadiusDemo classes="border-primary-900 dark:border-tertiary-100" />
                   </div>
                 </div>
               </div>

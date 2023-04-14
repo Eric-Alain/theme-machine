@@ -33,6 +33,8 @@ const Result = () => {
       primary: colors.primary,
       secondary: colors.secondary,
       tertiary: colors.tertiary,
+      background: colors.background,
+      foreground: colors.foreground,
       fontGeneral: fonts.general.replace(/'/gm, ""),
       fontHeading: fonts.heading.replace(/'/gm, ""),
       rounded: shape.rounded,
@@ -53,8 +55,20 @@ const Result = () => {
         reg: /--tertiary: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       },
       {
-        var: `--general-text-color: ${lightOrDark(cssVars.tertiary)};`,
+        var: `--background: ${cssVars.background};`,
+        reg: /--background: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--foreground: ${cssVars.foreground};`,
+        reg: /--foreground: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--general-text-color: ${lightOrDark(cssVars.foreground)};`,
         reg: /--general-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--herobtn-text-color: ${lightOrDark(cssVars.primary)};`,
+        reg: /--herobtn-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       },
       {
         var: `--button-text-color: ${lightOrDark(cssVars.secondary)};`,
@@ -111,6 +125,7 @@ const Result = () => {
     const source = `
       <html class="${theme === "dark" ? "dark" : "light"}">
         <head>
+	   	<meta name="viewport" content="width=device-width, initial-scale=1">
           ${fonts
             .map(font => {
               return `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=${font}" />`
@@ -174,10 +189,14 @@ const Result = () => {
   })
 
   return (
-    <section id="result" className="col-span-12 md:col-span-8 flex flex-col">
+    <section id="result" className="col-span-12 lg:col-span-9 flex flex-col">
       <h2 className="dark:text-tertiary-100">Result</h2>
-      <div className="rounded border border-solid border-primary-300 h-[40rem]">
-        <iframe key={"results-iframe"} src={url} title="Results" />
+      <div className="rounded border border-solid border-primary-300 min-h-[40rem] h-full">
+        <iframe
+          key={"results-iframe"}
+          src={url}
+          title="Results"
+         />
       </div>
     </section>
   )

@@ -4,9 +4,11 @@ export const initialState = {
   colors: {
     black: "#292929",
     white: "#fff",
-    primary: "#994100",
-    secondary: "#24174b",
-    tertiary: "#FFFFFF"
+    primary: "#14213d",
+    secondary: "#e69d11",
+    tertiary: "#7D00CC",
+    background: "#000000",
+    foreground: "#FFFFFF"
   },
   fonts: {
     general: `'Jost', sans-serif`,
