@@ -49,7 +49,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
 
   // When component mounts, revert some state
   useEffect(() => {
-    console.log("Called")
+    //console.log("Called")
 
     if (showModal) {
       setSnackBar({
@@ -90,14 +90,14 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
         // Find all the prefixes and items.
         getDownloadURL(ref(storage, `images/${currentUser.uid}/displayImage`))
           .then(url => {
-            console.log(ref(url))
+            //console.log(ref(url))
             fetch(ref(url))
               .then(res => res.blob())
               .then(imageBlob => {
                 const imageFile = new File([imageBlob], "image.jpeg", {
                   type: imageBlob.type
                 })
-                console.log(imageFile)
+                //console.log(imageFile)
                 setData({
                   ...data,
                   image: imageFile
@@ -105,7 +105,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
               })
           })
           .catch(e => {
-            console.log(e)
+            //console.log(e)
           })
       }
     })
@@ -155,7 +155,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
         setShowSave(false)
       })
       .catch(e => {
-        console.log(e)
+        //console.log(e)
       })
   }
 

@@ -2,24 +2,38 @@ import { BODYHTML, CSS } from "../types/code"
 import { htmlEntities } from "../../utils"
 
 export const initialState = {
-  bodyHtml: htmlEntities(`<main>
-	<nav>
-		<div class="logo">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="none">
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
-			</svg>
-		</div>
-
-		<div class="menu">
-			<a href="#" class="menu-item">About</a>
-			<a href="#" class="menu-item">Contact</a>
-			<a href="#" class="menu-item">Subscribe</a>
-		</div>
-	</nav>
-
+  bodyHtml: htmlEntities(`<div class="nav-container">
+	<div class="nav-bg-overlay"></div>	
+		<nav>			
+			<div class="menuToggle">
+			
+				<input type="checkbox" />
+				<span></span>
+				<span></span>
+				<span></span>
+				
+				<div class="logo">
+					<a href="#">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="none">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
+						</svg>
+					</a>
+				</div>
+				
+				<div class="menu">
+					<a href="#" class="menu-item">About</a>
+					<a href="#" class="menu-item">Contact</a>
+					<a href="#" class="menu-item">Subscribe</a>
+				</div>
+				
+			</div>
+		</nav>
+	</div>
+</div>	
+<main>
 	<h1 class="hero-heading">Welcome to <span class="color-effect">Theme Machine</span></h1>
 	<div class="hero">
 		<div class="hero-text">
@@ -30,7 +44,7 @@ export const initialState = {
 				HTML and CSS directly in the sections below.
 			</p>
 			<p><strong>Note</strong>: inputting invalid HTML or CSS can result in undesired results or broken styles - so be sure to check your work!</p>
-			<a href="#typography" class="hero-btn">See more</a>
+			<a href="#features" class="hero-btn">See more</a>
 		</div>
 		<div class="hero-grid">
 			<div class="hero-grid-item"></div>
@@ -41,12 +55,25 @@ export const initialState = {
 		</div>
 	</div>
 
-	<section id="tiles">
+	<section id="features">
+		<h2>Features</h2>
 		<div class="tile-grid">
 			<!-- Tile one -->
 			<div class="tile-grid-item">
 				<div class="tile-grid-icon">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+					<style type="text/css">
+				        .tile-grid .tile-grid-item:nth-child(1) .tile-grid-icon path{
+				        	fill: url(#iconGradient);
+				        	stroke: var(--primary);
+				        	}
+				      </style>
+				      <defs>
+				        <linearGradient id="iconGradient" gradientTransform="rotate(-35)">
+				          <stop offset="5%" stop-color="var(--secondary)" />
+				           <stop offset="45%" stop-color="var(--tertiary)" />
+				        </linearGradient>
+				      </defs>
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -55,16 +82,30 @@ export const initialState = {
 				</div>
 				<div class="tile-grid-heading">
 					<h3>Fast</h3>
+					<div class="tile-grid-streak"></div>
 				</div>
 				<div class="tile-grid-description">
-					<p>No need to spend hours implementing different variations of colors. Decide right away!</p>
+					<p>Don't waste your time setting up basic styles. Simply pick a few options and be on your way!</p>
 				</div>
 			</div>
 
 			<!-- Tile two -->
-			<div class="tile-grid-item tile-offset">
+			<div class="tile-grid-item">
+				<div class="tile-offset-overlay"></div>
 				<div class="tile-grid-icon">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+					<style type="text/css">
+				        .tile-grid .tile-grid-item:nth-child(2) .tile-grid-icon path{
+				        	fill: url(#middleIconGradient);
+				        	stroke: var(--secondary);
+				        	}
+				      </style>
+				      <defs>
+				        <linearGradient id="middleIconGradient" gradientTransform="rotate(-35)">
+				          <stop offset="5%" stop-color="var(--tertiary)" />
+				           <stop offset="45%" stop-color="var(--primary)" />
+				        </linearGradient>
+				      </defs>
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -73,9 +114,10 @@ export const initialState = {
 				</div>
 				<div class="tile-grid-heading">
 					<h3>Realistic</h3>
+					<div class="tile-grid-streak"></div>
 				</div>
 				<div class="tile-grid-description">
-					<p>Color Palettes make it hard to pick. This tool distributes the colors on a real website</p>
+					<p>Choosing styles without a point of reference can be difficult. Make decisions based on a real website.</p>
 				</div>
 			</div>
 
@@ -83,6 +125,18 @@ export const initialState = {
 			<div class="tile-grid-item">
 				<div class="tile-grid-icon">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+					<style type="text/css">
+				        .tile-grid .tile-grid-item:nth-child(3) .tile-grid-icon path{
+				        	fill: url(#iconGradient);
+				        	stroke: var(--primary);
+				        	}
+				      </style>
+				      <defs>
+				        <linearGradient id="iconGradient" gradientTransform="rotate(-35)">
+				          <stop offset="5%" stop-color="var(--secondary)" />
+				           <stop offset="45%" stop-color="var(--tertiary)" />
+				        </linearGradient>
+				      </defs>
 						<path
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -91,9 +145,10 @@ export const initialState = {
 				</div>
 				<div class="tile-grid-heading">
 					<h3>Fun</h3>
+					<div class="tile-grid-streak"></div>
 				</div>
 				<div class="tile-grid-description">
-					<p>Push a few buttons, and there you have it! Your very own branding colors, ready to export.</p>
+					<p>It's fun to experiment! Play around with styles freely then export or save your results.</p>
 				</div>
 			</div>
 		</div>
@@ -177,19 +232,20 @@ export const initialState = {
 </main>`),
 
   css: htmlEntities(`:root {
-	--primary: #023dbb;
-	--secondary: #c91414;
-	--tertiary: #8c0029;
+	--primary: #6a0036;
+	--secondary: #05a7e1;
+	--tertiary: #cea800;
 	--background: #000000;
 	--foreground: #FFFFFF;
 	--general-text-color: #000000;
 	--button-text-color: #FFFFFF;
-	--herobtn-text-color: #FFFFFF;
-	--font-general: Jost, sans-serif;
-	--font-heading: Fira Mono, sans-serif;
-	--tm-rounded: 1px solid var(--secondary);
+	--herobtn-text-color: #000000;
+	--font-general: Ubuntu, sans-serif;
+	--font-heading: Viga, sans-serif;
+	--tm-rounded: 1px solid var(--primary);
 	--tm-radius: 0px;
 	--font-size: 16px;
+	--transition: all 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
 }
 
 .color-effect {
@@ -205,6 +261,7 @@ html {
 body {
 	font-family: var(--font-general);
 	background-color: var(--background);
+	margin: 0;
 }
 
 button,
@@ -250,8 +307,126 @@ div {
 /* NAV */
 nav {
 	display: block;
-	width: 100%;
 	padding: 20px 0;
+	position: relative;
+	z-index: 1;
+}
+
+.nav-container {
+	position: relative;
+	padding: 0 3rem;
+	background: var(--foreground);
+}
+
+.nav-bg-overlay {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background-color: teal;
+	opacity: 0.025;
+	z-index: 0;
+}
+
+.menuToggle {
+	display: block;
+	position: relative;
+	z-index: 1;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: pointer;
+}
+
+.menuToggle a {
+	text-decoration: none;
+	color: #232323;
+	transition: color 0.3s ease;
+}
+
+.menuToggle input {
+	display: block;
+	width: 40px;
+	height: 32px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+	opacity: 0;
+	z-index: 2;
+	-webkit-touch-callout: none;
+}
+
+.menuToggle span {
+	display: block;
+	width: 33px;
+	height: 4px;
+	margin-bottom: 5px;
+	position: absolute;
+	right: 6px;
+	background: #cdcdcd;
+	border-radius: 3px;
+	z-index: 1;
+	transform-origin: 4px 0px;
+	transition: var(--transition);
+}
+
+.menuToggle span:nth-child(2) {
+	top: 8px;
+}
+
+.menuToggle span:nth-child(3) {
+	top: 16px;
+	transform-origin: 0% 0%;
+}
+
+.menuToggle span:nth-child(4) {
+	top: 24px;
+	transform-origin: 0% 100%;
+}
+
+.menuToggle input:checked ~ span {
+	opacity: 1;
+	transform: rotate(45deg) translate(-4px, -20px);
+	background: #232323;
+}
+
+.menuToggle input:checked ~ span:nth-child(2) {
+	transform: rotate(-45deg) translate(-7px, 21px);
+}
+
+.menuToggle input:checked ~ span:nth-child(3) {
+	opacity: 0;
+	transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+.menuToggle input:checked ~ .menu {
+	height: 6rem;
+	transition: var(--transition);
+}
+
+.menu {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(1, minmax(0, 1fr));
+	gap: 0.5rem;
+	align-items: center;
+	height: 0;	
+	overflow: hidden;
+	transition: var(--transition);
+}
+
+.menu-item {
+	font-size: 18px;
+	color: var(--primary);
+	position: relative;
+	text-decoration: none;
+	transition: transform ease 0.2s;
+}
+
+.logo {
+	position: relative;
+	margin-bottom: 6px;
 }
 
 .logo svg {
@@ -261,36 +436,29 @@ nav {
 	width: auto;
 }
 
-.menu {
-	display: grid;
-	grid-template-columns: repeat(1, minmax(0, 1fr));
-	gap: 0.5rem;
+.menu-item::after,
+.logo a::after {
+	content: '';
+	position: absolute;
+	width: 8%;
+	transform: scaleX(0);
+	height: 2px;
+	bottom: 0;
+	left: 0;
+	background-color: var(--tertiary);
+	transform-origin: bottom right;
+	transition: transform 0.25s ease-out;
 }
 
-.menu-item {
-	font-size: 18px;
-	color: var(--primary);
-	 position: relative;
-	text-decoration: none;
-	transition: transform ease 0.2s;
+.logo a::after {
+	width: 12%;
+	bottom: -4px;
 }
 
-.menu-item::after {
-  content: '';
-  position: absolute;
-  width: 8%;
-  transform: scaleX(0);
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--tertiary);
-  transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
-}
-
-.menu-item:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+.menu-item:hover::after,
+.logo a:hover::after {
+	transform: scaleX(1);
+	transform-origin: bottom left;
 }
 
 /* HERO */
@@ -305,21 +473,20 @@ nav {
 }
 
 .hero-heading {
-	margin-top: 0;
 	margin-bottom: 0;
 	font-size: calc(var(--font-size) + 14 * ((100vw - 320px) / 680));
 	border-bottom: 1px solid var(--tertiary);
 }
 
 .hero-btn {
-	background-color: var(--primary);
+	background-color: var(--tertiary);
 	color: var(--herobtn-text-color);
 	border: 1px solid var(--primary);
 	border-radius: var(--tm-radius);
 	text-decoration: none;
 	font-size: 1rem;
 	padding: 0.5rem 0.75rem;
-	transition: all 0.2s ease-out;
+	transition: var(--transition);
 }
 
 .hero-btn:hover {
@@ -327,7 +494,7 @@ nav {
 	background-color: var(--secondary);
 	color: var(--button-text-color);
 	border: 1px solid var(--primary);
-	transition: all 0.2s ease-out;
+	transition: var(--transition);
 }
 
 .hero-text {
@@ -407,10 +574,10 @@ nav {
 }
 
 /* TILES */
-
 .tile-grid {
 	display: grid;
 	grid-template-columns: repeat(1, minmax(0, 1fr));
+	align-items: flex-start;
 	gap: 1rem;
 	width: 100%;
 }
@@ -423,15 +590,76 @@ nav {
 	flex-direction: column;
 	text-align: center;
 	padding: 0.75rem;
+	min-height: 17rem;
+	position: relative;
+	transition: var(--transition);
+}
+
+.tile-grid-item:hover {
+	box-shadow: 0px 2px 4px var(--primary);
+	transition: var(--transition);
+}
+
+.tile-grid-item:nth-child(2) {
+	box-shadow: 0px 2px 4px var(--primary);
+	transition: var(--transition);
+}
+
+.tile-grid-item:nth-child(2):hover {
+	box-shadow: 0px 4px 8px var(--primary);
+	transition: var(--transition);
+}
+
+.tile-offset-overlay {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--primary);
+	opacity: 0.035;
+	z-index: 0;
 }
 
 .tile-grid-icon svg {
 	height: 4rem;
 	width: auto;
+	z-index: 1;
+}
+
+.tile-grid-heading {
+	position: relative;
+	z-index: 1;
+	width: max-content;
+	margin: 1rem auto;
 }
 
 .tile-grid-heading h3 {
 	margin-bottom: 1rem;
+}
+
+.tile-grid-heading:after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 10px;
+	height: 8px;
+	width: 190%;
+	background-color: var(--secondary);
+	border-radius: var(--tm-radius);
+	opacity: 0.4;
+	z-index: 0;
+	box-shadow: -1px 1px 2px grey;
+}
+
+.tile-grid-item:nth-child(2) .tile-grid-heading:after {
+	background-color: var(--tertiary);
+}
+
+.tile-grid-description {
+	flex: 1;
+	z-index: 1;
 }
 
 .tile-grid-description p {
@@ -442,20 +670,20 @@ nav {
 .btn {
 	background-color: var(--secondary);
 	color: var(--button-text-color);
-	border: 1px solid var(--tertiary);
+	border: 1px solid var(--primary);
 	border-radius: var(--tm-radius);
 	text-decoration: none;
 	font-size: 1rem;
 	padding: 0.25rem 0.5rem;
-	transition: all 0.2s ease-out;
+	transition: var(--transition);
 }
 
 .btn:hover {
 	cursor: pointer;
-	background-color: var(--button-text-color);
-	color: var(--secondary);
-	border: 1px solid var(--secondary);
-	transition: all 0.2s ease-out;
+	background-color: var(--tertiary);
+	color: var(--herobtn-text-color);
+	border: 1px solid var(--primary);
+	transition: var(--transition);
 }
 
 form,
@@ -482,19 +710,28 @@ form,
 
 /* MEDIA QUERIES */
 @media only screen and (min-width: 640px) {
-	nav {
+	.menuToggle {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 	}
 
+	.menuToggle input,
+	.menuToggle > span {
+		display: none;
+	}
+
+	.logo a::after {
+		width: 100%;
+	}
+
 	.menu {
+		height: auto !important;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 
 	.menu-item::after {
 		width: 50%;
-		bottom: 20px;
 	}
 
 	.hero {

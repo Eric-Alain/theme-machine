@@ -39,7 +39,7 @@ const FontSelector = ({ label, elementToHandle, fonts, defaultFont }) => {
       <select
         onChange={e => handleFontChange(e, elementToHandle)}
         defaultValue={defaultFont}
-        className="appearance-none dark:bg-gray-900"
+        className="appearance-none dark:bg-gray-900 max-w-full"
         style={{ fontFamily: fonts[elementToHandle] }}
       >
         <option value="Damion" style={{ fontFamily: `'Damion', sans-serif` }}>

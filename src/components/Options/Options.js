@@ -33,17 +33,22 @@ const Options = () => {
   const [sliderValue, setSliderValue] = useState(shape.radius)
 
   const handleRadiusChange = e => {
-    setSliderValue(e.target.value)
-    debounce(300, [() => dispatch(setShape({ radius: e.target.value }))])
+    setSliderValue(parseInt(e.target.valueAsNumber))
+    debounce(300, [
+      () => dispatch(setShape({ radius: e.target.valueAsNumber }))
+    ])
   }
 
   useEffect(() => {
     const borderRadius = parseInt(
       reduxCss.match(/(?<=--tm-radius:[ *])(\d+)(?=[\s\S]*?\t\b)/gm)
-        ? reduxCss.match(/(?<=--tm-radius:[ *])(\d+)(?=[\s\S]*?\t\b)/gm)[0]
+        ? parseInt(
+            reduxCss.match(/(?<=--tm-radius:[ *])(\d+)(?=[\s\S]*?\t\b)/gm)[0]
+          )
         : 0,
       10
     )
+
     const val = shape.rounded ? borderRadius : 0
     setSliderValue(val)
     dispatch(

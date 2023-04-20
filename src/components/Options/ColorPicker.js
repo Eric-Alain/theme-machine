@@ -44,81 +44,54 @@ const ColorPicker = ({ colors, category }) => {
     }
   }
 
-  //useEffect
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true)
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true)
-    }
-  }, [])
+  //Memoized variables
+  const matchOrDefault = (reduxCss, regex, defaultValue = "#000000") =>
+    reduxCss.match(regex)?.toString()
+      ? reduxCss.match(regex)?.toString()
+      : defaultValue
 
-  // First use match to extract the color values from reduxCss and store them in their respective variables.
-  const primary =
-    reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm)?.toString() || "#000000"
-
-  const secondary =
-    reduxCss.match(/(?<=--secondary:[ *])(.*?)(?=;)/gm)?.toString() || "#000000"
-  
- const tertiary =
-    reduxCss.match(/(?<=--tertiary:[ *])(.*?)(?=;)/gm)?.toString() || "#000000"
-
-    const background =
-      reduxCss.match(/(?<=--background:[ *])(.*?)(?=;)/gm)?.toString() ||
-      "#000000"
-
-	 const foreground =
-     reduxCss.match(/(?<=--foreground:[ *])(.*?)(?=;)/gm)?.toString() ||
-     "#000000"
-
-  // We then use useMemo to memoize an array of the color name and value pairs, and pass the primary, secondary, and tertiary variables as dependencies to ensure they are updated when they change.
-  const colorsMemo = useMemo(
-    () => [
-      ["primary", primary],
-      ["secondary", secondary],
-      ["tertiary", tertiary],
-      ["background", background],
-      ["foreground", foreground]
-    ],
-    [primary, secondary, tertiary, background, foreground]
+  const { primary, secondary, tertiary, background, foreground } = useMemo(
+    () => ({
+      primary: matchOrDefault(reduxCss, /(?<=--primary:[ *])(.*?)(?=;)/gm),
+      secondary: matchOrDefault(reduxCss, /(?<=--secondary:[ *])(.*?)(?=;)/gm),
+      tertiary: matchOrDefault(reduxCss, /(?<=--tertiary:[ *])(.*?)(?=;)/gm),
+      background: matchOrDefault(
+        reduxCss,
+        /(?<=--background:[ *])(.*?)(?=;)/gm
+      ),
+      foreground: matchOrDefault(reduxCss, /(?<=--foreground:[ *])(.*?)(?=;)/gm)
+    }),
+    [reduxCss]
   )
 
   // We also define a useCallback function that dispatches the setColors action with the memoized colors array as its argument, and memoize the function itself using an empty dependency array to ensure it does not change on re-renders.
   const dispatchColors = useCallback(() => {
-    dispatch(setColors(colorsMemo))
-  }, [dispatch, colorsMemo])
+    dispatch(
+      setColors([
+        ["primary", colors.primary],
+        ["secondary", colors.secondary],
+        ["tertiary", colors.tertiary],
+        ["background", colors.background],
+        ["foreground", colors.foreground]
+      ])
+    )
+  }, [
+    dispatch,
+    colors.primary,
+    colors.secondary,
+    colors.tertiary,
+    colors.background,
+    colors.foreground
+  ])
 
-  // Lastly, we call the dispatchColors function in the useEffect hook to dispatch the setColors action once on component mount and whenever reduxCss changes.
+  //useEffect
   useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true)
     dispatchColors()
-  }, [reduxCss, dispatch, dispatchColors])
-
-  /*useEffect(() => {
-	console.log(reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm))
-    dispatch(
-      setColors([
-        "primary",
-        reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm)
-          ? reduxCss.match(/(?<=--primary:[ *])(.*?)(?=;)/gm).toString()
-          : "#000000"
-      ])
-    )
-    dispatch(
-      setColors([
-        "secondary",
-        reduxCss.match(/(?<=--secondary:[ *])(.*?)(?=;)/gm)
-          ? reduxCss.match(/(?<=--secondary:[ *])(.*?)(?=;)/gm).toString()
-          : "#000000"
-      ])
-    )
-    dispatch(
-      setColors([
-        "tertiary",
-        reduxCss.match(/(?<=--tertiary:[ *])(.*?)(?=;)/gm)
-          ? reduxCss.match(/(?<=--tertiary:[ *])(.*?)(?=;)/gm).toString()
-          : "#000000"
-      ])
-    )
-  }, [reduxCss, dispatch])*/
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true)
+    }
+  }, [reduxCss, dispatchColors])
 
   //Hero icons found at https://heroicons.com
   return (

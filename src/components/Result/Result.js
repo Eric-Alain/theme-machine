@@ -1,5 +1,5 @@
 // React
-import React, { useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 //Redux
 import { useSelector, useDispatch } from "react-redux"
@@ -17,6 +17,8 @@ const Result = () => {
   const theme = useSelector(state => state.theme)
 
   const dispatch = useDispatch()
+
+  const iframeRef = useRef(null)
 
   useEffect(() => {
     //Decode the css stored in redux store, as we need to complete some find/replace operations with it
@@ -67,7 +69,7 @@ const Result = () => {
         reg: /--general-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       },
       {
-        var: `--herobtn-text-color: ${lightOrDark(cssVars.primary)};`,
+        var: `--herobtn-text-color: ${lightOrDark(cssVars.tertiary)};`,
         reg: /--herobtn-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
       },
       {
@@ -93,10 +95,61 @@ const Result = () => {
     swapArr.forEach(swap => {
       tempString = tempString.replace(swap.reg, swap.var)
     })
+
     dispatch(setCSS(tempString))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colors, fonts, shape])
+
+  // Create a state reference for scroll position of iFrame
+  const [scroll, setScroll] = useState(0)
+
+  /***********************************/
+  /*BEFORE UNLOAD LISTENER FOR IFRAME*/
+  /***********************************/
+  useEffect(() => {
+    const frame = iframeRef.current
+
+    // Handle page exit or refresh, set localStorage value for scroll position of our iFrame
+    const onBeforeUnload = ev => {
+      localStorage.setItem("theme-scroll-pos", frame.contentWindow.scrollY)
+    }
+
+    // Add listener onMount
+    window.addEventListener("beforeunload", onBeforeUnload)
+
+    // Remove listener onUnmount
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload)
+    }
+  }, [])
+
+  /************************************/
+  /*USEEFFECT HOOK FOR SCROLL POSITION*/
+  /************************************/
+
+  // Update the scroll state value any time we play around with values that re-render the component
+  useEffect(() => {
+    const frame = iframeRef.current
+    setScroll(frame.contentWindow.scrollY)
+  }, [colors, fonts, shape, css, bodyHtml, scroll])
+
+  /***************************/
+  /*ONLOAD HANDLER FOR IFRAME*/
+  /***************************/
+
+  const handleOnLoad = () => {
+    const scrollPos = parseInt(localStorage.getItem("theme-scroll-pos"))
+
+    // If we have a scroll position saved in memory and our state scroll position hasn't initialized (so, basically, on a page refresh), use the value in memory
+    if (scrollPos && scroll === 0) {
+      iframeRef.current.contentWindow.scrollTo(0, scrollPos)
+    }
+    // Otherwise, refer to the value store in state (for example, on component re-renders, but not a page refresh)
+    else {
+      iframeRef.current.contentWindow.scrollTo(0, scroll)
+    }
+  }
 
   const getGeneratedPageURL = ({ html, css }) => {
     const getBlobURL = (code, type) => {
@@ -193,10 +246,12 @@ const Result = () => {
       <h2 className="dark:text-tertiary-100">Result</h2>
       <div className="rounded border border-solid border-primary-300 min-h-[40rem] h-full">
         <iframe
+          ref={iframeRef}
           key={"results-iframe"}
           src={url}
           title="Results"
-         />
+          onLoad={handleOnLoad}
+        />
       </div>
     </section>
   )

@@ -4,15 +4,15 @@ export const initialState = {
   colors: {
     black: "#292929",
     white: "#fff",
-    primary: "#14213d",
-    secondary: "#e69d11",
-    tertiary: "#7D00CC",
+    primary: "#6a0036",
+    secondary: "#05a7e1",
+    tertiary: "#cea800",
     background: "#000000",
     foreground: "#FFFFFF"
   },
   fonts: {
-    general: `'Jost', sans-serif`,
-    heading: `'Fira Mono', sans-serif`
+    general: `'Ubuntu', sans-serif`,
+    heading: `'Viga', sans-serif`
   },
   shape: {
     rounded: false,
