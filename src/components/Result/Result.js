@@ -24,6 +24,119 @@ const Result = () => {
     //Decode the css stored in redux store, as we need to complete some find/replace operations with it
     const tempCss = decodeHtmlEntities(css)
 
+    const cssVars = {
+      primary: colors.primary,
+      secondary: colors.secondary,
+      tertiary: colors.tertiary,
+      background: colors.background,
+      foreground: colors.foreground
+    }
+
+    const swapArr = [
+      {
+        var: `--primary: ${cssVars.primary};`,
+        reg: /--primary: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\\n*})/gm
+      },
+      {
+        var: `--secondary: ${cssVars.secondary};`,
+        reg: /--secondary: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--tertiary: ${cssVars.tertiary};`,
+        reg: /--tertiary: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--background: ${cssVars.background};`,
+        reg: /--background: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--foreground: ${cssVars.foreground};`,
+        reg: /--foreground: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--general-text-color: ${lightOrDark(cssVars.foreground)};`,
+        reg: /--general-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--herobtn-text-color: ${lightOrDark(cssVars.tertiary)};`,
+        reg: /--herobtn-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--button-text-color: ${lightOrDark(cssVars.secondary)};`,
+        reg: /--button-text-color: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      }
+    ]
+
+    let tempString = tempCss
+
+    swapArr.forEach(swap => {
+      tempString = tempString.replace(swap.reg, swap.var)
+    })
+    dispatch(setCSS(tempString))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colors])
+
+  useEffect(() => {
+    //Decode the css stored in redux store, as we need to complete some find/replace operations with it
+    const tempCss = decodeHtmlEntities(css)
+
+    const cssVars = {
+      fontGeneral: fonts.general.replace(/'/gm, ""),
+      fontHeading: fonts.heading.replace(/'/gm, "")
+    }
+
+    const swapArr = [
+      {
+        var: `--font-general: ${cssVars.fontGeneral};`,
+        reg: /--font-general: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      },
+      {
+        var: `--font-heading: ${cssVars.fontHeading};`,
+        reg: /--font-heading: *(.*?)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      }
+    ]
+
+    let tempString = tempCss
+
+    swapArr.forEach(swap => {
+      tempString = tempString.replace(swap.reg, swap.var)
+    })
+    dispatch(setCSS(tempString))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fonts])
+
+  useEffect(() => {
+    //Decode the css stored in redux store, as we need to complete some find/replace operations with it
+    const tempCss = decodeHtmlEntities(css)
+
+    const cssVars = {
+      rounded: shape.rounded,
+      radius: shape.radius
+    }
+
+    const swapArr = [
+      {
+        var: `--tm-radius: ${cssVars.rounded ? cssVars.radius : 0}px;`,
+        reg: /--tm-radius: *(\d+)[\s\S]*?(?=\n*\t*[--]*[a-zA-Z]*-*[a-zA-Z]*-*[a-zA-Z]*:|\n*})/gm
+      }
+    ]
+
+    let tempString = tempCss
+
+    swapArr.forEach(swap => {
+      tempString = tempString.replace(swap.reg, swap.var)
+    })
+    dispatch(setCSS(tempString))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fonts])
+
+  /*useEffect(() => {
+    //Decode the css stored in redux store, as we need to complete some find/replace operations with it
+    const tempCss = decodeHtmlEntities(css)
+
     //Complex, update only specific parts of css redux state whenever colors or fonts state changes, keeps everything in sync
     //General idea:
     // -make object of redux selectors used to update state
@@ -95,11 +208,10 @@ const Result = () => {
     swapArr.forEach(swap => {
       tempString = tempString.replace(swap.reg, swap.var)
     })
-
     dispatch(setCSS(tempString))
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [colors, fonts, shape])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colors, fonts, shape])*/
 
   // Create a state reference for scroll position of iFrame
   const [scroll, setScroll] = useState(0)

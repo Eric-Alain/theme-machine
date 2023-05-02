@@ -42,7 +42,9 @@ const Code = () => {
 
   const handleCssChange = code => {
     localSetCss(code)
-    debounce(1000, [() => dispatch(setCSS(htmlEntities(code)))])
+    debounce(1000, [
+      () => dispatch(setCSS(htmlEntities(code)))
+    ])
   }
 
   useEffect(() => {

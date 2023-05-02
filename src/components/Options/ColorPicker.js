@@ -1,5 +1,5 @@
 //React
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 
 //Redux
@@ -15,10 +15,12 @@ import { lightOrDark } from "../../utils"
 const ColorPicker = ({ colors, category }) => {
   const reduxCss = useSelector(state => state.code.css)
 
+
   //Local state for component
   const [hide, setHide] = useState(true)
   const [pickerOpen, setPickerOpen] = useState(false)
   const ref = useRef(null)
+  const [ localColors, setLocalColors ] = useState(colors)
 
   //Redux
   const dispatch = useDispatch()
@@ -44,54 +46,35 @@ const ColorPicker = ({ colors, category }) => {
     }
   }
 
-  //Memoized variables
-  const matchOrDefault = (reduxCss, regex, defaultValue = "#000000") =>
-    reduxCss.match(regex)?.toString()
-      ? reduxCss.match(regex)?.toString()
-      : defaultValue
-
-  const { primary, secondary, tertiary, background, foreground } = useMemo(
-    () => ({
-      primary: matchOrDefault(reduxCss, /(?<=--primary:[ *])(.*?)(?=;)/gm),
-      secondary: matchOrDefault(reduxCss, /(?<=--secondary:[ *])(.*?)(?=;)/gm),
-      tertiary: matchOrDefault(reduxCss, /(?<=--tertiary:[ *])(.*?)(?=;)/gm),
-      background: matchOrDefault(
-        reduxCss,
-        /(?<=--background:[ *])(.*?)(?=;)/gm
-      ),
-      foreground: matchOrDefault(reduxCss, /(?<=--foreground:[ *])(.*?)(?=;)/gm)
-    }),
-    [reduxCss]
-  )
-
-  // We also define a useCallback function that dispatches the setColors action with the memoized colors array as its argument, and memoize the function itself using an empty dependency array to ensure it does not change on re-renders.
-  const dispatchColors = useCallback(() => {
-    dispatch(
-      setColors([
-        ["primary", colors.primary],
-        ["secondary", colors.secondary],
-        ["tertiary", colors.tertiary],
-        ["background", colors.background],
-        ["foreground", colors.foreground]
-      ])
-    )
-  }, [
-    dispatch,
-    colors.primary,
-    colors.secondary,
-    colors.tertiary,
-    colors.background,
-    colors.foreground
-  ])
-
-  //useEffect
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true)
-    dispatchColors()
     return () => {
       document.removeEventListener("click", handleClickOutside, true)
     }
-  }, [reduxCss, dispatchColors])
+  }, [])
+
+  useEffect(() => {
+    const colors = [
+      { name: "primary", regex: /(?<=--primary:[ *])(.*?)(?=;)/gm },
+      { name: "secondary", regex: /(?<=--secondary:[ *])(.*?)(?=;)/gm },
+      { name: "tertiary", regex: /(?<=--tertiary:[ *])(.*?)(?=;)/gm },
+      { name: "background", regex: /(?<=--background:[ *])(.*?)(?=;)/gm },
+      { name: "foreground", regex: /(?<=--foreground:[ *])(.*?)(?=;)/gm }
+    ]
+
+    const extractedColors = colors.reduce((obj, color) => {
+      const match = reduxCss.match(color.regex)
+      if (match) {
+        obj[color.name] = match[0].toString()
+      } else {
+        obj[color.name] = "#000000"
+      }
+      return obj
+    }, {})
+    setLocalColors(extractedColors)
+    dispatch(setColors(extractedColors))
+  }, [reduxCss, dispatch])
+
 
   //Hero icons found at https://heroicons.com
   return (
@@ -100,14 +83,14 @@ const ColorPicker = ({ colors, category }) => {
         <div
           onClick={toggleHide}
           className="rounded border border-primary-600 hover:cursor-pointer z-1 p-1"
-          style={{ background: colors[category] }}
+          style={{ background: localColors[category] }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
             className="h-6"
-            style={{ color: lightOrDark(colors[category]) }}
+            style={{ color: lightOrDark(localColors[category]) }}
           >
             <path
               fillRule="evenodd"
@@ -123,7 +106,7 @@ const ColorPicker = ({ colors, category }) => {
           } left-[36px] top-0 z-2`}
         >
           <SketchPicker
-            color={colors[category]}
+            color={localColors[category]}
             onChangeComplete={handleChangeComplete}
           />
         </div>
