@@ -15,12 +15,11 @@ import { lightOrDark } from "../../utils"
 const ColorPicker = ({ colors, category }) => {
   const reduxCss = useSelector(state => state.code.css)
 
-
   //Local state for component
   const [hide, setHide] = useState(true)
   const [pickerOpen, setPickerOpen] = useState(false)
   const ref = useRef(null)
-  const [ localColors, setLocalColors ] = useState(colors)
+  const [localColors, setLocalColors] = useState(colors)
 
   //Redux
   const dispatch = useDispatch()
@@ -71,10 +70,24 @@ const ColorPicker = ({ colors, category }) => {
       }
       return obj
     }, {})
-    setLocalColors(extractedColors)
-    dispatch(setColors(extractedColors))
-  }, [reduxCss, dispatch])
 
+    setLocalColors(extractedColors)
+
+
+    /*const extractedColorsArr = colors.map(color => {
+      const match = reduxCss.match(color.regex)
+      return [ color.name, match ? match[0].toString() : "#000000" ]
+    })
+    console.log(extractedColorsArr)
+
+    extractedColorsArr.forEach(color => {
+      dispatch(setColors([color[0], color[1]]))
+    })*/
+
+    dispatch(setColors(extractedColors))
+
+    //dispatch(setColors)
+  }, [reduxCss, dispatch])
 
   //Hero icons found at https://heroicons.com
   return (

@@ -2,16 +2,16 @@ import { COLORS, FONTS, SHAPE } from "../types/styles"
 
 export const initialState = {
   colors: {
-    black: "#292929",
-    white: "#fff",
-    primary: "#6a0036",
-    secondary: "#05a7e1",
-    tertiary: "#cea800",
+    primary: "#f7ef04",
+    secondary: "#fa9902",
+    tertiary: "#c202fc",
     background: "#000000",
-    foreground: "#FFFFFF"
+    foreground: "#000000",
+    black: "#292929",
+    white: "#fff"
   },
   fonts: {
-    general: `'Ubuntu', sans-serif`,
+    general: `'Roboto', sans-serif`,
     heading: `'Viga', sans-serif`
   },
   shape: {

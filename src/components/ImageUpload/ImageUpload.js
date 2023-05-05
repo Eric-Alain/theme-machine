@@ -23,7 +23,7 @@ const ImageUpload = ({ state, setState }) => {
           className="block text-black dark:text-tertiary-100"
           htmlFor="profile-picture"
         >
-          Profile picture
+          Display image
         </label>
         <input
           ref={ref}

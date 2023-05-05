@@ -4,7 +4,13 @@ import PropTypes from "prop-types"
 
 import { signOut, onAuthStateChanged, updateProfile } from "firebase/auth"
 import { collection, onSnapshot } from "firebase/firestore"
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  deleteObject
+} from "firebase/storage"
 
 import ImageUpload from "../ImageUpload/ImageUpload"
 import Snackbar from "../Snackbars/Snackbar"
@@ -116,7 +122,8 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
         }
       }
     })
-  }, [auth, db, data, storage])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth, db])
 
   /********************/
   /*HANDLERS/LISTENERS*/
@@ -132,28 +139,59 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
     if (!showSave) {
       setShowSave(true)
     }
+
+    // hide snackbar if user starts changing fields again
+    if (snackBar.show) {
+      setSnackBar({
+        ...snackBar,
+        show: false
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.displayName, data.image])
 
   // Handle form submit
   const handleSubmit = async e => {
     e.preventDefault()
+
+    if (data.displayName && data.displayName.length < 2) {
+      setSnackBar({
+        ...snackBar,
+        variant: "danger",
+        show: true,
+        message: <p>Display name must be 2 characters or longer.</p>
+      })
+      return
+    }
+
     // Wait for account to be created, update the user name key based on what was entered in sign up form
     await updateProfile(user, {
       displayName:
         data.displayName.length > 0 ? data.displayName : user.displayName
     })
       .then(async () => {
-        if (data.image) {
-          const storageRef = ref(storage, `images/${user.uid}/displayImage`)
-          await uploadBytes(storageRef, data.image).catch(e => {
-            setSnackBar({
-              ...snackBar,
-              variant: "danger",
-              show: true,
-              message: <p>Error uploading image</p>
+        try {
+          if (data.image) {
+            const storageRef = ref(storage, `images/${user.uid}/displayImage`)
+            await uploadBytes(storageRef, data.image).catch(e => {
+              setSnackBar({
+                ...snackBar,
+                variant: "danger",
+                show: true,
+                message: <p>Error uploading image</p>
+              })
             })
-          })
+          } else if (data.image === "") {
+            const storageRef = ref(storage, `images/${user.uid}/displayImage`)
+            // Check if the path even exists first
+            listAll(ref(storage, `images/${user.uid}`)).then(async list => {
+              if (list.items.length > 0) {
+                deleteObject(storageRef)
+              }
+            })
+          }
+        } catch (e) {
+          console.log(e)
         }
       })
       .then(() => {
@@ -201,34 +239,36 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                     Load theme
                   </h4>
                   <ul className="unstyled text-black dark:text-tertiary-100 transition-all">
-                    {loadables
-                      ? loadables.map((item, i) => {
-                          return (
-                            <li
-                              key={i}
-                              className="mb-1 p-1 rounded hover:bg-primary-300 hover:text-black transition-all"
-                            >
-                              <a href="#test" className="flex justify-between">
-                                <div>{item.themeName}</div>
-                                <div className="grid grid-cols-3 gap-1">
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.primary }}
-                                  ></div>
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.secondary }}
-                                  ></div>
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.tertiary }}
-                                  ></div>
-                                </div>
-                              </a>
-                            </li>
-                          )
-                        })
-                      : null}
+                    {loadables ? (
+                      loadables.map((item, i) => {
+                        return (
+                          <li
+                            key={i}
+                            className="mb-1 p-1 rounded hover:bg-primary-300 hover:text-black transition-all"
+                          >
+                            <a href="#test" className="flex justify-between">
+                              <div>{item.themeName}</div>
+                              <div className="grid grid-cols-3 gap-1">
+                                <div
+                                  className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                  style={{ backgroundColor: item.primary }}
+                                ></div>
+                                <div
+                                  className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                  style={{ backgroundColor: item.secondary }}
+                                ></div>
+                                <div
+                                  className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                  style={{ backgroundColor: item.tertiary }}
+                                ></div>
+                              </div>
+                            </a>
+                          </li>
+                        )
+                      })
+                    ) : (
+                      <p>No themes saved yet.</p>
+                    )}
                   </ul>
                   <h4 className="h5 mb-3 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Update profile
@@ -240,7 +280,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                           className="block text-black dark:text-tertiary-100"
                           htmlFor="displayName"
                         >
-                          User name
+                          Display name
                         </label>
                         <input
                           type="text"
@@ -258,11 +298,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                       <ImageUpload state={data} setState={setData} />
                       {showSave ? (
                         <div>
-                          <button
-                            className="btn-main"
-                            type="submit"
-                            onClick={() => setShowSave(false)}
-                          >
+                          <button className="btn-main" type="submit">
                             Save changes
                           </button>
                         </div>

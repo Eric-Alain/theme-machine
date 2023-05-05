@@ -50,6 +50,7 @@ const Options = () => {
     )
 
     const val = shape.rounded ? borderRadius : 0
+
     setSliderValue(val)
     dispatch(
       setShape({

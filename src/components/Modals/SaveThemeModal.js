@@ -2,12 +2,7 @@
 import React, { useState, useEffect, createContext } from "react"
 import PropTypes from "prop-types"
 
-import {
-  doc,
-  setDoc,
-  getDoc,
-  serverTimestamp
-} from "firebase/firestore"
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"
 
 import Snackbar from "../Snackbars/Snackbar"
 import { capitalizeFirstLetter } from "../../utils"
@@ -70,6 +65,7 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
         error.code = "theme-already-exists"
         throw error
       } else {
+        console.log(styles)
         // This means it doesn't exist, so we should create it
         await setDoc(doc(db, "users", uid, "themes", data.themeName), {
           state: {
@@ -86,19 +82,13 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
         })
       }
     } catch (e) {
-	console.log(e.code)
-      setSnackBar({
+      console.log(e)
+      /*setSnackBar({
         ...snackBar,
         variant: "danger",
         show: true,
-        message: (
-          <p>
-            {capitalizeFirstLetter(
-              e.code.replace(/-/gm, " ")
-            )}
-          </p>
-        )
-      })
+        message: <p>{capitalizeFirstLetter(e.code.replace(/-/gm, " "))}</p>
+      })*/
     }
   }
 
@@ -181,6 +171,26 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
                           <div
                             className="ml-3 h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
                             style={{ backgroundColor: colors.tertiary }}
+                          ></div>
+                        </div>
+                      </li>
+                      <li className="flex justify-between mb-1">
+                        <div>Background color</div>
+                        <div className="flex">
+                          <span>{colors.background}</span>
+                          <div
+                            className="ml-3 h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                            style={{ backgroundColor: colors.background }}
+                          ></div>
+                        </div>
+                      </li>
+                      <li className="flex justify-between mb-1">
+                        <div>Foreground color</div>
+                        <div className="flex">
+                          <span>{colors.foreground}</span>
+                          <div
+                            className="ml-3 h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                            style={{ backgroundColor: colors.foreground }}
                           ></div>
                         </div>
                       </li>

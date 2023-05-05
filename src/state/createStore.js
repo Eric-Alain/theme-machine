@@ -36,6 +36,8 @@ const persistConfig = getPersistConfig({
     "styles.colors.primary",
     "styles.colors.secondary",
     "styles.colors.tertiary",
+    "styles.colors.background",
+    "styles.colors.foreground",
     "styles.colors.black",
     "styles.colors.white",
     "styles.fonts.general",

@@ -202,13 +202,13 @@ export const initialState = {
 </main>`),
 
   css: htmlEntities(`:root {
-	--primary: #059b8f;
-	--secondary: #f0b6f7;
-	--tertiary: #bf5900;
-	--background: #f0d4d4;
-	--foreground: #ffffff;
-	--general-text-color: #000000;
-	--button-text-color: #000000;
+	--primary: #f7ef04;
+	--secondary: #fa9902;
+	--tertiary: #c202fc;
+	--background: #000000;
+	--foreground: #000000;
+	--general-text-color: #ffffff;
+	--button-text-color: #ffffff;
 	--herobtn-text-color: #ffffff;
 	--font-general: Roboto, sans-serif;
 	--font-heading: Jost, sans-serif;
@@ -390,7 +390,7 @@ nav {
 
 .menu-item {
 	font-size: 18px;
-	color: var(--primary);
+	color: var(--primary)!important;
 	position: relative;
 	text-decoration: none;
 	transition: transform ease 0.2s;
