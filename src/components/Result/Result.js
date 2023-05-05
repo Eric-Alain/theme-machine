@@ -131,7 +131,7 @@ const Result = () => {
     dispatch(setCSS(tempString))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fonts])
+  }, [shape])
 
   /*useEffect(() => {
     //Decode the css stored in redux store, as we need to complete some find/replace operations with it

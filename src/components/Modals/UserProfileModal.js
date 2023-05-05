@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 
 import { signOut, onAuthStateChanged, updateProfile } from "firebase/auth"
 import { collection, onSnapshot } from "firebase/firestore"
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
 
 import ImageUpload from "../ImageUpload/ImageUpload"
 import Snackbar from "../Snackbars/Snackbar"
@@ -49,8 +49,6 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
 
   // When component mounts, revert some state
   useEffect(() => {
-    //console.log("Called")
-
     if (showModal) {
       setSnackBar({
         ...snackBar,
@@ -87,29 +85,38 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
           }
         )
 
-        // Find all the prefixes and items.
-        getDownloadURL(ref(storage, `images/${currentUser.uid}/displayImage`))
-          .then(url => {
-            //console.log(ref(url))
-            fetch(ref(url))
-              .then(res => res.blob())
-              .then(imageBlob => {
-                const imageFile = new File([imageBlob], "image.jpeg", {
-                  type: imageBlob.type
+        try {
+          // Check if the path even exists first
+          listAll(ref(storage, `images/${currentUser.uid}`)).then(list => {
+            if (list.items.length > 0) {
+              // Find all the prefixes and items.
+              getDownloadURL(
+                ref(storage, `images/${currentUser.uid}/displayImage`)
+              )
+                .then(url => {
+                  fetch(ref(url))
+                    .then(res => res.blob())
+                    .then(imageBlob => {
+                      const imageFile = new File([imageBlob], "image.jpeg", {
+                        type: imageBlob.type
+                      })
+                      setData({
+                        ...data,
+                        image: imageFile
+                      })
+                    })
                 })
-                //console.log(imageFile)
-                setData({
-                  ...data,
-                  image: imageFile
+                .catch(e => {
+                  console.log(e)
                 })
-              })
+            }
           })
-          .catch(e => {
-            //console.log(e)
-          })
+        } catch (e) {
+          console.log(e)
+        }
       }
     })
-  }, [auth, db])
+  }, [auth, db, data, storage])
 
   /********************/
   /*HANDLERS/LISTENERS*/
@@ -118,10 +125,15 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
   // Handle form field changes
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })
+  }
+
+  // Listen for changes in data, if different, show the save button
+  useEffect(() => {
     if (!showSave) {
       setShowSave(true)
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.displayName, data.image])
 
   // Handle form submit
   const handleSubmit = async e => {
@@ -246,7 +258,11 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                       <ImageUpload state={data} setState={setData} />
                       {showSave ? (
                         <div>
-                          <button className="btn-main" type="submit">
+                          <button
+                            className="btn-main"
+                            type="submit"
+                            onClick={() => setShowSave(false)}
+                          >
                             Save changes
                           </button>
                         </div>

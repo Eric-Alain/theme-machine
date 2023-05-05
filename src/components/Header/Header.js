@@ -17,7 +17,7 @@ import Hamburger from "./Hamburger"
 
 import { onAuthStateChanged } from "firebase/auth"
 import { auth, db, storage } from "../Firebase/Firebase"
-import { ref, getDownloadURL } from "firebase/storage"
+import { ref, getDownloadURL, listAll } from "firebase/storage"
 
 //Icon svgs from heroicons.com
 
@@ -45,7 +45,9 @@ const Header = ({ siteTitle, width }) => {
   const [user, setUser] = useState(null)
 
   //User img
-  const [displaySrc, setDisplaySrc] = useState(null)
+  const [displaySrc, setDisplaySrc] = useState(
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1080' height='1080' xml:space='preserve'%3E%3Cpath style='stroke:white;stroke-width:1;stroke-dasharray:none;stroke-linecap:butt;stroke-dashoffset:0;stroke-linejoin:miter;stroke-miterlimit:4;fill:%23fff;fill-rule:nonzero;opacity:1' transform='matrix(1.54 0 0 1.54 1 108.8)' d='M534.8 89.328c0 72.277 5.602 134 5.602 218.55 0 100.01-65.727 173.72-156.8 173.72h-67.2c-47.601 0-87.503-18.156-114.8-48.508-27.296-30.352-42-72.441-42-119.61 0-85.535 16.946-162.72 39.899-227.84 2.625-7.367 14.008-9.453 19.074-3.504l51.977 62.52c60.82-11.027 123.35-10.055 187.07 0l57.75-62.867c7.582-7.027 19.176-2.476 19.426 7.531zm-320.25 22.941c-13.094 40.719-23.434 85.598-28.699 133.97h5.426c9.515-29.191 36.898-50.434 69.125-50.434 38.148 0 69.52 29.785 72.449 67.246h34.3c2.934-37.465 34.302-67.246 72.45-67.246 32.227 0 59.609 21.246 69.125 50.434h8.398c-1.183-45.234-3.25-86.121-4.023-129.07l-42.875 46.934c-2.516 2.762-6.469 4.125-10.148 3.504-66.168-11.035-130.2-12.125-191.98 0-3.899.73-8.14-.8-10.676-3.852zm302.93 145.18h-6.125c.582 3.7 1.05 7.527 1.05 11.383 0 40.102-32.726 72.852-72.8 72.852-38.227 0-69.801-29.871-72.625-67.422h-33.95c-2.823 37.551-34.397 67.422-72.624 67.422-40.074 0-72.801-32.75-72.801-72.852 0-3.856.469-7.684 1.05-11.383h-4.023c-1.648 18.199-2.625 36.891-2.625 56.039 0 42.496 13.297 78.859 36.398 104.55 23.102 25.688 56 41.152 98 41.152h67.2c79.292 0 134.4-60.781 134.4-151.3 0-17.695-.169-34.332-.524-50.438zM350 321.894c9.277 0 16.801 5.02 16.801 11.207 0 5.336-5.644 9.902-13.125 11.031-3.21 21.137-2.894 46.52.875 66.895 1.203 6.246 5.586 10.328 10.148 12.258 5.566 2.227 11.254 2.047 14.875-1.574 2.063-2.11 5.856-2.153 7.965-.09 2.11 2.062 2.148 5.86.086 7.969-7.578 7.586-18.691 7.402-27.125 4.027-3.906-1.562-7.61-3.77-10.5-6.656-2.89 2.887-6.594 5.09-10.5 6.656-8.434 3.375-19.547 3.559-27.125-4.027-2.063-2.11-2.024-5.906.086-7.969 2.11-2.063 5.902-2.02 7.964.09 3.622 3.62 9.31 3.804 14.875 1.574 4.813-1.926 8.875-4.73 8.38-10.48-4.465-22.133-4.696-46.52-1.204-69.727-5.472-1.848-9.273-5.61-9.273-9.98-.07-7.352 8.05-11.067 16.8-11.208z'/%3E%3C/svg%3E"
+  )
 
   const [toggleHamburger, setToggleHamburger] = useState(false)
 
@@ -58,14 +60,28 @@ const Header = ({ siteTitle, width }) => {
       if (currentUser) {
         setAuthShow(true)
         setUser(currentUser)
-        // Find all the prefixes and items.
-        getDownloadURL(ref(storage, `images/${currentUser.uid}/displayImage`))
-          .then(url => {
-            setDisplaySrc(ref(url))
+        try {
+          // Check if the path even exists first
+          listAll(ref(storage, `images/${currentUser.uid}`)).then(list => {
+            if (list.items.length > 0) {
+              // Find all the prefixes and items.
+              getDownloadURL(
+                ref(storage, `images/${currentUser.uid}/displayImage`)
+              )
+                .then(url => {
+                  if (url) {
+                    console.log(url)
+                    setDisplaySrc(ref(url))
+                  }
+                })
+                .catch(e => {
+                  console.log(e)
+                })
+            }
           })
-          .catch(e => {
-            console.log(e)
-          })
+        } catch (e) {
+          console.log(e)
+        }
       } else {
         setAuthShow(false)
       }
@@ -96,7 +112,7 @@ const Header = ({ siteTitle, width }) => {
             } md:hidden transition-all duration-500 border-primary-300 mx-1`}
           />
           <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-8 xl:col-end-10 grid grid-cols-1 md:grid-cols-4 justify-self-end items-end w-full">
-            <div className="xl:col-start-1 xl:col-end-3 justify-self-end">
+            <div className="xl:col-start-1 xl:col-end-3 justify-self-start md:justify-self-end">
               <button
                 onClick={
                   authShow
@@ -107,7 +123,7 @@ const Header = ({ siteTitle, width }) => {
                 title="Account options"
               >
                 {width > 768 ? (
-                  user ? (
+                  authShow && user ? (
                     <div className="grid grid-cols-2 justify-self-end items-end">
                       <div className="mr-1">{user.displayName}</div>
                       <div>
@@ -139,6 +155,7 @@ const Header = ({ siteTitle, width }) => {
                   <span>Account</span>
                 )}
               </button>
+
               <AuthenticateModal
                 showModal={showAuthenticateModal}
                 setShowModal={setShowAuthenticateModal}
@@ -151,7 +168,7 @@ const Header = ({ siteTitle, width }) => {
                 setShowModal={setShowUserProfileModal}
               />
             </div>
-            <div className="xl:col-start-3 xl:col-end-4 justify-self-end">
+            <div className="xl:col-start-3 xl:col-end-4 justify-self-start md:justify-self-end">
               <button
                 onClick={() => setShowSaveThemeModal(true)}
                 className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
@@ -165,7 +182,7 @@ const Header = ({ siteTitle, width }) => {
                 setShowModal={setShowSaveThemeModal}
               />
             </div>
-            <div className="xl:col-start-4 xl:col-end-5 justify-self-end">
+            <div className="xl:col-start-4 xl:col-end-5 justify-self-start md:justify-self-end">
               <button
                 onClick={() => setShowModal(true)}
                 className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
