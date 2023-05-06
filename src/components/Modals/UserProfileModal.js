@@ -42,7 +42,19 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
 
   const [showSave, setShowSave] = useState(false)
 
-  const [showLoadTheme, setShowLoadTheme] = useState(false)
+  const [showLoadTheme, setShowLoadTheme] = useState({})
+
+  const handleShowLoadTheme = (key, bool) => {
+    let objCopy = {...showLoadTheme};
+	
+	for (let item of Object.keys(objCopy)) {
+		objCopy[item] = false
+	}
+
+	objCopy = { ...objCopy, [key]: bool }
+
+    setShowLoadTheme(objCopy)
+  }
 
   /************/
   /*VARS/INITS*/
@@ -250,7 +262,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                             <button
                               href="#test"
                               className="w-full mb-1 p-1 rounded hover:bg-primary-100 hover:text-black dark:hover:bg-gray-700 dark:hover:text-tertiary-100 transition-all"
-                              onClick={() => setShowLoadTheme(true)}
+                              onClick={() => handleShowLoadTheme(i, true)}
                             >
                               <div className="flex justify-between">
                                 <div>{item.themeName}</div>
@@ -282,7 +294,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                                       height="24"
                                       fill="none"
                                       viewBox="0 0 24 24"
-                                      class="h-6 w-6 p-[3px] rounded border border-transparent text-black group-hover:text-[#b91c1c] group-hover:bg-tertiary-100 dark:text-tertiary-100 dark:bg-gray-600 dark:border-gray-400 dark:group-hover:text-tertiary-100 dark:group-hover:bg-gray-900 group-hover:border-tertiary-100 transition-all"
+                                      className="h-6 w-6 p-[3px] rounded border border-transparent text-black group-hover:text-[#b91c1c] group-hover:bg-tertiary-100 dark:text-tertiary-100 dark:bg-gray-600 dark:border-gray-400 dark:group-hover:text-tertiary-100 dark:group-hover:bg-gray-900 group-hover:border-tertiary-100 transition-all"
                                     >
                                       <path
                                         stroke="currentColor"
@@ -299,7 +311,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
 
                             <div
                               className={`mb-1 p-1 grid grid-cols-1 justify-start overflow-hidden${
-                                showLoadTheme ? " h-[4rem]" : " h-0"
+                                showLoadTheme[i] ? " h-[4rem]" : " h-0"
                               } transition-all`}
                             >
                               <div>
@@ -309,7 +321,9 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                                 <div>
                                   <button
                                     className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
-                                    onClick={() => setShowLoadTheme(false)}
+                                    onClick={() =>
+                                      handleShowLoadTheme(i, false)
+                                    }
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -317,7 +331,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                                       height="24"
                                       fill="none"
                                       viewBox="0 0 20 20"
-                                      class="h-6 w-6 rounded text-primary-600 hover:text-black dark:text-tertiary-100 transition-all"
+                                      className="h-6 w-6 rounded text-primary-600 hover:text-black dark:text-tertiary-100 transition-all"
                                     >
                                       <path
                                         fill="none"
@@ -334,7 +348,9 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                                 <div>
                                   <button
                                     className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
-                                    onClick={() => setShowLoadTheme(false)}
+                                    onClick={() =>
+                                      handleShowLoadTheme(i, false)
+                                    }
                                   >
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -342,7 +358,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                                       height="24"
                                       fill="none"
                                       viewBox="0 0 24 24"
-                                      class="h-6 w-6 rounded text-primary-600 dark:text-tertiary-100 transition-all"
+                                      className="h-6 w-6 rounded text-primary-600 dark:text-tertiary-100 transition-all"
                                     >
                                       <g>
                                         <path
