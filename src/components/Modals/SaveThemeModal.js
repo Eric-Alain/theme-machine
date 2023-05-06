@@ -56,16 +56,15 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
 
     // Try catch operation with firestore
     try {
+      console.log(uid)
       const themeRef = doc(db, "users", uid, "themes", data.themeName)
       const themeSnap = await getDoc(themeRef)
-
       if (themeSnap.exists()) {
         // This means we know that a theme with this name already exists in our collection, return an error for the snackbar
         const error = new Error("This theme already exists!")
         error.code = "theme-already-exists"
         throw error
       } else {
-        console.log(styles)
         // This means it doesn't exist, so we should create it
         await setDoc(doc(db, "users", uid, "themes", data.themeName), {
           state: {

@@ -15,6 +15,7 @@ module.exports = {
       xxl: "1400px"
     },
     colors: {
+      transparent: "transparent",
       black: "#292929",
       white: "#fff",
       gray: {

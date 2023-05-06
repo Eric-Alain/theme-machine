@@ -287,7 +287,7 @@ nav {
 .nav-container {
 	position: relative;
 	padding: 0 3rem;
-	background: var(--foreground);
+	background-color: var(--foreground);
 }
 
 .nav-bg-overlay {
@@ -296,8 +296,8 @@ nav {
 	width: 100%;
 	top: 0;
 	left: 0;
-	background-color: teal;
-	opacity: 0.025;
+	background-color: var(--secondary);
+	opacity: 0.25;
 	z-index: 0;
 }
 

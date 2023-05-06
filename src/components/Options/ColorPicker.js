@@ -61,6 +61,7 @@ const ColorPicker = ({ colors, category }) => {
       { name: "foreground", regex: /(?<=--foreground:[ *])(.*?)(?=;)/gm }
     ]
 
+    // set the local colors object
     const extractedColors = colors.reduce((obj, color) => {
       const match = reduxCss.match(color.regex)
       if (match) {
@@ -73,20 +74,15 @@ const ColorPicker = ({ colors, category }) => {
 
     setLocalColors(extractedColors)
 
-
-    /*const extractedColorsArr = colors.map(color => {
+    // run dispatch calls for specific colors
+    const extractedColorsArr = colors.map(color => {
       const match = reduxCss.match(color.regex)
-      return [ color.name, match ? match[0].toString() : "#000000" ]
+      return [color.name, match ? match[0].toString() : "#000000"]
     })
-    console.log(extractedColorsArr)
 
     extractedColorsArr.forEach(color => {
       dispatch(setColors([color[0], color[1]]))
-    })*/
-
-    dispatch(setColors(extractedColors))
-
-    //dispatch(setColors)
+    })
   }, [reduxCss, dispatch])
 
   //Hero icons found at https://heroicons.com

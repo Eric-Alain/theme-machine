@@ -42,6 +42,8 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
 
   const [showSave, setShowSave] = useState(false)
 
+  const [showLoadTheme, setShowLoadTheme] = useState(false)
+
   /************/
   /*VARS/INITS*/
   /************/
@@ -84,7 +86,9 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                 themeName: doc.id,
                 primary: colors.primary,
                 secondary: colors.secondary,
-                tertiary: colors.tertiary
+                tertiary: colors.tertiary,
+                background: colors.background,
+                foreground: colors.foreground
               })
               setLoadables(arr)
             })
@@ -242,27 +246,118 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                     {loadables ? (
                       loadables.map((item, i) => {
                         return (
-                          <li
-                            key={i}
-                            className="mb-1 p-1 rounded hover:bg-primary-300 hover:text-black transition-all"
-                          >
-                            <a href="#test" className="flex justify-between">
-                              <div>{item.themeName}</div>
-                              <div className="grid grid-cols-3 gap-1">
-                                <div
-                                  className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                  style={{ backgroundColor: item.primary }}
-                                ></div>
-                                <div
-                                  className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                  style={{ backgroundColor: item.secondary }}
-                                ></div>
-                                <div
-                                  className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                  style={{ backgroundColor: item.tertiary }}
-                                ></div>
+                          <li key={i} className="transition-all">
+                            <button
+                              href="#test"
+                              className="w-full mb-1 p-1 rounded hover:bg-primary-100 hover:text-black dark:hover:bg-gray-700 dark:hover:text-tertiary-100 transition-all"
+                              onClick={() => setShowLoadTheme(true)}
+                            >
+                              <div className="flex justify-between">
+                                <div>{item.themeName}</div>
+                                <div className="grid grid-cols-6 gap-1">
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.primary }}
+                                  ></div>
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.secondary }}
+                                  ></div>
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.tertiary }}
+                                  ></div>
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.background }}
+                                  ></div>
+                                  <div
+                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
+                                    style={{ backgroundColor: item.foreground }}
+                                  ></div>
+                                  <div className="group transition-all">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="24"
+                                      height="24"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      class="h-6 w-6 p-[3px] rounded border border-transparent text-black group-hover:text-[#b91c1c] group-hover:bg-tertiary-100 dark:text-tertiary-100 dark:bg-gray-600 dark:border-gray-400 dark:group-hover:text-tertiary-100 dark:group-hover:bg-gray-900 group-hover:border-tertiary-100 transition-all"
+                                    >
+                                      <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M10 12v5M14 12v5M4 7h16M6 10v8a3 3 0 003 3h6a3 3 0 003-3v-8M9 5a2 2 0 012-2h2a2 2 0 012 2v2H9V5z"
+                                      ></path>
+                                    </svg>
+                                  </div>
+                                </div>
                               </div>
-                            </a>
+                            </button>
+
+                            <div
+                              className={`mb-1 p-1 grid grid-cols-1 justify-start overflow-hidden${
+                                showLoadTheme ? " h-[4rem]" : " h-0"
+                              } transition-all`}
+                            >
+                              <div>
+                                Load this theme? Unsaved work will be lost.
+                              </div>
+                              <div className="grid grid-cols-10 gap-1 items-center">
+                                <div>
+                                  <button
+                                    className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
+                                    onClick={() => setShowLoadTheme(false)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="24"
+                                      height="24"
+                                      fill="none"
+                                      viewBox="0 0 20 20"
+                                      class="h-6 w-6 rounded text-primary-600 hover:text-black dark:text-tertiary-100 transition-all"
+                                    >
+                                      <path
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M17 5L8 15l-5-4"
+                                      ></path>
+                                    </svg>
+                                  </button>
+                                </div>
+
+                                <div>
+                                  <button
+                                    className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
+                                    onClick={() => setShowLoadTheme(false)}
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="24"
+                                      height="24"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      class="h-6 w-6 rounded text-primary-600 dark:text-tertiary-100 transition-all"
+                                    >
+                                      <g>
+                                        <path
+                                          stroke="currentColor"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth="2"
+                                          d="M18 18l-6-6m0 0L6 6m6 6l6-6m-6 6l-6 6"
+                                        ></path>
+                                      </g>
+                                    </svg>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </li>
                         )
                       })
