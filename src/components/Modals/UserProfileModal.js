@@ -14,6 +14,7 @@ import {
 
 import ImageUpload from "../ImageUpload/ImageUpload"
 import Snackbar from "../Snackbars/Snackbar"
+import ThemePalette from "./ThemePalette"
 
 const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
   /*************/
@@ -40,21 +41,10 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
   // Create state variable to store values from our db, will be used to render jsx
   const [loadables, setLoadables] = useState(null)
 
-  const [showSave, setShowSave] = useState(false)
+  // Show the save button if user makes changes to Display name or Display image fields
+  const [showSave, setShowSave] = useState(false) 
 
-  const [showLoadTheme, setShowLoadTheme] = useState({})
 
-  const handleShowLoadTheme = (key, bool) => {
-    let objCopy = {...showLoadTheme};
-	
-	for (let item of Object.keys(objCopy)) {
-		objCopy[item] = false
-	}
-
-	objCopy = { ...objCopy, [key]: bool }
-
-    setShowLoadTheme(objCopy)
-  }
 
   /************/
   /*VARS/INITS*/
@@ -62,6 +52,8 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
 
   // Context init for snackbar
   const SnackContext = createContext(snackBar)
+
+
 
   /******************/
   /*USE EFFECT HOOKS*/
@@ -141,15 +133,6 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, db])
 
-  /********************/
-  /*HANDLERS/LISTENERS*/
-  /********************/
-
-  // Handle form field changes
-  const handleChange = e => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-
   // Listen for changes in data, if different, show the save button
   useEffect(() => {
     if (!showSave) {
@@ -165,6 +148,15 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.displayName, data.image])
+
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
+
+  // Handle form field changes
+  const handleChange = e => {
+    setData({ ...data, [e.target.name]: e.target.value })
+  }
 
   // Handle form submit
   const handleSubmit = async e => {
@@ -254,133 +246,9 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                   <h4 className="h5 mb-3 mt-0 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Load theme
                   </h4>
-                  <ul className="unstyled text-black dark:text-tertiary-100 transition-all">
-                    {loadables ? (
-                      loadables.map((item, i) => {
-                        return (
-                          <li key={i} className="transition-all">
-                            <button
-                              href="#test"
-                              className="w-full mb-1 p-1 rounded hover:bg-primary-100 hover:text-black dark:hover:bg-gray-700 dark:hover:text-tertiary-100 transition-all"
-                              onClick={() => handleShowLoadTheme(i, true)}
-                            >
-                              <div className="flex justify-between">
-                                <div>{item.themeName}</div>
-                                <div className="grid grid-cols-6 gap-1">
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.primary }}
-                                  ></div>
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.secondary }}
-                                  ></div>
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.tertiary }}
-                                  ></div>
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.background }}
-                                  ></div>
-                                  <div
-                                    className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
-                                    style={{ backgroundColor: item.foreground }}
-                                  ></div>
-                                  <div className="group transition-all">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="24"
-                                      height="24"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      className="h-6 w-6 p-[3px] rounded border border-transparent text-black group-hover:text-[#b91c1c] group-hover:bg-tertiary-100 dark:text-tertiary-100 dark:bg-gray-600 dark:border-gray-400 dark:group-hover:text-tertiary-100 dark:group-hover:bg-gray-900 group-hover:border-tertiary-100 transition-all"
-                                    >
-                                      <path
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M10 12v5M14 12v5M4 7h16M6 10v8a3 3 0 003 3h6a3 3 0 003-3v-8M9 5a2 2 0 012-2h2a2 2 0 012 2v2H9V5z"
-                                      ></path>
-                                    </svg>
-                                  </div>
-                                </div>
-                              </div>
-                            </button>
-
-                            <div
-                              className={`mb-1 p-1 grid grid-cols-1 justify-start overflow-hidden${
-                                showLoadTheme[i] ? " h-[4rem]" : " h-0"
-                              } transition-all`}
-                            >
-                              <div>
-                                Load this theme? Unsaved work will be lost.
-                              </div>
-                              <div className="grid grid-cols-10 gap-1 items-center">
-                                <div>
-                                  <button
-                                    className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
-                                    onClick={() =>
-                                      handleShowLoadTheme(i, false)
-                                    }
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="24"
-                                      height="24"
-                                      fill="none"
-                                      viewBox="0 0 20 20"
-                                      className="h-6 w-6 rounded text-primary-600 hover:text-black dark:text-tertiary-100 transition-all"
-                                    >
-                                      <path
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M17 5L8 15l-5-4"
-                                      ></path>
-                                    </svg>
-                                  </button>
-                                </div>
-
-                                <div>
-                                  <button
-                                    className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
-                                    onClick={() =>
-                                      handleShowLoadTheme(i, false)
-                                    }
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="24"
-                                      height="24"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      className="h-6 w-6 rounded text-primary-600 dark:text-tertiary-100 transition-all"
-                                    >
-                                      <g>
-                                        <path
-                                          stroke="currentColor"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M18 18l-6-6m0 0L6 6m6 6l6-6m-6 6l-6 6"
-                                        ></path>
-                                      </g>
-                                    </svg>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        )
-                      })
-                    ) : (
-                      <p>No themes saved yet.</p>
-                    )}
-                  </ul>
+                  <ThemePalette
+                    themes={loadables}
+                  />
                   <h4 className="h5 mb-3 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Update profile
                   </h4>
