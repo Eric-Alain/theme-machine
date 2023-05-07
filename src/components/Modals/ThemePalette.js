@@ -2,7 +2,14 @@ import React, { useState } from "react"
 import PropTypes from "prop-types"
 import ProceedOrCancel from "./ProceedOrCancel"
 
+//Redux
+import { useDispatch } from "react-redux"
+import { loadStore } from "../../state/actions/root"
+
 const ThemePalette = ({ themes }) => {
+  //Redux
+  const dispatch = useDispatch()
+
   // Manage state for menus where the user is presented with the option to proceed or to cancel (in our case, for loading or deleting themes)
   const [showProceedOrCancel, setShowProceedOrCancel] = useState({})
 
@@ -41,6 +48,8 @@ const ThemePalette = ({ themes }) => {
             "foreground"
           ]
 
+		const { state } = item;
+
           return (
             <li key={i} className="transition-all">
               <div className="flex items-center">
@@ -55,9 +64,10 @@ const ThemePalette = ({ themes }) => {
                     <div>{item.themeName}</div>
                     <div className="grid grid-cols-5 gap-1">
                       {/* Make a color tile for each color found in colors array (must match saved state values) */}
-                      {colors.map(color => {
+                      {colors.map((color, c) => {
                         return (
                           <div
+                            key={c}
                             className="h-6 w-6 rounded border border-primary-300 dark:border-gray-400"
                             style={{ backgroundColor: item[color] }}
                           ></div>
@@ -99,6 +109,7 @@ const ThemePalette = ({ themes }) => {
                 message="Load this theme? Unsaved work will be lost."
                 showProceedOrCancel={showProceedOrCancel}
                 handleProceedOrCancel={handleProceedOrCancel}
+                callbacks={[() => dispatch(loadStore(state))]}
               />
 
               {/* Delete theme proceed or cancel */}

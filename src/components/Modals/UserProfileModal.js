@@ -92,7 +92,8 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                 secondary: colors.secondary,
                 tertiary: colors.tertiary,
                 background: colors.background,
-                foreground: colors.foreground
+                foreground: colors.foreground,
+			 state: doc.data().state
               })
               setLoadables(arr)
             })

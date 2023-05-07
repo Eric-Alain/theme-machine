@@ -5,7 +5,8 @@ const ProceedOrCancel = ({
   index,
   message,
   showProceedOrCancel,
-  handleProceedOrCancel
+  handleProceedOrCancel,
+  callbacks
 }) => {
   return (
     <div
@@ -15,10 +16,11 @@ const ProceedOrCancel = ({
     >
       <div>{message}</div>
       <div className="grid grid-cols-10 gap-1 items-center">
+        {/* Checkmark */}
         <div>
           <button
             className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
-            onClick={() => handleProceedOrCancel(index, false)}
+            onClick={() => handleProceedOrCancel(index, false, callbacks)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,6 +42,7 @@ const ProceedOrCancel = ({
           </button>
         </div>
 
+        {/* Close button */}
         <div>
           <button
             className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
@@ -74,7 +77,8 @@ ProceedOrCancel.propTypes = {
   index: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   showProceedOrCancel: PropTypes.object.isRequired,
-  handleProceedOrCancel: PropTypes.func.isRequired
+  handleProceedOrCancel: PropTypes.func.isRequired,
+  callbacks: PropTypes.arrayOf(PropTypes.func)
 }
 
 export default ProceedOrCancel

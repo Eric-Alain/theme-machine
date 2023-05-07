@@ -1,4 +1,4 @@
-import { RESET_STORE } from "../types/root"
+import { RESET_STORE, LOAD_STORE } from "../types/root"
 
 import { combineReducers } from "redux"
 
@@ -21,6 +21,10 @@ const rootReducer = (state, action) => {
     case RESET_STORE:
       storage.removeItem("persist:root")
       return appReducer(undefined, action)
+
+    case LOAD_STORE:
+      storage.removeItem("persist:root")
+      return appReducer(payload, action)
 
     default:
       return appReducer(state, action)
