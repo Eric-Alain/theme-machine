@@ -1,0 +1,1 @@
+export const ACTIVE_PALETTE = "ACTIVE_PALETTE"

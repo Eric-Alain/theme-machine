@@ -3,21 +3,32 @@ import React, { useState, useEffect, createContext } from "react"
 import PropTypes from "prop-types"
 
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"
+import { onAuthStateChanged } from "firebase/auth"
 
 import Snackbar from "../Snackbars/Snackbar"
+import ProceedOrCancel from "./ProceedOrCancel"
 import { capitalizeFirstLetter } from "../../utils"
 
 //Redux
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+
+import { setActivePalette } from "../../state/actions/palette"
 
 const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
-  const [uid, setUid] = useState(null)
+  const dispatch = useDispatch()
+
+  // For storing data about our user
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    if (auth.currentUser) {
-      setUid(auth.currentUser.uid)
-    }
-  }, [auth])
+    // Subscribe to user authentication
+    onAuthStateChanged(auth, async currentUser => {
+      if (currentUser) {
+        setUser(currentUser)
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth, db])
 
   const [snackBar, setSnackBar] = useState({
     variant: "success",
@@ -39,13 +50,71 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
     error: null
   })
 
+  // Manage state for menus where the user is presented with the option to proceed or to cancel (in our case, for loading or deleting themes)
+  const [showProceedOrCancel, setShowProceedOrCancel] = useState({})
+
+  const handleProceedOrCancel = (key, bool, callbacks) => {
+    // Close out other proceed or cancel menus
+    let objCopy = { ...showProceedOrCancel }
+
+    for (let item of Object.keys(objCopy)) {
+      objCopy[item] = false
+    }
+
+    // Show desired proceed or cancel menu
+    objCopy = { ...objCopy, [key]: bool }
+
+    // Set the state accordingly
+    setShowProceedOrCancel(objCopy)
+
+    // If we have any callback functions to run, run them
+    if (callbacks) {
+      callbacks.forEach(func => {
+        func()
+      })
+    }
+  }
+
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async e => {
-    e.preventDefault()
+  const writeTheme = async () => {
+    try {
+      if (user.uid) {
+        await setDoc(doc(db, "users", user.uid, "themes", data.themeName), {
+          state: {
+            styles: styles,
+            code: code,
+            palette: data.themeName
+          },
+          timestamp: serverTimestamp()
+        })
+        dispatch(setActivePalette(data.themeName))
+        setSnackBar({
+          ...snackBar,
+          variant: "success",
+          show: true,
+          message: <p>Theme "{data.themeName}" saved!</p>
+        })
+      } else {
+        setSnackBar({
+          ...snackBar,
+          variant: "danger",
+          show: true,
+          message: <p>You need to be logged in to save this theme.</p>
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
+  const handleSubmit = e => {
+    e.preventDefault()
+  }
+
+  const handleClick = async () => {
     // Reset our snackbar
     setSnackBar({
       ...snackBar,
@@ -56,29 +125,19 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
 
     // Try catch operation with firestore
     try {
-      console.log(uid)
-      const themeRef = doc(db, "users", uid, "themes", data.themeName)
-      const themeSnap = await getDoc(themeRef)
-      if (themeSnap.exists()) {
-        // This means we know that a theme with this name already exists in our collection, return an error for the snackbar
-        const error = new Error("This theme already exists!")
-        error.code = "theme-already-exists"
-        throw error
-      } else {
-        // This means it doesn't exist, so we should create it
-        await setDoc(doc(db, "users", uid, "themes", data.themeName), {
-          state: {
-            styles: styles,
-            code: code
-          },
-          timestamp: serverTimestamp()
-        })
-        setSnackBar({
-          ...snackBar,
-          variant: "success",
-          show: true,
-          message: <p>Theme "{data.themeName}" saved!</p>
-        })
+      if (user.uid) {
+        const themeRef = doc(db, "users", user.uid, "themes", data.themeName)
+        const themeSnap = await getDoc(themeRef)
+
+        if (themeSnap.exists()) {
+          console.log("theme exists")
+          // Show user proceed or cancel menu to decide if they want to overwrite the theme
+          handleProceedOrCancel("save-1", true)
+        } else {
+          console.log("theme dont exists")
+          // This means it doesn't exist, so we should create it
+          writeTheme()
+        }
       }
     } catch (e) {
       console.log(e)
@@ -258,11 +317,29 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
                           onChange={handleChange}
                         />
                       </div>
-                      <div>
-                        <button className="btn-main" type="submit">
+                      <div
+                        className={
+                          showProceedOrCancel["save-1"] ? "hidden" : ""
+                        }
+                      >
+                        <button
+                          className="btn-main"
+                          type="button"
+                          onClick={handleClick}
+                        >
                           Save
                         </button>
                       </div>
+
+                      {/* Load theme proceed or cancel */}
+                      <ProceedOrCancel
+                        index={`save-1`}
+                        message="A theme with this name already exists. Do you want to overwrite it?"
+                        showProceedOrCancel={showProceedOrCancel}
+                        handleProceedOrCancel={handleProceedOrCancel}
+                        proceedCallbacks={[() => writeTheme()]}
+                      />
+
                       <SnackContext.Provider value={{ snackBar, setSnackBar }}>
                         <Snackbar snackObj={snackBar} setShow={setSnackBar} />
                       </SnackContext.Provider>

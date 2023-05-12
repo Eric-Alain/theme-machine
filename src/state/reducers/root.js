@@ -5,13 +5,15 @@ import { combineReducers } from "redux"
 import stylesReducer from "../reducers/styles"
 import codeReducer from "../reducers/code"
 import themeReducer from "../reducers/theme"
+import paletteReducer from "../reducers/palette"
 import { storage } from "../createStore"
 
 //Create root reducer
 export const appReducer = combineReducers({
   styles: stylesReducer,
   code: codeReducer,
-  theme: themeReducer
+  theme: themeReducer,
+  palette: paletteReducer
 })
 
 const rootReducer = (state, action) => {

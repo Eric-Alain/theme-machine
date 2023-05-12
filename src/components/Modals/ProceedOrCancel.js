@@ -6,21 +6,28 @@ const ProceedOrCancel = ({
   message,
   showProceedOrCancel,
   handleProceedOrCancel,
-  callbacks
+  proceedCallbacks,
+  cancelCallbacks
 }) => {
   return (
     <div
       className={`grid grid-cols-1 justify-start overflow-hidden${
-        showProceedOrCancel[index] ? " mb-1 p-1 h-[4rem]" : " h-0 p-0"
+        showProceedOrCancel[index] ? " mb-1 p-1 min-h-fit h-[5rem]" : " h-0 p-0"
       } transition-all`}
     >
-      <div>{message}</div>
+      <div className="text-black dark:text-tertiary-100">{message}</div>
       <div className="grid grid-cols-10 gap-1 items-center">
         {/* Checkmark */}
         <div>
           <button
             className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
-            onClick={() => handleProceedOrCancel(index, false, callbacks)}
+            onClick={() =>
+              handleProceedOrCancel(
+                index,
+                false,
+                proceedCallbacks
+              )
+            }
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +53,13 @@ const ProceedOrCancel = ({
         <div>
           <button
             className="rounded border border-transparent hover:bg-primary-100 dark:hover:bg-gray-900 dark:hover:border dark:hover:border-tertiary-100 transition-all"
-            onClick={() => handleProceedOrCancel(index, false)}
+            onClick={() =>
+              handleProceedOrCancel(
+                index,
+                false,
+                cancelCallbacks
+              )
+            }
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
