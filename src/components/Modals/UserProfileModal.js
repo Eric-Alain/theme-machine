@@ -1,5 +1,11 @@
 //React
-import React, { useState, useEffect, createContext } from "react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  createContext,
+  useCallback
+} from "react"
 import PropTypes from "prop-types"
 
 import { signOut, onAuthStateChanged, updateProfile } from "firebase/auth"
@@ -195,7 +201,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
               }
             })
           }
-		// Call to local storage, setting a time stamp of the last time we updated the display image
+          // Call to local storage, setting a time stamp of the last time we updated the display image
           localStorage.setItem("tm-di-storage", new Date())
           if (typeof window !== "undefined") {
             window.dispatchEvent(new Event("storage"))
@@ -219,6 +225,25 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
       })
   }
 
+  // Listen for click outside of modal and close modal
+  const upRef = useRef()
+
+  const handleContext = useCallback(
+    e => {
+      if (upRef.current && !upRef.current.contains(e.target)) {
+        setShowModal(false)
+      }
+    },
+    [setShowModal]
+  )
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleContext)
+    return () => {
+      document.removeEventListener("mousedown", handleContext)
+    }
+  }, [handleContext])
+
   return (
     <>
       {showModal ? (
@@ -226,7 +251,11 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="w-[360px] relative my-6 mx-auto">
               {/*content*/}
-              <div className="rounded-md shadow-lg relative flex flex-col w-full bg-tertiary-100 dark:bg-gray-900 border border-solid border-primary-300 outline-none focus:outline-none">
+              <div
+                className="rounded-md shadow-lg relative flex flex-col w-full bg-tertiary-100 dark:bg-gray-900 border border-solid border-primary-300 outline-none focus:outline-none"
+                onClick={handleContext}
+                ref={upRef}
+              >
                 {/*header*/}
                 <div className="flex items-center justify-between rounded-t bg-primary-900 dark:bg-gray-700 dark:text-tertiary-100">
                   <div>

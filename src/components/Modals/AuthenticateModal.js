@@ -1,5 +1,11 @@
 //React
-import React, { useState, useEffect, createContext } from "react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  createContext,
+  useCallback
+} from "react"
 import PropTypes from "prop-types"
 
 import { onAuthStateChanged } from "firebase/auth"
@@ -53,6 +59,25 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
     })
   }, [])
 
+  // Listen for click outside of modal and close modal
+  const authRef = useRef()
+
+  const handleContext = useCallback(
+    e => {
+      if (authRef.current && !authRef.current.contains(e.target)) {
+        setShowModal(false)
+      }
+    },
+    [setShowModal]
+  )
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleContext)
+    return () => {
+      document.removeEventListener("mousedown", handleContext)
+    }
+  }, [handleContext])
+
   return (
     <>
       {showModal ? (
@@ -60,7 +85,11 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="w-[360px] relative my-6 mx-auto">
               {/*content*/}
-              <div className="rounded-md shadow-lg relative flex flex-col w-full bg-tertiary-100 dark:bg-gray-900 border border-solid border-primary-300 outline-none focus:outline-none">
+              <div
+                className="rounded-md shadow-lg relative flex flex-col w-full bg-tertiary-100 dark:bg-gray-900 border border-solid border-primary-300 outline-none focus:outline-none"
+                onClick={handleContext}
+                ref={authRef}
+              >
                 {/*header*/}
                 <div className="flex items-center justify-between rounded-t bg-primary-900 dark:bg-gray-700 dark:text-tertiary-100">
                   <div className="w-full grid grid-cols-2 gap-2 justify-between">
