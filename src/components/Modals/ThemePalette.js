@@ -1,13 +1,19 @@
+// React
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import ProceedOrCancel from "./ProceedOrCancel"
 
-//Redux
+// Redux
 import { useDispatch } from "react-redux"
 import { loadStore } from "../../state/actions/root"
 
-const ThemePalette = ({ themes }) => {
-  //Redux
+// Firebase
+import { doc, deleteDoc } from "firebase/firestore"
+
+// Components
+import ProceedOrCancel from "./ProceedOrCancel"
+
+const ThemePalette = ({ themes, user, db }) => {
+  // Redux dispatch
   const dispatch = useDispatch()
 
   // Manage state for menus where the user is presented with the option to proceed or to cancel (in our case, for loading or deleting themes)
@@ -35,6 +41,22 @@ const ThemePalette = ({ themes }) => {
     }
   }
 
+  // Hanlder function for when user wants to proceed with deleting a theme from their profile
+  const handleDelete = async docName => {
+    // Try catch operation with firestore
+    try {
+      // Only run if user is authenticated and has a uid
+      if (user.uid) {
+        // Reference to specific theme
+        const themeRef = doc(db, "users", user.uid, "themes", docName)
+        // Delete call
+        await deleteDoc(themeRef)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   return (
     <ul className="unstyled text-black dark:text-tertiary-100 transition-all">
       {/* If user's profile has any saved themes, map and display them */}
@@ -48,7 +70,7 @@ const ThemePalette = ({ themes }) => {
             "foreground"
           ]
 
-		const { state } = item;
+          const { state } = item
 
           return (
             <li key={i} className="transition-all">
@@ -109,7 +131,7 @@ const ThemePalette = ({ themes }) => {
                 message="Load this theme? Unsaved work will be lost."
                 showProceedOrCancel={showProceedOrCancel}
                 handleProceedOrCancel={handleProceedOrCancel}
-                callbacks={[() => dispatch(loadStore(state))]}
+                proceedCallbacks={[() => dispatch(loadStore(state))]}
               />
 
               {/* Delete theme proceed or cancel */}
@@ -118,6 +140,7 @@ const ThemePalette = ({ themes }) => {
                 message="Delete this theme? This action is irreversible."
                 showProceedOrCancel={showProceedOrCancel}
                 handleProceedOrCancel={handleProceedOrCancel}
+                proceedCallbacks={[() => handleDelete(item.themeName)]}
               />
             </li>
           )
@@ -133,7 +156,8 @@ const ThemePalette = ({ themes }) => {
 }
 
 ThemePalette.propTypes = {
-  themes: PropTypes.array.isRequired
+  themes: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 export default ThemePalette

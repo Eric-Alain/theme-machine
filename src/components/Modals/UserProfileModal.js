@@ -42,9 +42,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
   const [loadables, setLoadables] = useState(null)
 
   // Show the save button if user makes changes to Display name or Display image fields
-  const [showSave, setShowSave] = useState(false) 
-
-
+  const [showSave, setShowSave] = useState(false)
 
   /************/
   /*VARS/INITS*/
@@ -52,8 +50,6 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
 
   // Context init for snackbar
   const SnackContext = createContext(snackBar)
-
-
 
   /******************/
   /*USE EFFECT HOOKS*/
@@ -93,7 +89,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                 tertiary: colors.tertiary,
                 background: colors.background,
                 foreground: colors.foreground,
-			 state: doc.data().state
+                state: doc.data().state
               })
               setLoadables(arr)
             })
@@ -199,6 +195,11 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
               }
             })
           }
+		// Call to local storage, setting a time stamp of the last time we updated the display image
+          localStorage.setItem("tm-di-storage", new Date())
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new Event("storage"))
+          }
         } catch (e) {
           console.log(e)
         }
@@ -247,9 +248,7 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                   <h4 className="h5 mb-3 mt-0 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Load theme
                   </h4>
-                  <ThemePalette
-                    themes={loadables}
-                  />
+                  <ThemePalette themes={loadables} user={user} db={db} />
                   <h4 className="h5 mb-3 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Update profile
                   </h4>
