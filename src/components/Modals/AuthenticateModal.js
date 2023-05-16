@@ -28,9 +28,15 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
     message: null
   })
 
-  const SnackContext = createContext(snackBar)
+  // Reset snack bar
+  const hideSnackbar = () => {
+    setSnackBar({
+      ...snackBar,
+      show: false
+    })
+  }
 
-  auth.languageCode = "it"
+  const SnackContext = createContext(snackBar)
 
   const [passwordPlaceholder, setPasswordPlaceholder] = useState("")
 
@@ -48,6 +54,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
   ]
 
   const [authShow, setAuthShow] = useState(false)
+  const [showPasswordRecover, setShowPasswordRecover] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, currentUser => {
@@ -100,7 +107,12 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                         signUp ? "hover:border-primary-700 " : ""
                       }border-primary-900 transition-colors duration-500`}
                     >
-                      <button onClick={() => setSignUp(false)}>
+                      <button
+                        onClick={() => {
+                          setSignUp(false)
+                          setShowPasswordRecover(false)
+                        }}
+                      >
                         <h3 className="ml-3 my-0 pt-2 pb-1 text-tertiary-100">
                           Login
                         </h3>
@@ -147,6 +159,8 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                       passwordPlaceholders={passwordPlaceholders}
                       snackBar={snackBar}
                       setSnackBar={setSnackBar}
+                      showPasswordRecover={showPasswordRecover}
+                      setShowPasswordRecover={setShowPasswordRecover}
                     />
                   ) : (
                     /*Sign up*/

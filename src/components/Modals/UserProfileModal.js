@@ -21,8 +21,17 @@ import {
 import ImageUpload from "../ImageUpload/ImageUpload"
 import Snackbar from "../Snackbars/Snackbar"
 import ThemePalette from "./ThemePalette"
+import ProceedOrCancel from "./ProceedOrCancel"
 
-const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
+const UserProfileModal = ({
+  auth,
+  db,
+  storage,
+  showModal,
+  setShowModal,
+  showProceedOrCancel,
+  handleProceedOrCancel
+}) => {
   /*************/
   /*STATE HOOKS*/
   /*************/
@@ -225,6 +234,20 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
       })
   }
 
+  // Handle delete account
+  const handleDeleteAcount = () => {
+    // Call delete() method on our auth object (only a logged in/authenticated user can delete their own account)
+    auth.currentUser
+      .delete()
+      .then(() => {
+        // If succesful, close the modal (as only authenticated users should have access to the user profile menu)
+        setShowModal(false)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
+
   // Listen for click outside of modal and close modal
   const upRef = useRef()
 
@@ -277,7 +300,13 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                   <h4 className="h5 mb-3 mt-0 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Load theme
                   </h4>
-                  <ThemePalette themes={loadables} user={user} db={db} />
+                  <ThemePalette
+                    themes={loadables}
+                    user={user}
+                    db={db}
+                    showProceedOrCancel={showProceedOrCancel}
+                    handleProceedOrCancel={handleProceedOrCancel}
+                  />
                   <h4 className="h5 mb-3 py-0 text-black dark:text-tertiary-100 border-b primary-300 dark:border-gray-400">
                     Update profile
                   </h4>
@@ -330,10 +359,22 @@ const UserProfileModal = ({ auth, db, storage, showModal, setShowModal }) => {
                     >
                       Logout
                     </button>
-                    <button className="ml-3 btn-danger" type="button">
+                    <button
+                      className="ml-3 btn-danger"
+                      type="button"
+                      onClick={() => handleProceedOrCancel(`del-acc-1`, true)}
+                    >
                       Delete account
                     </button>
                   </div>
+                  {/* Delete theme proceed or cancel */}
+                  <ProceedOrCancel
+                    index={`del-acc-1`}
+                    message="<strong>Are you absolutely sure</strong>? This action is irreversible."
+                    showProceedOrCancel={showProceedOrCancel}
+                    handleProceedOrCancel={handleProceedOrCancel}
+                    proceedCallbacks={[() => handleDeleteAcount()]}
+                  />
                 </div>
               </div>
             </div>

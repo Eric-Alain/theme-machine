@@ -1,14 +1,26 @@
-//React
+// React
 import React from "react"
 import PropTypes from "prop-types"
 
+// Firebase
 import { signInWithPopup, GithubAuthProvider } from "firebase/auth"
 
+// Utils
 import { capitalizeFirstLetter } from "../../utils"
 
 const GithubAuth = ({ auth, snackBar, setSnackBar }) => {
+  /************/
+  /*VARS/INITS*/
+  /************/
+
+  // Create Github auth object
   const githubProvider = new GithubAuthProvider()
 
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
+
+  // Handle Github auth sign in method
   const handleGithubAuth = () => {
     signInWithPopup(auth, githubProvider)
       //.then(result => {})
@@ -48,6 +60,7 @@ const GithubAuth = ({ auth, snackBar, setSnackBar }) => {
         }
       })
   }
+
   return (
     <button
       className="w-fit p-2 hover:bg-gray-200 border-primary-900 dark:bg-gray-700 dark:hover:bg-gray-400 dark:border-gray-500 border rounded transition-all"

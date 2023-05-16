@@ -1,14 +1,26 @@
-//React
+// React
 import React from "react"
 import PropTypes from "prop-types"
 
+// Firebase
 import { signInWithPopup, FacebookAuthProvider } from "firebase/auth"
 
+// Utils
 import { capitalizeFirstLetter } from "../../utils"
 
 const FacebookAuth = ({ auth, snackBar, setSnackBar }) => {
+  /************/
+  /*VARS/INITS*/
+  /************/
+
+  // Create FB auth object
   const facebookProvider = new FacebookAuthProvider()
 
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
+
+  // Handle FB auth sign in method
   const handleFacebookAuth = () => {
     signInWithPopup(auth, facebookProvider)
       //.then(result => {})
@@ -48,6 +60,7 @@ const FacebookAuth = ({ auth, snackBar, setSnackBar }) => {
         }
       })
   }
+
   return (
     <button
       className="w-fit p-2 hover:bg-gray-200 border-primary-900 dark:bg-gray-700 dark:hover:bg-gray-800 dark:border-gray-500 border rounded transition-all"

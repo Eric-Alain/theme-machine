@@ -19,7 +19,14 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { setActivePalette } from "../../state/actions/palette"
 
-const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
+const SaveThemeModal = ({
+  auth,
+  db,
+  showModal,
+  setShowModal,
+  showProceedOrCancel,
+  handleProceedOrCancel
+}) => {
   const dispatch = useDispatch()
 
   // For storing data about our user
@@ -54,31 +61,6 @@ const SaveThemeModal = ({ auth, db, showModal, setShowModal }) => {
     themeName: "",
     error: null
   })
-
-  // Manage state for menus where the user is presented with the option to proceed or to cancel (in our case, for loading or deleting themes)
-  const [showProceedOrCancel, setShowProceedOrCancel] = useState({})
-
-  const handleProceedOrCancel = (key, bool, callbacks) => {
-    // Close out other proceed or cancel menus
-    let objCopy = { ...showProceedOrCancel }
-
-    for (let item of Object.keys(objCopy)) {
-      objCopy[item] = false
-    }
-
-    // Show desired proceed or cancel menu
-    objCopy = { ...objCopy, [key]: bool }
-
-    // Set the state accordingly
-    setShowProceedOrCancel(objCopy)
-
-    // If we have any callback functions to run, run them
-    if (callbacks) {
-      callbacks.forEach(func => {
-        func()
-      })
-    }
-  }
 
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })

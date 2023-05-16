@@ -1,5 +1,5 @@
 // React
-import React, { useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 
 // Redux
@@ -12,34 +12,15 @@ import { doc, deleteDoc } from "firebase/firestore"
 // Components
 import ProceedOrCancel from "./ProceedOrCancel"
 
-const ThemePalette = ({ themes, user, db }) => {
+const ThemePalette = ({
+  themes,
+  user,
+  db,
+  showProceedOrCancel,
+  handleProceedOrCancel
+}) => {
   // Redux dispatch
   const dispatch = useDispatch()
-
-  // Manage state for menus where the user is presented with the option to proceed or to cancel (in our case, for loading or deleting themes)
-  const [showProceedOrCancel, setShowProceedOrCancel] = useState({})
-
-  const handleProceedOrCancel = (key, bool, arrayOfFunctions) => {
-    // Close out other proceed or cancel menus
-    let objCopy = { ...showProceedOrCancel }
-
-    for (let item of Object.keys(objCopy)) {
-      objCopy[item] = false
-    }
-
-    // Show desired proceed or cancel menu
-    objCopy = { ...objCopy, [key]: bool }
-
-    // Set the state accordingly
-    setShowProceedOrCancel(objCopy)
-
-    // If we have any callback functions to run, run them
-    if (arrayOfFunctions) {
-      arrayOfFunctions.forEach(func => {
-        func()
-      })
-    }
-  }
 
   // Hanlder function for when user wants to proceed with deleting a theme from their profile
   const handleDelete = async docName => {
@@ -156,7 +137,7 @@ const ThemePalette = ({ themes, user, db }) => {
 }
 
 ThemePalette.propTypes = {
-  themes: PropTypes.array.isRequired,
+  themes: PropTypes.array,
   user: PropTypes.object.isRequired
 }
 

@@ -1,15 +1,27 @@
-//React
+// React
 import React from "react"
 import PropTypes from "prop-types"
 
+// Firebase
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 
+// Utils
 import { capitalizeFirstLetter } from "../../utils"
 
 const GoogleAuth = ({ auth, snackBar, setSnackBar }) => {
+  /************/
+  /*VARS/INITS*/
+  /************/
+
+  // Create Google auth object and configure scope
   const googleProvider = new GoogleAuthProvider()
   googleProvider.addScope("https://www.googleapis.com/auth/contacts.readonly")
 
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
+
+  // Handle Google auth sign in method
   const handleGoogleAuth = () => {
     signInWithPopup(auth, googleProvider)
       //.then(result => {})
@@ -49,6 +61,7 @@ const GoogleAuth = ({ auth, snackBar, setSnackBar }) => {
         }
       })
   }
+
   return (
     <button
       className="w-fit p-2 hover:bg-gray-200 border-primary-900 dark:bg-gray-700 dark:hover:bg-gray-800 dark:border-gray-500 border rounded transition-all"
