@@ -1,4 +1,4 @@
-//React
+// React
 import React from "react"
 import PropTypes from "prop-types"
 
@@ -72,7 +72,7 @@ const Snackbar = ({ snackObj, setShow }) => {
             <svg
               className="fill-current h-6 w-6"
               role="button"
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http:// www.w3.org/2000/svg"
               viewBox="0 0 20 20"
             >
               <title>Close</title>

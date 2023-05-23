@@ -1,30 +1,30 @@
-//React
+// React
 import React, { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 
-//Redux
+// Redux
 import { useSelector, useDispatch } from "react-redux"
 import { setColors } from "../../state/actions/styles"
 
-//Components
+// Components
 import { SketchPicker } from "react-color"
 
-//Utils
+// Utils
 import { lightOrDark } from "../../utils"
 
 const ColorPicker = ({ colors, category }) => {
   const reduxCss = useSelector(state => state.code.css)
 
-  //Local state for component
+  // Local state for component
   const [hide, setHide] = useState(true)
   const [pickerOpen, setPickerOpen] = useState(false)
   const ref = useRef(null)
   const [localColors, setLocalColors] = useState(colors)
 
-  //Redux
+  // Redux
   const dispatch = useDispatch()
 
-  //Handlers
+  // Handlers
   const toggleHide = () => {
     if (pickerOpen) {
       setPickerOpen(false)
@@ -61,7 +61,7 @@ const ColorPicker = ({ colors, category }) => {
       { name: "foreground", regex: /(?<=--foreground:[ *])(.*?)(?=;)/gm }
     ]
 
-    // set the local colors object
+    //  set the local colors object
     const extractedColors = colors.reduce((obj, color) => {
       const match = reduxCss.match(color.regex)
       if (match) {
@@ -74,7 +74,7 @@ const ColorPicker = ({ colors, category }) => {
 
     setLocalColors(extractedColors)
 
-    // run dispatch calls for specific colors
+    //  run dispatch calls for specific colors
     const extractedColorsArr = colors.map(color => {
       const match = reduxCss.match(color.regex)
       return [color.name, match ? match[0].toString() : "#000000"]
@@ -85,7 +85,7 @@ const ColorPicker = ({ colors, category }) => {
     })
   }, [reduxCss, dispatch])
 
-  //Hero icons found at https://heroicons.com
+  // Hero icons found at https:// heroicons.com
   return (
     <>
       <div className="relative z-0">
@@ -95,7 +95,7 @@ const ColorPicker = ({ colors, category }) => {
           style={{ background: localColors[category] }}
         >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
+            xmlns="http:// www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
             className="h-6"

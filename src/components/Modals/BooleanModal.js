@@ -1,8 +1,12 @@
-//React
+// React
 import React, { useEffect, useRef, useCallback } from "react"
 import PropTypes from "prop-types"
 
 const BooleanModal = ({ showModal, setShowModal, callback }) => {
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
+
   // Listen for click outside of modal and close modal
   const boolRef = useRef()
 
@@ -21,7 +25,7 @@ const BooleanModal = ({ showModal, setShowModal, callback }) => {
       document.removeEventListener("mousedown", handleContext)
     }
   }, [handleContext])
-  
+
   return (
     <>
       {showModal ? (

@@ -1,4 +1,4 @@
-//React
+// React
 import React, {
   useState,
   useEffect,
@@ -8,16 +8,16 @@ import React, {
 } from "react"
 import PropTypes from "prop-types"
 
+// Firebase
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
 
+// Components
 import Snackbar from "../Snackbars/Snackbar"
 import ProceedOrCancel from "./ProceedOrCancel"
 
-//Redux
-import { useSelector, useDispatch } from "react-redux"
-
-import { setActivePalette } from "../../state/actions/palette"
+// Redux
+import { useSelector } from "react-redux"
 
 const SaveThemeModal = ({
   auth,
@@ -27,11 +27,48 @@ const SaveThemeModal = ({
   showProceedOrCancel,
   handleProceedOrCancel
 }) => {
-  const dispatch = useDispatch()
+  /*************/
+  /*STATE HOOKS*/
+  /*************/
 
-  // For storing data about our user
+  // For storing data about our firebase user
   const [user, setUser] = useState(null)
 
+  // Form control values
+  const [data, setData] = useState({
+    themeName: "",
+    error: null
+  })
+
+  // Snackbar alert state
+  const [snackBar, setSnackBar] = useState({
+    variant: "success",
+    show: false,
+    message: null
+  })
+
+  // State for describing roundness of current theme
+  const [roundnessDesc, setRoundnessDesc] = useState("")
+
+  /************/
+  /*VARS/INITS*/
+  /************/
+
+  // Context needed for snackbar state for nested components
+  const SnackContext = createContext(snackBar)
+
+  // Redux useSelector hooks
+  const colors = useSelector(state => state.styles.colors)
+  const fonts = useSelector(state => state.styles.fonts)
+  const shape = useSelector(state => state.styles.shape)
+  const styles = useSelector(state => state.styles)
+  const code = useSelector(state => state.code)
+
+  /******************/
+  /*USE EFFECT HOOKS*/
+  /******************/
+
+  // Firebase, listen for change in authenticated state
   useEffect(() => {
     // Subscribe to user authentication
     onAuthStateChanged(auth, async currentUser => {
@@ -42,97 +79,7 @@ const SaveThemeModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, db])
 
-  const [snackBar, setSnackBar] = useState({
-    variant: "success",
-    show: false,
-    message: null
-  })
-
-  const SnackContext = createContext(snackBar)
-
-  const colors = useSelector(state => state.styles.colors)
-  const fonts = useSelector(state => state.styles.fonts)
-  const shape = useSelector(state => state.styles.shape)
-
-  const styles = useSelector(state => state.styles)
-  const code = useSelector(state => state.code)
-
-  const [data, setData] = useState({
-    themeName: "",
-    error: null
-  })
-
-  const handleChange = e => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
-
-  const writeTheme = async () => {
-    try {
-      if (user.uid) {
-        await setDoc(doc(db, "users", user.uid, "themes", data.themeName), {
-          state: {
-            styles: styles,
-            code: code,
-            palette: data.themeName
-          },
-          timestamp: serverTimestamp()
-        })
-        dispatch(setActivePalette(data.themeName))
-        setSnackBar({
-          ...snackBar,
-          variant: "success",
-          show: true,
-          message: <p>Theme "{data.themeName}" saved!</p>
-        })
-      } else {
-        setSnackBar({
-          ...snackBar,
-          variant: "danger",
-          show: true,
-          message: <p>You need to be logged in to save this theme.</p>
-        })
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const handleSubmit = e => {
-    e.preventDefault()
-  }
-
-  const handleClick = async () => {
-    // Reset our snackbar
-    setSnackBar({
-      ...snackBar,
-      variant: "success",
-      show: false,
-      message: <p></p>
-    })
-
-    // Try catch operation with firestore
-    try {
-      if (user.uid) {
-        const themeRef = doc(db, "users", user.uid, "themes", data.themeName)
-        const themeSnap = await getDoc(themeRef)
-
-        if (themeSnap.exists()) {
-          console.log("theme exists")
-          // Show user proceed or cancel menu to decide if they want to overwrite the theme
-          handleProceedOrCancel("save-1", true)
-        } else {
-          console.log("theme dont exists")
-          // This means it doesn't exist, so we should create it
-          writeTheme()
-        }
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const [roundnessDesc, setRoundnessDesc] = useState("")
-
+  // Update term used to describe roundness when it changes
   useEffect(() => {
     const describeRoundness = () => {
       if (shape.radius > 0 && shape.radius <= 4) {
@@ -151,6 +98,86 @@ const SaveThemeModal = ({
     }
     setRoundnessDesc(describeRoundness())
   }, [shape.radius])
+
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
+
+  // Handle input field value changes
+  const handleChange = e => {
+    setData({ ...data, [e.target.name]: e.target.value })
+  }
+
+  // Callback handler to save theme to user's firebase profile
+  const writeTheme = async () => {
+    try {
+      // If user it authenticated
+      if (user.uid) {
+        // Set doc at specific end point
+        await setDoc(doc(db, "users", user.uid, "themes", data.themeName), {
+          state: {
+            styles: styles,
+            code: code,
+            palette: data.themeName
+          },
+          timestamp: serverTimestamp()
+        })
+        // Leave a nice message
+        setSnackBar({
+          ...snackBar,
+          variant: "success",
+          show: true,
+          message: <p>Theme "{data.themeName}" saved!</p>
+        })
+      } else {
+        // Otherwise alert user of issue
+        setSnackBar({
+          ...snackBar,
+          variant: "danger",
+          show: true,
+          message: <p>You need to be logged in to save this theme.</p>
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  // Override form default, for some reason, can't simply use form submit
+  const handleSubmit = e => {
+    e.preventDefault()
+  }
+
+  // Handle save button click
+  const handleClick = async () => {
+    // Reset our snackbar
+    setSnackBar({
+      ...snackBar,
+      variant: "success",
+      show: false,
+      message: <p></p>
+    })
+
+    // Try catch operation with firestore
+    try {
+      // If user is authenticated
+      if (user.uid) {
+        // Create end point ref and call it
+        const themeRef = doc(db, "users", user.uid, "themes", data.themeName)
+        const themeSnap = await getDoc(themeRef)
+        // If it exists
+        if (themeSnap.exists()) {
+          // Show user proceed or cancel menu to decide if they want to overwrite the theme
+          handleProceedOrCancel("save-1", true)
+        } else {
+          // This means it doesn't exist, so we should create it
+          writeTheme()
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   // Listen for click outside of modal and close modal
   const saveRef = useRef()
@@ -363,8 +390,11 @@ const SaveThemeModal = ({
 
 SaveThemeModal.propTypes = {
   auth: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
   showModal: PropTypes.bool.isRequired,
-  setShowModal: PropTypes.func.isRequired
+  setShowModal: PropTypes.func.isRequired,
+  showProceedOrCancel: PropTypes.object,
+  handleProceedOrCancel: PropTypes.func
 }
 
 export default SaveThemeModal

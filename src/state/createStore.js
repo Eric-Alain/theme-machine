@@ -46,8 +46,7 @@ const persistConfig = getPersistConfig({
     "styles.shape.radius",
     "code.bodyHtml",
     "code.css",
-    "theme",
-    "palette"
+    "theme"
   ],
   rootReducer
 })

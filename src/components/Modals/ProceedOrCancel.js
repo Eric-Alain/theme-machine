@@ -1,3 +1,4 @@
+// React
 import React from "react"
 import PropTypes from "prop-types"
 
@@ -29,7 +30,7 @@ const ProceedOrCancel = ({
             }
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http:// www.w3.org/2000/svg"
               width="24"
               height="24"
               fill="none"
@@ -55,7 +56,7 @@ const ProceedOrCancel = ({
             onClick={() => handleProceedOrCancel(index, false, cancelCallbacks)}
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http:// www.w3.org/2000/svg"
               width="24"
               height="24"
               fill="none"
@@ -82,8 +83,8 @@ const ProceedOrCancel = ({
 ProceedOrCancel.propTypes = {
   index: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
-  showProceedOrCancel: PropTypes.object.isRequired,
-  handleProceedOrCancel: PropTypes.func.isRequired,
+  showProceedOrCancel: PropTypes.object,
+  handleProceedOrCancel: PropTypes.func,
   callbacks: PropTypes.arrayOf(PropTypes.func)
 }
 

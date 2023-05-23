@@ -1,37 +1,37 @@
-//React
+// React
 import React, { useState, useEffect } from "react"
 
-//Redux
+// Redux
 import { useDispatch, useSelector } from "react-redux"
 import { setBodyHtml, setCSS } from "../../state/actions/code"
 
-//Editor component
+// Editor component
 import Editor from "react-simple-code-editor"
 
-//Prismjs syntax highlighter options for editor
+// Prismjs syntax highlighter options for editor
 import { highlight, languages } from "prismjs/components/prism-core"
 import "prismjs/components/prism-markup"
 import "prismjs/components/prism-css"
 
 import { dark, light } from "./editorStyles"
 
-//Components
+// Components
 import CopyOverlay from "./CopyOverlay"
 
-//Utils
+// Utils
 import { debounce, htmlEntities, decodeHtmlEntities } from "../../utils"
 
 const Code = () => {
   const dispatch = useDispatch()
 
-  //Theme selector
+  // Theme selector
   const theme = useSelector(state => state.theme)
 
-  //Redux selectors to trigger useEffect whenever they change
+  // Redux selectors to trigger useEffect whenever they change
   const reduxBodyHtml = useSelector(state => state.code.bodyHtml)
   const reduxCss = useSelector(state => state.code.css)
 
-  //useState for component rendering
+  // useState for component rendering
   const [localHtml, localSetHtml] = useState(reduxBodyHtml)
   const [localCss, localSetCss] = useState(reduxCss)
 
@@ -59,7 +59,7 @@ const Code = () => {
   /*Copy clipboards*/
   /*****************/
 
-  //HTML copy clipboard
+  // HTML copy clipboard
   const [htmlClipVis, setHtmlClipVis] = useState(false)
   const [htmlClipCopied, setHtmlClipCopied] = useState(false)
 
@@ -85,7 +85,7 @@ const Code = () => {
     }
   }, [htmlClipCopied])
 
-  //CSS copy clipboard
+  // CSS copy clipboard
   const [cssClipVis, setCssClipVis] = useState(false)
   const [cssClipCopied, setCssClipCopied] = useState(false)
 

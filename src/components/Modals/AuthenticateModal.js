@@ -1,4 +1,4 @@
-//React
+// React
 import React, {
   useState,
   useEffect,
@@ -8,38 +8,50 @@ import React, {
 } from "react"
 import PropTypes from "prop-types"
 
+// Firebase
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../Firebase/Firebase"
 
+// Components
 import Login from "../Authentication/Login"
 import Signup from "../Authentication/Signup"
 import GoogleAuth from "../Authentication/GoogleAuth"
 import FacebookAuth from "../Authentication/FacebookAuth"
 import GithubAuth from "../Authentication/GithubAuth"
-
 import Snackbar from "../Snackbars/Snackbar"
 
 const AuthenticateModal = ({ showModal, setShowModal }) => {
+  /*************/
+  /*STATE HOOKS*/
+  /*************/
+
+  // Show sign up menu or not
   const [signUp, setSignUp] = useState(false)
 
+  // Set random placeholder string for password input field
+  const [passwordPlaceholder, setPasswordPlaceholder] = useState("")
+
+  // Show menu based on whether use is authenticated or not
+  const [authShow, setAuthShow] = useState(false)
+
+  // Show different menu if user wishers to recover password
+  const [showPasswordRecover, setShowPasswordRecover] = useState(false)
+
+  // Snackbar alert state
   const [snackBar, setSnackBar] = useState({
     variant: "success",
     show: false,
     message: null
   })
 
-  // Reset snack bar
-  const hideSnackbar = () => {
-    setSnackBar({
-      ...snackBar,
-      show: false
-    })
-  }
+  /************/
+  /*VARS/INITS*/
+  /************/
 
+  // Context needed for snackbar state for nested components
   const SnackContext = createContext(snackBar)
 
-  const [passwordPlaceholder, setPasswordPlaceholder] = useState("")
-
+  // Array of fun input placeholder strings
   const passwordPlaceholders = [
     "AllYourBaseAreBelongToUs",
     "passwordispassword",
@@ -53,8 +65,9 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
     "YouShallNotPass(word)"
   ]
 
-  const [authShow, setAuthShow] = useState(false)
-  const [showPasswordRecover, setShowPasswordRecover] = useState(false)
+  /******************/
+  /*USE EFFECT HOOKS*/
+  /******************/
 
   useEffect(() => {
     onAuthStateChanged(auth, currentUser => {
@@ -65,6 +78,10 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
       }
     })
   }, [])
+
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
 
   // Listen for click outside of modal and close modal
   const authRef = useRef()
@@ -153,6 +170,7 @@ const AuthenticateModal = ({ showModal, setShowModal }) => {
                     <Login
                       auth={auth}
                       authShow={authShow}
+                      showModal={showModal}
                       setShowModal={setShowModal}
                       passwordPlaceholder={passwordPlaceholder}
                       setPasswordPlaceholder={setPasswordPlaceholder}

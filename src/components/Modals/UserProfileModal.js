@@ -1,4 +1,4 @@
-//React
+// React
 import React, {
   useState,
   useEffect,
@@ -230,7 +230,7 @@ const UserProfileModal = ({
         setShowSave(false)
       })
       .catch(e => {
-        //console.log(e)
+        // console.log(e)
       })
   }
 

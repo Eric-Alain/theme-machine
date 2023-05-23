@@ -6,7 +6,6 @@ import PropTypes from "prop-types"
 import {
   signInWithEmailAndPassword,
   signOut,
-  fetchSignInMethodsForEmail,
   sendPasswordResetEmail
 } from "firebase/auth"
 
@@ -16,6 +15,7 @@ import { randomStringFromArray, capitalizeFirstLetter } from "../../utils"
 const Login = ({
   auth,
   authShow,
+  showModal,
   setShowModal,
   passwordPlaceholder,
   setPasswordPlaceholder,
@@ -40,12 +40,18 @@ const Login = ({
   /******************/
   /*USE EFFECT HOOKS*/
   /******************/
+
   useEffect(() => {
     setPasswordPlaceholder(
       randomStringFromArray(passwordPlaceholder, passwordPlaceholders)
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // If user closes modal, reset menu
+  useEffect(() => {
+    setShowPasswordRecover(false)
+  }, [showModal, setShowPasswordRecover])
 
   /********************/
   /*HANDLERS/LISTENERS*/
@@ -70,86 +76,24 @@ const Login = ({
   }
 
   // Handle when user wants to submit their info for login
-  const handleLogin = async => {
+  const handleLogin = () => {
     hideSnackbar()
-    try {
-      // Check if the email entered has an email and password sign in method
-      fetchSignInMethodsForEmail(auth, data.email).then(result => {
-        //If so, attempt to sign in using email and password
-        if (result.some(str => str === "password")) {
-          // Try to create user account using email and password
-          signInWithEmailAndPassword(auth, data.email, data.password).catch(
-            e => {
-              if (e.code === "auth/account-exists-with-different-credential") {
-                setSnackBar({
-                  ...snackBar,
-                  variant: "warning",
-                  show: true,
-                  message: (
-                    <>
-                      <p className="mb-3">
-                        {capitalizeFirstLetter(
-                          e.code
-                            .replace(/^auth\/(.*?)$/gm, "$1")
-                            .replace(/-/gm, " ")
-                        )}{" "}
-                        for "{e.customData.email}".
-                      </p>
-                      <p>Why don't you try signing in a different way?</p>
-                    </>
-                  )
-                })
-              } else {
-                setSnackBar({
-                  ...snackBar,
-                  variant: "danger",
-                  show: true,
-                  message: (
-                    <>
-                      <p className="mb-3">
-                        {capitalizeFirstLetter(
-                          e.code
-                            .replace(/^auth\/(.*?)$/gm, "$1")
-                            .replace(/-/gm, " ")
-                        )}
-                      </p>
-                    </>
-                  )
-                })
-              }
-            }
-          )
-        }
-        // Otherwise, set a warning snackbar that an account exists with another method
-        else {
-          setSnackBar({
-            ...snackBar,
-            variant: "warning",
-            show: true,
-            message: (
-              <>
-                <p className="mb-3">
-                  Account exists with different credential for "{data.email}".
-                </p>
-                <p>Why don't you try signing in a different way?</p>
-              </>
-            )
-          })
-        }
-      })
-    } catch (e) {
-      // Otherwise display the error message to the user
+    signInWithEmailAndPassword(auth, data.email, data.password).catch(e => {
       setSnackBar({
         ...snackBar,
         variant: "danger",
         show: true,
         message: (
-          <p>
-            {e.code}: {e.message}
-          </p>
+          <>
+            <p className="mb-3">
+              {capitalizeFirstLetter(
+                e.code.replace(/^auth\/(.*?)$/gm, "$1").replace(/-/gm, " ")
+              )}
+            </p>
+          </>
         )
       })
-    }
+    })
   }
 
   // Handle UI actions when user clicks "forgot password" button
@@ -187,6 +131,17 @@ const Login = ({
         show: true,
         message: <p>Please enter a valid email.</p>
       })
+    }
+  }
+
+  // Handle enter key press in form, since we prevent default on this form
+  const handleKeyPress = e => {
+    if (e.key === "Enter") {
+      if (showPasswordRecover) {
+        handlePasswordReset()
+      } else {
+        handleLogin()
+      }
     }
   }
 
@@ -240,6 +195,7 @@ const Login = ({
                       placeholder="example@email.com"
                       value={data.recoveryEmail}
                       onChange={handleChange}
+                      onKeyDown={handleKeyPress}
                     />
                     <p className="small block text-black dark:text-tertiary-100">
                       A password recovery email will be sent to the address
@@ -263,6 +219,7 @@ const Login = ({
                       placeholder="example@email.com"
                       value={data.email}
                       onChange={handleChange}
+                      onKeyDown={handleKeyPress}
                     />
                   </div>
                   <div>
@@ -279,9 +236,11 @@ const Login = ({
                       placeholder={passwordPlaceholder}
                       value={data.password}
                       onChange={handleChange}
+                      onKeyDown={handleKeyPress}
                     />
                     <button
                       className="text-[#2563EB] dark:text-[#3B82F6] hover:underline"
+                      type="button"
                       onClick={() => setShowPasswordRecover(true)}
                     >
                       Forgot password?
@@ -313,6 +272,7 @@ const Login = ({
 Login.propTypes = {
   auth: PropTypes.object.isRequired,
   authShow: PropTypes.bool.isRequired,
+  showModal: PropTypes.bool.isRequired,
   setShowModal: PropTypes.func.isRequired,
   passwordPlaceholder: PropTypes.string,
   setPasswordPlaceholder: PropTypes.func,

@@ -19,8 +19,16 @@ const ThemePalette = ({
   showProceedOrCancel,
   handleProceedOrCancel
 }) => {
+  /************/
+  /*VARS/INITS*/
+  /************/
+
   // Redux dispatch
   const dispatch = useDispatch()
+
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
 
   // Hanlder function for when user wants to proceed with deleting a theme from their profile
   const handleDelete = async docName => {
@@ -87,7 +95,7 @@ const ThemePalette = ({
                     title={`Delete ${item.themeName} theme`}
                   >
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns="http:// www.w3.org/2000/svg"
                       width="24"
                       height="24"
                       fill="none"
@@ -138,7 +146,10 @@ const ThemePalette = ({
 
 ThemePalette.propTypes = {
   themes: PropTypes.array,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  db: PropTypes.object.isRequired,
+  showProceedOrCancel: PropTypes.object,
+  handleProceedOrCancel: PropTypes.func
 }
 
 export default ThemePalette

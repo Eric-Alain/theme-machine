@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react"
 import ColorPicker from "./ColorPicker"
 
-//Redux
+// Redux
 import { useSelector, useDispatch } from "react-redux"
 import { setShape } from "../../state/actions/styles"
 
-//Components
+// Components
 import FontSelector from "./FontSelector"
 import RadioButton from "./RadioButton"
 import RangeSlider from "./RangeSlider"
 import RadiusDemo from "./RadiusDemo"
 
-//Utils
+// Utils
 import { debounce } from "../../utils"
 
 const Options = () => {
@@ -26,10 +26,10 @@ const Options = () => {
     dispatch(setShape({ rounded: e.target.checked }))
   }
 
-  //Combining useState hook with redux state in order to make use of debouncing
-  //This way, the range slider works as expected, but the redux state only gets
-  //updated 1s after the user is done interacting with it. This reduces the amount
-  //of dispatch calls to update the redux store, which could be expensive
+  // Combining useState hook with redux state in order to make use of debouncing
+  // This way, the range slider works as expected, but the redux state only gets
+  // updated 1s after the user is done interacting with it. This reduces the amount
+  // of dispatch calls to update the redux store, which could be expensive
   const [sliderValue, setSliderValue] = useState(shape.radius)
 
   const handleRadiusChange = e => {

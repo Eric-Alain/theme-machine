@@ -1,7 +1,8 @@
+// React
 import React, { useEffect } from "react"
 import PropTypes from "prop-types"
 
-//Redux
+// Redux
 import { useSelector, useDispatch } from "react-redux"
 import { setFonts } from "../../state/actions/styles"
 

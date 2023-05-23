@@ -8,7 +8,7 @@ import Options from "../components/Options/Options"
 import Result from "../components/Result/Result"
 import Code from "../components/Code/Code"
 
-const IndexPage = () => {
+const IndexPage = ({ location }) => {
   const [width, setWidth] = useState(null)
 
   // Set initial width on component mount
@@ -30,7 +30,7 @@ const IndexPage = () => {
   // Use useMemo to store the Layout component instead of calling it on each render
   const layout = useMemo(
     () => (
-      <Layout width={width}>
+      <Layout width={width} location={location}>
         <Seo title="Home" />
         <div className="container mx-auto pt-1 pb-5 px-5 bg-tertiary-100 dark:bg-gray-900 dark:text-tertiary-100 border border-primary-300 rounded">
           <h1 className="dark:text-tertiary-100">Theme Machine</h1>

@@ -1,12 +1,12 @@
 // React
 import React, { useState, useEffect, useRef } from "react"
 
-//Redux
+// Redux
 import { useSelector, useDispatch } from "react-redux"
 import { setCSS } from "../../state/actions/code"
 import { setShape } from "../../state/actions/styles"
 
-//Utils
+// Utils
 import { lightOrDark, decodeHtmlEntities } from "../../utils"
 
 const Result = () => {
@@ -22,7 +22,7 @@ const Result = () => {
   const iframeRef = useRef(null)
 
   useEffect(() => {
-    //Decode the css stored in redux store, as we need to complete some find/replace operations with it
+    // Decode the css stored in redux store, as we need to complete some find/replace operations with it
     const tempCss = decodeHtmlEntities(css)
 
     const swapArr = [
@@ -71,7 +71,7 @@ const Result = () => {
   }, [colors])
 
   useEffect(() => {
-    //Decode the css stored in redux store, as we need to complete some find/replace operations with it
+    // Decode the css stored in redux store, as we need to complete some find/replace operations with it
     const tempCss = decodeHtmlEntities(css)
 
     const swapArr = [
@@ -96,7 +96,7 @@ const Result = () => {
   }, [fonts])
 
   useEffect(() => {
-    //Decode the css stored in redux store, as we need to complete some find/replace operations with it
+    // Decode the css stored in redux store, as we need to complete some find/replace operations with it
     const tempCss = decodeHtmlEntities(css)
 
     const swapArr = [
@@ -175,8 +175,8 @@ const Result = () => {
       return URL.createObjectURL(blob)
     }
 
-    //Must be fonts available in google apis as well as font source, addl fonts must be installed via npm fontsource and added to gatsby-browser.js
-    //Easy rule to remember, font needs to exist in Google fonts and FontSource
+    // Must be fonts available in google apis as well as font source, addl fonts must be installed via npm fontsource and added to gatsby-browser.js
+    // Easy rule to remember, font needs to exist in Google fonts and FontSource
     const fonts = [
       "Damion",
       "Fira+Mono",
@@ -190,9 +190,9 @@ const Result = () => {
       "Viga"
     ]
 
-    //const cssURL = getBlobURL(css, "text/css")
-    //const jsURL = getBlobURL(js, "text/javascript")
-    //${css && `<link rel="stylesheet" type="text/css" href="${cssURL}" />`}
+    // const cssURL = getBlobURL(css, "text/css")
+    // const jsURL = getBlobURL(js, "text/javascript")
+    // ${css && `<link rel="stylesheet" type="text/css" href="${cssURL}" />`}
     const source = `
       <html class="${theme === "dark" ? "dark" : "light"}">
         <head>

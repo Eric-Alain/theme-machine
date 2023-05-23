@@ -12,6 +12,10 @@ const Signup = ({
   snackBar,
   setSnackBar
 }) => {
+  /*************/
+  /*STATE HOOKS*/
+  /*************/
+
   const [data, setData] = useState({
     displayName: "",
     email: "",
@@ -19,6 +23,21 @@ const Signup = ({
     confirmPassword: "",
     error: null
   })
+
+  /******************/
+  /*USE EFFECT HOOKS*/
+  /******************/
+
+  useEffect(() => {
+    setPasswordPlaceholder(
+      randomStringFromArray(passwordPlaceholder, passwordPlaceholders)
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  /********************/
+  /*HANDLERS/LISTENERS*/
+  /********************/
 
   const handleChange = e => {
     setData({ ...data, [e.target.name]: e.target.value })
@@ -82,12 +101,6 @@ const Signup = ({
       })
     }
   }
-
-  useEffect(() => {
-    setPasswordPlaceholder(
-      randomStringFromArray(passwordPlaceholder, passwordPlaceholders)
-    )
-  }, [])
 
   return (
     <form onSubmit={handleSubmit}>
