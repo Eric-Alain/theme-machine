@@ -74,6 +74,7 @@ const Header = ({ siteTitle, width, location }) => {
   // Listen for change in user authentication, use it to grab display image information from firebase storage
   useEffect(() => {
     onAuthStateChanged(auth, currentUser => {
+      // If we have an authenticated user and their expiration token is valid
       if (currentUser) {
         setAuthShow(true)
         setUser(currentUser)
@@ -98,7 +99,9 @@ const Header = ({ siteTitle, width, location }) => {
         } catch (e) {
           console.log(e)
         }
-      } else {
+      }
+      // Otherwise, close the modal, reset the redux store state and sign out the user (they need to reauthenticate to refresh their token)
+      else {
         setAuthShow(false)
         dispatch(resetStore())
       }
@@ -214,7 +217,11 @@ const Header = ({ siteTitle, width, location }) => {
           {/* Handle menu if we are on incorrect route */}
           {location.pathname === "/" ? (
             <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-8 xl:col-end-10 grid grid-cols-1 md:grid-cols-4 justify-self-end items-end w-full">
-              <div className="xl:col-start-1 xl:col-end-3 justify-self-start md:justify-self-end">
+              <div
+                className={`xl:col-start-1 xl:col-end-${
+                  authShow ? "3 " : "4 "
+                }justify-self-start md:justify-self-end`}
+              >
                 <button
                   onClick={
                     authShow
@@ -272,22 +279,24 @@ const Header = ({ siteTitle, width, location }) => {
                   handleProceedOrCancel={handleProceedOrCancel}
                 />
               </div>
-              <div className="xl:col-start-3 xl:col-end-4 justify-self-start md:justify-self-end">
-                <button
-                  onClick={() => setShowSaveThemeModal(true)}
-                  className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
-                >
-                  Save
-                </button>
-                <SaveThemeModal
-                  auth={auth}
-                  db={db}
-                  showModal={showSaveThemeModal}
-                  setShowModal={setShowSaveThemeModal}
-                  showProceedOrCancel={showProceedOrCancel}
-                  handleProceedOrCancel={handleProceedOrCancel}
-                />
-              </div>
+              {authShow ? (
+                <div className="xl:col-start-3 xl:col-end-4 justify-self-start md:justify-self-end">
+                  <button
+                    onClick={() => setShowSaveThemeModal(true)}
+                    className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"
+                  >
+                    Save
+                  </button>
+                  <SaveThemeModal
+                    auth={auth}
+                    db={db}
+                    showModal={showSaveThemeModal}
+                    setShowModal={setShowSaveThemeModal}
+                    showProceedOrCancel={showProceedOrCancel}
+                    handleProceedOrCancel={handleProceedOrCancel}
+                  />
+                </div>
+              ) : null}
               <div className="xl:col-start-4 xl:col-end-5 justify-self-start md:justify-self-end">
                 <button
                   onClick={() => setShowBooleanModal(true)}

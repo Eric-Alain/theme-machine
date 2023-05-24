@@ -4,6 +4,7 @@ import ColorPicker from "./ColorPicker"
 // Redux
 import { useSelector, useDispatch } from "react-redux"
 import { setShape } from "../../state/actions/styles"
+import { setColors } from "../../state/actions/styles"
 
 // Components
 import FontSelector from "./FontSelector"
@@ -12,7 +13,7 @@ import RangeSlider from "./RangeSlider"
 import RadiusDemo from "./RadiusDemo"
 
 // Utils
-import { debounce } from "../../utils"
+import { debounce, generateHexVals } from "../../utils"
 
 const Options = () => {
   const dispatch = useDispatch()
@@ -22,8 +23,21 @@ const Options = () => {
   const shape = useSelector(state => state.styles.shape)
   const reduxCss = useSelector(state => state.code.css)
 
+  const handleSubmit = e => {
+    e.preventDefault()
+  }
+
   const handleShapeChange = e => {
     dispatch(setShape({ rounded: e.target.checked }))
+  }
+
+  const handleRandomizer = () => {
+    const hexVals = generateHexVals(5)
+    dispatch(setColors(["primary", hexVals[0]]))
+    dispatch(setColors(["secondary", hexVals[1]]))
+    dispatch(setColors(["tertiary", hexVals[2]]))
+    dispatch(setColors(["background", hexVals[3]]))
+    dispatch(setColors(["foreground", hexVals[4]]))
   }
 
   // Combining useState hook with redux state in order to make use of debouncing
@@ -75,7 +89,7 @@ const Options = () => {
     <section className="col-span-12 lg:col-span-3 flex flex-col">
       <h2 className="dark:text-tertiary-100">Options</h2>
       <div className="grow rounded border border-solid border-primary-300 pb-3 px-5">
-        <form className="my-5">
+        <form className="my-5" onSubmit={handleSubmit}>
           <fieldset>
             <legend className="h4 border-b border-solid border-primary-300 mb-3 w-full">
               Colors
@@ -140,6 +154,31 @@ const Options = () => {
                 <label className="ml-3" htmlFor="theme-foreground">
                   Foreground
                 </label>
+              </div>
+
+              <div className="inline-flex items-center">
+                <button
+                  className="rounded border z-1 relative z-0 p-1 flex bg-tertiary-100 text-primary-900 border-primary-600 hover:bg-primary-900 hover:text-secondary-900 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-600 transition-all"
+                  onClick={handleRandomizer}
+                  type="button"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6 justify-center items-center"
+                  >
+                    <path
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                    />
+                  </svg>
+                </button>
+                <p className="ml-3">Randomize</p>
               </div>
             </div>
           </fieldset>

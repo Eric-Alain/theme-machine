@@ -122,6 +122,15 @@ const SaveThemeModal = ({
           },
           timestamp: serverTimestamp()
         })
+
+        await setDoc(doc(db, "users", user.uid), {
+          userInfo: {
+            name: user.displayName,
+            email: user.email,
+            uuid: user.uid
+          },
+          timestamp: serverTimestamp()
+        })
         // Leave a nice message
         setSnackBar({
           ...snackBar,

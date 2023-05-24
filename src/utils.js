@@ -70,3 +70,13 @@ export const randomStringFromArray = (string, array) => {
 export const capitalizeFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+export const generateHexVals = num => {
+  let arr = []
+  for (let i = 0; i < num; i++) {
+    arr.push(
+      `#${((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0")}`
+    )
+  }
+  return arr
+}

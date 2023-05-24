@@ -150,7 +150,7 @@ export const initialState = {
 			<li>lists,</li>
 		</ol>
 		</div>		
-		you can keep your content neat and tidy. Lists are not just for groceries, they are also perfect for showing off your content in a structured and organized way.</p>
+		<p>you can keep your content neat and tidy. Lists are not just for groceries, they are also perfect for showing off your content in a structured and organized way.</p>
 		<p>With the <button class="btn" onClick="alert('Something happened!')">click of a button</button> , you can make things happen on your website.</p>
 		<p>Last but not least, let's talk about forms! Sometimes you simply need to know more about your user. Shake things up and make your form stand out!</p>
 		<fieldset>		
@@ -202,14 +202,14 @@ export const initialState = {
 </main>`),
 
   css: htmlEntities(`:root {
-	--primary: #f7ef04;
-	--secondary: #fa9902;
-	--tertiary: #c202fc;
-	--background: #000000;
-	--foreground: #000000;
-	--general-text-color: #ffffff;
-	--button-text-color: #ffffff;
-	--herobtn-text-color: #ffffff;
+	--primary: #14213D;
+	--secondary: #D4D4D4;
+	--tertiary: #f59b1c;
+	--background: #D4D4D4;
+	--foreground: #FAFAFA;
+	--general-text-color: #000000;
+	--button-text-color: #000000;
+	--herobtn-text-color: #000000;
 	--font-general: Roboto, sans-serif;
 	--font-heading: Jost, sans-serif;
 	--tm-rounded: 1px solid var(--primary);
