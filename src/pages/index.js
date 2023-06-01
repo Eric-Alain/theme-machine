@@ -36,13 +36,10 @@ const IndexPage = ({ location }) => {
           <h1 className="dark:text-tertiary-100">Theme Machine</h1>
           <p className="mb-3">
             Theme Machine is a quick and easy-to-use tool for mockups of your
-            web design. It allows you to quickly play around with colors, fonts
-            and shapes, giving you a visual representation of your design before
-            you even start coding.
-          </p>
-          <p className="mb-3">
+            web design. Pplay around with colors, fonts and shapes to get a
+            visual representation of your design before you even start coding.
             With Theme Machine, you save time by not having to write boiler code
-            but still have the flexibility to create stunning websites that
+            and get the inspiration you need to create stunning websites that
             stand out from the crowd.
           </p>
           <hr className="border-primary-300 mb-3" />
@@ -54,7 +51,7 @@ const IndexPage = ({ location }) => {
         </div>
       </Layout>
     ),
-    [width]
+    [width, location]
   )
   return layout
 }

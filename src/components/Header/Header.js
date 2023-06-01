@@ -200,7 +200,7 @@ const Header = ({ siteTitle, width, location }) => {
           } md:h-fit overflow-hidden md:overflow-visible transition-all duration-500 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 items-end relative`}
         >
           <div
-            className="md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-7 xl:col-start-1 xl:col-end-8"
+            className="md:col-start-1 md:col-end-4 lg:col-start-1 lg:col-end-6 xl:col-start-1 xl:col-end-8"
             title={siteTitle}
           >
             <LogoSvg classNames="w-[6rem] h-auto" baseColor={"#fff"} />
@@ -216,10 +216,18 @@ const Header = ({ siteTitle, width, location }) => {
           />
           {/* Handle menu if we are on incorrect route */}
           {location.pathname === "/" ? (
-            <div className="md:col-start-5 md:col-end-6 lg:col-start-7 lg:col-end-8 xl:col-start-8 xl:col-end-10 grid grid-cols-1 md:grid-cols-4 justify-self-end items-end w-full">
+            <div
+              className={`md:col-start-4 md:col-end-6 lg:col-start-6 lg:col-end-8 xl:col-start-8 xl:col-end-10 grid grid-cols-1${
+                authShow
+                  ? " md:grid-cols-3 xl:grid-cols-4 "
+                  : " md:grid-cols-3 "
+              }justify-self-end items-end w-full`}
+            >
               <div
-                className={`xl:col-start-1 xl:col-end-${
-                  authShow ? "3 " : "4 "
+                className={`${
+                  authShow
+                    ? "xl:col-start-1 xl:col-end-3 "
+                    : "md:col-start-2 md:col-end-3 "
                 }justify-self-start md:justify-self-end`}
               >
                 <button
@@ -297,7 +305,13 @@ const Header = ({ siteTitle, width, location }) => {
                   />
                 </div>
               ) : null}
-              <div className="xl:col-start-4 xl:col-end-5 justify-self-start md:justify-self-end">
+              <div
+                className={`${
+                  authShow
+                    ? "xl:col-start-4 xl:col-end-5 "
+                    : "md:col-start-3 md:col-end-4 "
+                }justify-self-start md:justify-self-end`}
+              >
                 <button
                   onClick={() => setShowBooleanModal(true)}
                   className="text-tertiary-100 hover:text-secondary-900 dark:text-tertiary-100 dark:hover:text-secondary-900"

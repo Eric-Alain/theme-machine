@@ -1,7 +1,7 @@
 {
   "name": "theme-machine",
   "private": true,
-  "description": "Description here",
+  "description": "Theme Machine is a quick and easy-to-use tool for mockups of your web design. Pplay around with colors, fonts and shapes to get a visual representation of your design before you even start coding. With Theme Machine, you save time by not having to write boiler code and get the inspiration you need to create stunning websites that stand out from the crowd.",
   "version": "0.1.0",
   "author": "Eric Alain <ericalain1@hotmail.com>",
   "dependencies": {
