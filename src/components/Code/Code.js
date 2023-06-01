@@ -98,7 +98,7 @@ const Code = () => {
         <div className="flex flex-row items-end justify-between relative mb-3">
           <h2 className="mb-0 pb-0 dark:text-tertiary-100">HTML</h2>
           <CopyOverlay
-            divClasses="flex items-end z-10"
+            divClasses="flex items-end"
             buttonClasses="group"
             iconClasses="text-tertiary-100 stroke-primary-900 group-hover:text-primary-900 group-hover:stroke-tertiary-100"
             copied={htmlClipCopied}
@@ -123,7 +123,7 @@ const Code = () => {
         <div className="flex flex-row items-end justify-between relative mb-3">
           <h2 className="mb-0 pb-0 dark:text-tertiary-100">CSS</h2>
           <CopyOverlay
-            divClasses="flex items-end z-10"
+            divClasses="flex items-end"
             buttonClasses="group"
             iconClasses="text-tertiary-100 stroke-primary-900 group-hover:text-primary-900 group-hover:stroke-tertiary-100"
             copied={cssClipCopied}

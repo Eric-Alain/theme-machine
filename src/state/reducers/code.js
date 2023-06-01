@@ -666,6 +666,11 @@ nav {
 	font-size: 1.25rem;
 }
 
+.form-input,
+.form-select {
+	width: 100%;
+}
+
 form {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
