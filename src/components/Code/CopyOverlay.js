@@ -24,6 +24,8 @@ const CopyOverlay = ({
             buttonClasses ? ` ${buttonClasses}` : ""
           }`}
           onClick={handleClick}
+          aria-label="Copy"
+          title="Copy"
         >
           <svg
             xmlns="http:// www.w3.org/2000/svg"

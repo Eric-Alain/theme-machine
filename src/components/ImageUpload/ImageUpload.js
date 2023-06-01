@@ -29,6 +29,7 @@ const ImageUpload = ({ state, setState }) => {
           ref={ref}
           type="file"
           name="profile-picture"
+          aria-labelledby="profile-picture"
           className="auth-input"
           onChange={handleFileChange}
         />

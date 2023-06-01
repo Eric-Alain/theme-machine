@@ -191,6 +191,7 @@ const Login = ({
                     <input
                       type="email"
                       name="recoveryEmail"
+                      aria-labelledby="recoveryEmail"
                       className="auth-input"
                       placeholder="example@email.com"
                       value={data.recoveryEmail}
@@ -215,6 +216,7 @@ const Login = ({
                     <input
                       type="email"
                       name="email"
+                      aria-labelledby="email"
                       className="auth-input"
                       placeholder="example@email.com"
                       value={data.email}
@@ -232,6 +234,7 @@ const Login = ({
                     <input
                       type="password"
                       name="password"
+                      aria-labelledby="password"
                       className="auth-input"
                       placeholder={passwordPlaceholder}
                       value={data.password}

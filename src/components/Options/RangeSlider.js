@@ -22,6 +22,7 @@ const RangeSlider = ({
       <input
         id={id}
         type="range"
+        aria-labelledby="range slider"
         value={value}
         min={min}
         max={max}

@@ -322,6 +322,7 @@ const UserProfileModal = ({
                         <input
                           type="text"
                           name="displayName"
+                          aria-labelledby="displayName"
                           className="auth-input"
                           placeholder="Themy Themerton"
                           value={

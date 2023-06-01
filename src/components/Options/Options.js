@@ -99,6 +99,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-primary"
+                  aria-labelledby="theme-primary"
                   id="theme-primary"
                   value={colors.primary}
                 />
@@ -111,6 +112,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-secondary"
+                  aria-labelledby="theme-secondary"
                   id="theme-secondary"
                   value={colors.secondary}
                 />
@@ -123,6 +125,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-tertiary"
+                  aria-labelledby="theme-tertiary"
                   id="theme-tertiary"
                   value={colors.tertiary}
                 />
@@ -135,6 +138,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-background"
+                  aria-labelledby="theme-background"
                   id="theme-background"
                   value={colors.background}
                 />
@@ -147,6 +151,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-foreground"
+                  aria-labelledby="theme-foreground"
                   id="theme-foreground"
                   value={colors.foreground}
                 />
@@ -160,6 +165,8 @@ const Options = () => {
                 <button
                   className="rounded border z-1 relative z-0 p-1 flex bg-tertiary-100 text-primary-900 border-primary-600 hover:bg-primary-900 hover:text-secondary-900 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-600 transition-all"
                   onClick={handleRandomizer}
+                  aria-label="Randomize colors"
+                  title="Randomize colors"
                   type="button"
                 >
                   <svg
