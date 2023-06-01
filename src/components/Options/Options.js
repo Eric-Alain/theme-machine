@@ -99,7 +99,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-primary"
-                  aria-labelledby="theme-primary"
+                  aria-label="theme-primary"
                   id="theme-primary"
                   value={colors.primary}
                 />
@@ -112,7 +112,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-secondary"
-                  aria-labelledby="theme-secondary"
+                  aria-label="theme-secondary"
                   id="theme-secondary"
                   value={colors.secondary}
                 />
@@ -125,7 +125,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-tertiary"
-                  aria-labelledby="theme-tertiary"
+                  aria-label="theme-tertiary"
                   id="theme-tertiary"
                   value={colors.tertiary}
                 />
@@ -138,7 +138,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-background"
-                  aria-labelledby="theme-background"
+                  aria-label="theme-background"
                   id="theme-background"
                   value={colors.background}
                 />
@@ -151,7 +151,7 @@ const Options = () => {
                 <input
                   type="hidden"
                   name="theme-foreground"
-                  aria-labelledby="theme-foreground"
+                  aria-label="theme-foreground"
                   id="theme-foreground"
                   value={colors.foreground}
                 />

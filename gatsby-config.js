@@ -49,15 +49,16 @@ module.exports = {
         name: `theme-machine`,
         short_name: `TM`,
         start_url: `/`,
-        background_color: `#994100`,
+        background_color: `#14213d`,
         // This will impact how browsers show your PWA/website
         // https://css-tricks.com/meta-theme-color-and-trickery/
-        theme_color: `#FFFFFF`,
+        theme_color: `#14213d`,
         display: `minimal-ui`,
         icon: `src/images/tm-logo.png` // This path is relative to the root of the site.
       }
     },
     `gatsby-plugin-postcss`,
+    `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-purgecss`,
       options: {

@@ -20,7 +20,7 @@ const RadioButton = ({
       >
         <input
           type="checkbox"
-          aria-labelledby="radio button"
+          aria-label="radio button"
           value={value ? value : false}
           checked={value ? value : false}
           className="sr-only peer"

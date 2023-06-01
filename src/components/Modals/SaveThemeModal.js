@@ -351,7 +351,7 @@ const SaveThemeModal = ({
                         <input
                           type="text"
                           name="themeName"
-                          aria-labelledby="themeName"
+                          aria-label="themeName"
                           className="auth-input"
                           placeholder="What do you want to call this theme?"
                           value={data.themeName}

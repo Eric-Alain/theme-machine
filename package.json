@@ -21,6 +21,7 @@
     "gatsby": "^4.23.0",
     "gatsby-plugin-image": "^2.23.0",
     "gatsby-plugin-manifest": "^4.23.0",
+    "gatsby-plugin-offline": "^6.10.0",
     "gatsby-plugin-purgecss": "^6.1.2",
     "gatsby-plugin-react-redux-persist": "^1.1.0",
     "gatsby-plugin-sharp": "^4.23.0",
