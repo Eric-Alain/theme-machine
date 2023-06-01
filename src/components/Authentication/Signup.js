@@ -115,7 +115,7 @@ const Signup = ({
           <input
             type="text"
             name="displayName"
-            aria-labelledby="displayName"
+            aria-label="displayName"
             className="auth-input"
             placeholder="What would you like us to call you?"
             value={data.displayName}
@@ -132,7 +132,7 @@ const Signup = ({
           <input
             type="email"
             name="email"
-            aria-labelledby="email"
+            aria-label="email"
             className="auth-input"
             placeholder="example@email.com"
             value={data.email}
@@ -149,7 +149,7 @@ const Signup = ({
           <input
             type="password"
             name="password"
-            aria-labelledby="password"
+            aria-label="password"
             className="auth-input"
             placeholder={passwordPlaceholder}
             value={data.password}
@@ -166,7 +166,7 @@ const Signup = ({
           <input
             type="password"
             name="confirmPassword"
-            aria-labelledby="confirmPassword"
+            aria-label="confirmPassword"
             className="auth-input"
             placeholder="Just to be sure."
             value={data.confirmPassword}
