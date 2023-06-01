@@ -42,9 +42,7 @@ const Code = () => {
 
   const handleCssChange = code => {
     localSetCss(code)
-    debounce(1000, [
-      () => dispatch(setCSS(htmlEntities(code)))
-    ])
+    debounce(1000, [() => dispatch(setCSS(htmlEntities(code)))])
   }
 
   useEffect(() => {
@@ -60,16 +58,7 @@ const Code = () => {
   /*****************/
 
   // HTML copy clipboard
-  const [htmlClipVis, setHtmlClipVis] = useState(false)
   const [htmlClipCopied, setHtmlClipCopied] = useState(false)
-
-  const handleHtmlClipMouseOver = () => {
-    setHtmlClipVis(true)
-  }
-
-  const handleHtmlClipMouseOut = () => {
-    setHtmlClipVis(false)
-  }
 
   const handleHtmlClipClick = () => {
     navigator.clipboard.writeText(decodeHtmlEntities(reduxBodyHtml))
@@ -86,16 +75,7 @@ const Code = () => {
   }, [htmlClipCopied])
 
   // CSS copy clipboard
-  const [cssClipVis, setCssClipVis] = useState(false)
   const [cssClipCopied, setCssClipCopied] = useState(false)
-
-  const handleCssClipMouseOver = () => {
-    setCssClipVis(true)
-  }
-
-  const handleCssClipMouseOut = () => {
-    setCssClipVis(false)
-  }
 
   const handleCssClipClick = () => {
     navigator.clipboard.writeText(decodeHtmlEntities(reduxCss))
@@ -115,20 +95,18 @@ const Code = () => {
     <>
       <style>{theme === "dark" ? dark : light}</style>
       <section className="col-span-12 md:col-span-6 flex flex-col">
-        <h2 className="dark:text-tertiary-100">HTML</h2>
-        <div
-          className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1 relative"
-          onMouseOver={handleHtmlClipMouseOver}
-          onMouseOut={handleHtmlClipMouseOut}
-        >
+        <div className="flex flex-row items-end justify-between relative mb-3">
+          <h2 className="mb-0 pb-0 dark:text-tertiary-100">HTML</h2>
           <CopyOverlay
-            divClasses="flex absolute top-1 right-1 z-10"
+            divClasses="flex items-end z-10"
             buttonClasses="group"
             iconClasses="text-tertiary-100 stroke-primary-900 group-hover:text-primary-900 group-hover:stroke-tertiary-100"
-            display={htmlClipVis}
             copied={htmlClipCopied}
             handleClick={handleHtmlClipClick}
           />
+        </div>
+
+        <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1 relative">
           <Editor
             value={localHtml}
             onValueChange={code => handleHtmlChange(code)}
@@ -137,25 +115,22 @@ const Code = () => {
             tabSize={1}
             ignoreTabKey={false}
             padding={12}
-            className="language-html bg-white dark:bg-gray-900 z-0"
-          />
+            className="language-html bg-white dark:bg-gray-900 z-0 -mt-6"
+          ></Editor>
         </div>
       </section>
       <section className="col-span-12 md:col-span-6 flex flex-col">
-        <h2 className="dark:text-tertiary-100">CSS</h2>
-        <div
-          className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1 relative"
-          onMouseOver={handleCssClipMouseOver}
-          onMouseOut={handleCssClipMouseOut}
-        >
+        <div className="flex flex-row items-end justify-between relative mb-3">
+          <h2 className="mb-0 pb-0 dark:text-tertiary-100">CSS</h2>
           <CopyOverlay
-            divClasses="flex absolute top-1 right-1 z-10"
+            divClasses="flex items-end z-10"
             buttonClasses="group"
             iconClasses="text-tertiary-100 stroke-primary-900 group-hover:text-primary-900 group-hover:stroke-tertiary-100"
-            display={cssClipVis}
             copied={cssClipCopied}
             handleClick={handleCssClipClick}
           />
+        </div>
+        <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1 relative">
           <Editor
             value={localCss}
             onValueChange={code => handleCssChange(code)}

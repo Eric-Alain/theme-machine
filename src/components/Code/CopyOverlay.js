@@ -6,7 +6,6 @@ const CopyOverlay = ({
   divClasses,
   buttonClasses,
   iconClasses,
-  display,
   copied,
   handleClick
 }) => {
@@ -14,14 +13,16 @@ const CopyOverlay = ({
     <>
       <div className={`${divClasses ? divClasses : ""}`}>
         <span
-          className={`transition-all${copied ? " opacity-100" : " opacity-0"}`}
+          className={`transition-all underline leading-none${
+            copied ? " opacity-100" : " opacity-0"
+          }`}
         >
           Copied!
         </span>
         <button
-          className={`transition-all ${
-            display ? "opacity-100 " : "opacity-0 "
-          }${buttonClasses ? buttonClasses : ""}`}
+          className={`transition-all opacity-100${
+            buttonClasses ? ` ${buttonClasses}` : ""
+          }`}
           onClick={handleClick}
         >
           <svg
@@ -30,7 +31,7 @@ const CopyOverlay = ({
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className={`${display ? "w-6 h-6 " : "w-0 h-0 "} transition-all${
+            className={`w-6 h-6 transition-all${
               iconClasses ? ` ${iconClasses}` : ""
             }`}
           >
@@ -50,7 +51,7 @@ CopyOverlay.propTypes = {
   divClasses: PropTypes.string,
   buttonClasses: PropTypes.string,
   iconClasses: PropTypes.string,
-  display: PropTypes.bool,
+  //display: PropTypes.bool,
   copied: PropTypes.bool,
   handleClick: PropTypes.func
 }
