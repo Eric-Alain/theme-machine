@@ -54,6 +54,7 @@ module.exports = {
         // https://css-tricks.com/meta-theme-color-and-trickery/
         theme_color: `#14213d`,
         display: `minimal-ui`,
+        icon: `src/images/tm-logo.png`,
         icons: [
           {
             src: `/src/images/android-chrome-192x192.png`,
