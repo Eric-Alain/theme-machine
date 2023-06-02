@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 // Redux
 import { useDispatch, useSelector } from "react-redux"
@@ -34,6 +34,10 @@ const Code = () => {
   // useState for component rendering
   const [localHtml, localSetHtml] = useState(reduxBodyHtml)
   const [localCss, localSetCss] = useState(reduxCss)
+
+  // Create refs to add aria-labels to textarea elements from simple editor component
+  const htmlEditorRef = useRef(null)
+  const cssEditorRef = useRef(null)
 
   const handleHtmlChange = code => {
     localSetHtml(decodeHtmlEntities(code))
@@ -91,6 +95,12 @@ const Code = () => {
     }
   }, [cssClipCopied])
 
+  // On initial component mount, add aria labels to Editor components
+  useEffect(() => {
+    htmlEditorRef.current._input.setAttribute("aria-label", "HTML Editor")
+    cssEditorRef.current._input.setAttribute("aria-label", "CSS Editor")
+  }, [])
+
   return (
     <>
       <style>{theme === "dark" ? dark : light}</style>
@@ -108,6 +118,7 @@ const Code = () => {
 
         <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1 relative">
           <Editor
+            ref={htmlEditorRef}
             value={localHtml}
             onValueChange={code => handleHtmlChange(code)}
             highlight={code => highlight(code, languages.markup)}
@@ -132,6 +143,7 @@ const Code = () => {
         </div>
         <div className="rounded border border-solid border-primary-300 overflow-y-scroll scrollbar max-h-[32rem] min-h-[32rem] flex-1 relative">
           <Editor
+            ref={cssEditorRef}
             value={localCss}
             onValueChange={code => handleCssChange(code)}
             highlight={code => highlight(code, languages.css)}

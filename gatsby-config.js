@@ -54,17 +54,36 @@ module.exports = {
         // https://css-tricks.com/meta-theme-color-and-trickery/
         theme_color: `#14213d`,
         display: `minimal-ui`,
-        icon: `src/images/tm-logo.png` // This path is relative to the root of the site.
+        icons: [
+          {
+            src: `src/images/android-chrome-192x192.png`,
+            sizes: `192x192`,
+            type: `image/png`,
+            purpose: `any`
+          },
+          {
+            src: `src/images/android-chrome-512x512.png`,
+            sizes: `512x512`,
+            type: `image/png`,
+            purpose: `any`
+          },
+          {
+            src: `src/images/android-chrome-maskable-192x192.png`,
+            sizes: `192x192`,
+            type: `image/png`,
+            purpose: `any maskable`
+          },
+          {
+            src: `src/images/android-chrome-maskable-512x512.png`,
+            sizes: `512x512`,
+            type: `image/png`,
+            purpose: `any`
+          }
+        ]
       }
     },
-    `gatsby-plugin-postcss`,
     `gatsby-plugin-offline`,
-    {
-      resolve: `gatsby-plugin-purgecss`,
-      options: {
-        tailwind: true
-      }
-    },
+    `gatsby-plugin-postcss`,
     `gatsby-plugin-netlify`
   ]
 }
