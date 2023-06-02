@@ -56,25 +56,25 @@ module.exports = {
         display: `minimal-ui`,
         icons: [
           {
-            src: `src/images/android-chrome-192x192.png`,
+            src: `/src/images/android-chrome-192x192.png`,
             sizes: `192x192`,
             type: `image/png`,
             purpose: `any`
           },
           {
-            src: `src/images/android-chrome-512x512.png`,
+            src: `/src/images/android-chrome-512x512.png`,
             sizes: `512x512`,
             type: `image/png`,
             purpose: `any`
           },
           {
-            src: `src/images/android-chrome-maskable-192x192.png`,
+            src: `/src/images/android-chrome-maskable-192x192.png`,
             sizes: `192x192`,
             type: `image/png`,
             purpose: `any maskable`
           },
           {
-            src: `src/images/android-chrome-maskable-512x512.png`,
+            src: `/src/images/android-chrome-maskable-512x512.png`,
             sizes: `512x512`,
             type: `image/png`,
             purpose: `any`
