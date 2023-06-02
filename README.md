@@ -1,10 +1,11 @@
 # Theme Machine
 
-To do:
+## Stack
 
-- Make URL param controls
-- Make testing library
-- Maybe make a "Buy me a coffee" button?
+  - React/redux: for general state management
+  - Gatsby/Node: for bootstrapping and tooling
+  - Tailwind CSA: for utility on demand styling
+  - Firebase: for authentication and database management
 
 
 
